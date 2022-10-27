@@ -1,0 +1,77 @@
+<Project>
+  <PropertyGroup>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>10.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>$(NoWarn);MSB3270</NoWarn>
+  </PropertyGroup>
+
+  <!-- Centralized location for all generated artifacts -->
+  <PropertyGroup>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)artifacts/</PackageOutputPath>
+  </PropertyGroup>
+
+  <!--
+    The target version being built (this is referenced by all build steps).
+    This version will set the package version prefix and the assembly version.
+    As such, this needs to be changed before a new release as well.
+  -->
+  <PropertyGroup>
+    <ShmuelieWinRTServerPackageVersion>2.0.0</ShmuelieWinRTServerPackageVersion>
+    <IsCommitOnReleaseBranch>false</IsCommitOnReleaseBranch>
+  </PropertyGroup>
+
+  <!--
+    Check if the current push is for a release build for NuGet, as that will create a package with a hardcoded version.
+    A release build is one that originates from a push to a branch with the format 'rel/<BUILD_VERSION>(.<SUFFIX>)?'.
+  -->
+  <PropertyGroup>
+    <ReleaseVersionParsingRegex>^rel/(\d{1,4}\.\d{1,4}\.\d{1,4})(?:-(\w+(?:\.\w+)?))?$</ReleaseVersionParsingRegex>
+    <IsBranchNameStartingWithRefPrefix>$([System.Text.RegularExpressions.Regex]::IsMatch($(GITHUB_REF_NAME), $(ReleaseVersionParsingRegex)))</IsBranchNameStartingWithRefPrefix>
+  </PropertyGroup>
+
+  <!-- If the current branch and action match a release for NuGet, override the relative build properties -->
+  <PropertyGroup Condition="'$(GITHUB_EVENT_NAME)' == 'push' AND '$(GITHUB_REF_NAME)' != '' AND '$(IsBranchNameStartingWithRefPrefix)' == 'true'">
+    <IsCommitOnReleaseBranch>true</IsCommitOnReleaseBranch>
+    <ShmuelieWinRTServerPackageVersionFromReleaseBranch>$([System.Text.RegularExpressions.Regex]::Match($(GITHUB_REF_NAME), $(ReleaseVersionParsingRegex)).Groups[1].Value)</ShmuelieWinRTServerPackageVersionFromReleaseBranch>
+    <ShmuelieWinRTServerPackageVersionSuffixFromReleaseBranch>$([System.Text.RegularExpressions.Regex]::Match($(GITHUB_REF_NAME), $(ReleaseVersionParsingRegex)).Groups[2].Value)</ShmuelieWinRTServerPackageVersionSuffixFromReleaseBranch>
+    <ShmuelieWinRTServerPackageVersion>$(ShmuelieWinRTServerPackageVersionFromReleaseBranch)</ShmuelieWinRTServerPackageVersion>
+    <VersionSuffix>$(ShmuelieWinRTServerPackageVersionSuffixFromReleaseBranch)</VersionSuffix>
+  </PropertyGroup>
+
+  <!-- Configure the assembly version and suffix for both normal CI builds and release builds -->
+  <PropertyGroup>
+    <AssemblyVersion>$(ShmuelieWinRTServerPackageVersion).0</AssemblyVersion>
+    <VersionPrefix>$(ShmuelieWinRTServerPackageVersion)</VersionPrefix>
+    <VersionSuffix Condition="'$(EXCLUDE_SUFFIX_FROM_VERSION)' != 'true' AND '$(IsCommitOnReleaseBranch)' != 'true'">alpha</VersionSuffix>
+    <VersionSuffix Condition="'$(GITHUB_EVENT_NAME)' == 'pull_request' AND '$(IsCommitOnReleaseBranch)' != 'true'">pr</VersionSuffix>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <ContinuousIntegrationBuild Condition="'$(GITHUB_RUN_ID)' != ''">true</ContinuousIntegrationBuild>
+    <RepositoryUrl>https://github.com/shmuelie/Shmuelie.WinRTServer/</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <ProjectUrl>https://github.com/shmuelie/Shmuelie.WinRTServer/</ProjectUrl>
+    <Authors>Sergio Pedri</Authors>
+    <Owners>Sergio Pedri</Owners>
+    <Company>Sergio Pedri</Company>
+    <Copyright>Copyright (c) 2022 Sergio Pedri</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageIconUrl>https://user-images.githubusercontent.com/10199417/110238403-b8811080-7f41-11eb-8cfe-e47e7e58f05b.png</PackageIconUrl>
+    <PackageTags>dotnet net netcore netstandard csharp library graphics directx shader hlsl compute gpu performance parallel windows</PackageTags>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1" PrivateAssets="all" />
+  </ItemGroup>
+
+  <!-- Needed for deterministic builds -->
+  <ItemGroup>
+    <SourceRoot Include="$(MSBuildThisFileDirectory)/"/>
+  </ItemGroup>
+</Project>
