@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using Shmuelie.Interop.Windows;
 
-namespace Shmuelie.WinRTServer.Windows;
+namespace Shmuelie.Interop.Windows;
 
 [Guid("00000035-0000-0000-C000-000000000046")]
 internal unsafe partial struct IActivationFactory

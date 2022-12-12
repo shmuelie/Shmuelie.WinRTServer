@@ -1,4 +1,4 @@
-﻿namespace Shmuelie.WinRTServer.Windows;
+﻿namespace Shmuelie.Interop.Windows;
 
 internal enum TrustLevel
 {

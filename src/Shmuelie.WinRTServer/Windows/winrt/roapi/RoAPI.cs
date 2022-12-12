@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Shmuelie.WinRTServer.Windows;
+namespace Shmuelie.Interop.Windows;
 
 internal static unsafe class RoAPI
 {
