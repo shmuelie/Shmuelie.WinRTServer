@@ -8,7 +8,9 @@ namespace Shmuelie.WinRTServer.Windows;
 [Guid("00000035-0000-0000-C000-000000000046")]
 internal unsafe partial struct IActivationFactory
 {
+#pragma warning disable CS0649 // This field maps to the native object directly
     public void** lpVtbl;
+#pragma warning restore CS0649
 
     /// <inheritdoc cref="IUnknown.QueryInterface" />
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

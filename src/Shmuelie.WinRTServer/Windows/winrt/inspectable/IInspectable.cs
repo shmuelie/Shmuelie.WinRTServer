@@ -8,7 +8,9 @@ namespace Shmuelie.WinRTServer.Windows;
 [Guid("AF86E2E0-B12D-4C6A-9C5A-D7AA65101E90")]
 internal unsafe partial struct IInspectable
 {
+#pragma warning disable CS0649 // This field maps to the native object directly
     public void** lpVtbl;
+#pragma warning restore CS0649
 
     /// <inheritdoc cref="IUnknown.QueryInterface" />
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
