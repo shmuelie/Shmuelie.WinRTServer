@@ -11,7 +11,7 @@ namespace Shmuelie.WinRTServer;
 /// <summary>
 /// CCW for <see cref="BaseClassFactory" />
 /// </summary>
-internal unsafe struct BaseFactoryProxy
+internal unsafe struct BaseClassFactoryProxy
 {
     private static readonly void** Vtbl = InitVtbl();
 
@@ -40,9 +40,9 @@ internal unsafe struct BaseFactoryProxy
     /// </summary>
     private uint _referenceCount;
 
-    public static BaseFactoryProxy* Create(BaseClassFactory factory)
+    public static BaseClassFactoryProxy* Create(BaseClassFactory factory)
     {
-        BaseFactoryProxy* @this = (BaseFactoryProxy*)Marshal.AllocHGlobal(sizeof(BaseFactoryProxy));
+        BaseClassFactoryProxy* @this = (BaseClassFactoryProxy*)Marshal.AllocHGlobal(sizeof(BaseClassFactoryProxy));
         @this->_lpVtbl = Vtbl;
         @this->_factory = GCHandle.Alloc(factory);
         @this->_referenceCount = 1;
@@ -57,25 +57,25 @@ internal unsafe struct BaseFactoryProxy
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public uint Release()
     {
-        return Impl.Release((BaseFactoryProxy*)Unsafe.AsPointer(ref this));
+        return Impl.Release((BaseClassFactoryProxy*)Unsafe.AsPointer(ref this));
     }
 
     private static class Impl
     {
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int QueryInterfaceDelegate(BaseFactoryProxy* @this, Guid* riid, void** ppvObject);
+        public delegate int QueryInterfaceDelegate(BaseClassFactoryProxy* @this, Guid* riid, void** ppvObject);
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate uint AddRefDelegate(BaseFactoryProxy* @this);
+        public delegate uint AddRefDelegate(BaseClassFactoryProxy* @this);
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate uint ReleaseDelegate(BaseFactoryProxy* @this);
+        public delegate uint ReleaseDelegate(BaseClassFactoryProxy* @this);
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int CreateInstanceDelegate(BaseFactoryProxy* @this, IUnknown* pUnkOuter, Guid* riid, void** ppvObject);
+        public delegate int CreateInstanceDelegate(BaseClassFactoryProxy* @this, IUnknown* pUnkOuter, Guid* riid, void** ppvObject);
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int LockServerDelegate(BaseFactoryProxy* @this, int fLock);
+        public delegate int LockServerDelegate(BaseClassFactoryProxy* @this, int fLock);
 
         /// <summary>
         /// The cached <see cref="QueryInterfaceDelegate"/> for <c>IUnknown.QueryInterface(REFIID, void**)</c>.
@@ -99,7 +99,7 @@ internal unsafe struct BaseFactoryProxy
         /// <summary>
         /// Implements <see href="https://docs.microsoft.com/en-us/windows/win32/api/unknwn/nf-unknwn-iunknown-queryinterface(refiid_void)"><c>IUnknown.QueryInterface(REFIID, void**)</c></see>.
         /// </summary>
-        private static int QueryInterface(BaseFactoryProxy* @this, Guid* riid, void** ppvObject)
+        private static int QueryInterface(BaseClassFactoryProxy* @this, Guid* riid, void** ppvObject)
         {
             if (riid->Equals(__uuidof<IUnknown>()) ||
                 riid->Equals(__uuidof<IClassFactory>()))
@@ -117,7 +117,7 @@ internal unsafe struct BaseFactoryProxy
         /// <summary>
         /// Implements <see href="https://docs.microsoft.com/en-us/windows/win32/api/unknwn/nf-unknwn-iunknown-addref"><c>IUnknown.AddRef()</c></see>.
         /// </summary>
-        private static uint AddRef(BaseFactoryProxy* @this)
+        private static uint AddRef(BaseClassFactoryProxy* @this)
         {
             return (uint)Interlocked.Increment(ref Unsafe.As<uint, int>(ref @this->_referenceCount));
         }
@@ -125,7 +125,7 @@ internal unsafe struct BaseFactoryProxy
         /// <summary>
         /// Implements <see href="https://docs.microsoft.com/en-us/windows/win32/api/unknwn/nf-unknwn-iunknown-release"><c>IUnknown.Release()</c></see>.
         /// </summary>
-        public static uint Release(BaseFactoryProxy* @this)
+        public static uint Release(BaseClassFactoryProxy* @this)
         {
             uint referenceCount = (uint)Interlocked.Decrement(ref Unsafe.As<uint, int>(ref @this->_referenceCount));
 
@@ -139,7 +139,7 @@ internal unsafe struct BaseFactoryProxy
             return referenceCount;
         }
 
-        public static int CreateInstance(BaseFactoryProxy* @this, IUnknown* pUnkOuter, Guid* riid, void** ppvObject)
+        public static int CreateInstance(BaseClassFactoryProxy* @this, IUnknown* pUnkOuter, Guid* riid, void** ppvObject)
         {
             try
             {
@@ -187,7 +187,7 @@ internal unsafe struct BaseFactoryProxy
             return S.S_OK;
         }
 
-        public static int LockServer(BaseFactoryProxy* @this, int fLock)
+        public static int LockServer(BaseClassFactoryProxy* @this, int fLock)
         {
             try
             {
