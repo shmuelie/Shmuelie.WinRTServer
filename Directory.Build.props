@@ -54,10 +54,10 @@
     <RepositoryType>git</RepositoryType>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <ProjectUrl>https://github.com/shmuelie/Shmuelie.WinRTServer/</ProjectUrl>
-    <Authors>Sergio Pedri</Authors>
-    <Owners>Sergio Pedri</Owners>
-    <Company>Sergio Pedri</Company>
-    <Copyright>Copyright (c) 2022 Sergio Pedri</Copyright>
+    <Authors>Shmueli Englard</Authors>
+    <Owners>Shmueli Englard</Owners>
+    <Company>Shmueli Englard</Company>
+    <Copyright>Copyright (c) 2022 Shmueli Englard</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageIcon>icon.png</PackageIcon>
