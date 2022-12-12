@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net6.0-windows</TargetFrameworks>
+    <ApplicationIcon>..\..\$(MSBuildProjectName).ico</ApplicationIcon>
+  </PropertyGroup>
+  <!-- .NET Standard 2.0 polyfill packages -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="System.Memory" Version="4.5.4" />
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="6.0.0" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Runtime.InteropServices.WindowsRuntime" Version="4.3.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(ApplicationIcon)">
+      <Link>$(MSBuildProjectName).ico</Link>
+    </Content>
+    <None Remove="$(MSBuildProjectName).xml" />
+  </ItemGroup>
+</Project>
