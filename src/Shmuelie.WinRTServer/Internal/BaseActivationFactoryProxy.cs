@@ -73,7 +73,7 @@ internal unsafe struct BaseActivationFactoryProxy
         public delegate int GetIidsDelegate(BaseActivationFactoryProxy* @this, uint* iidCount, Guid** iids);
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int GetRuntimeClassNameDelegate(BaseActivationFactoryProxy* @this, void** className);
+        public delegate int GetRuntimeClassNameDelegate(BaseActivationFactoryProxy* @this, HSTRING* className);
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         public delegate int GetTrustLevelDelegate(BaseActivationFactoryProxy* @this, TrustLevel* trustLevel);
@@ -161,7 +161,7 @@ internal unsafe struct BaseActivationFactoryProxy
             return S.S_OK;
         }
 
-        public static int GetRuntimeClassName(BaseActivationFactoryProxy* @this, void** className)
+        public static int GetRuntimeClassName(BaseActivationFactoryProxy* @this, HSTRING* className)
         {
             try
             {

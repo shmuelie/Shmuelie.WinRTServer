@@ -5,17 +5,17 @@ namespace Shmuelie.Interop.Windows;
 internal static unsafe class WinString
 {
     [DllImport("combase", ExactSpelling = true)]
-    public static extern int WindowsCreateString(ushort* sourceString, uint length, void** @string);
+    public static extern int WindowsCreateString(ushort* sourceString, uint length, HSTRING* @string);
 
     [DllImport("combase", ExactSpelling = true)]
-    public static extern int WindowsDeleteString(void* @string);
+    public static extern int WindowsDeleteString(HSTRING @string);
 
     [DllImport("combase", ExactSpelling = true)]
-    public static extern int WindowsDuplicateString(void* @string, void** newString);
+    public static extern int WindowsDuplicateString(HSTRING @string, HSTRING* newString);
 
     [DllImport("combase", ExactSpelling = true)]
-    public static extern uint WindowsGetStringLen(void* @string);
+    public static extern uint WindowsGetStringLen(HSTRING @string);
 
     [DllImport("combase", ExactSpelling = true)]
-    public static extern ushort* WindowsGetStringRawBuffer(void* @string, uint* length);
+    public static extern ushort* WindowsGetStringRawBuffer(HSTRING @string, uint* length);
 }

@@ -39,9 +39,9 @@ internal unsafe partial struct IActivationFactory
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int GetRuntimeClassName(void** className)
+    public int GetRuntimeClassName(HSTRING* className)
     {
-        return ((delegate* unmanaged[Stdcall]<IActivationFactory*, void**, int>)(lpVtbl[4]))((IActivationFactory*)Unsafe.AsPointer(ref this), className);
+        return ((delegate* unmanaged[Stdcall]<IActivationFactory*, HSTRING*, int>)(lpVtbl[4]))((IActivationFactory*)Unsafe.AsPointer(ref this), className);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
