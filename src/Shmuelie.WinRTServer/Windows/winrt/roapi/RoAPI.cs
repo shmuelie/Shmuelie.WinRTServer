@@ -8,7 +8,7 @@ internal static unsafe class RoAPI
     public static extern int RoInitialize(RO_INIT_TYPE initType);
 
     [DllImport("combase", ExactSpelling = true)]
-    public static extern int RoRegisterActivationFactories(void** activatableClassIds, delegate* unmanaged[Stdcall]<void*, IActivationFactory**, int>* activationFactoryCallbacks, uint count, void** cookie);
+    public static extern int RoRegisterActivationFactories(void** activatableClassIds, delegate* unmanaged[Stdcall]<void*, IActivationFactory**, int>* activationFactoryCallbacks, uint count, void* cookie);
 
     [DllImport("combase", ExactSpelling = true)]
     public static extern void RoRevokeActivationFactories(void* cookie);
