@@ -183,7 +183,7 @@ public sealed class ComServer : IAsyncDisposable
     }
 
     /// <summary>
-    /// Gets a value indicating where the server is running.
+    /// Gets a value indicating whether the server is running.
     /// </summary>
     public bool IsRunning => lifetimeCheckTimer.Enabled;
 
