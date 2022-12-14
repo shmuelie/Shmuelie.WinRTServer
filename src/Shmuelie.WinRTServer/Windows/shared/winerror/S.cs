@@ -6,4 +6,6 @@
 internal static class S
 {
     public const int S_OK = 0;
+
+    public const int S_FALSE = 1;
 }

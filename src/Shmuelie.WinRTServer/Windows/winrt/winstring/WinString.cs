@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Shmuelie.WinRTServer.Windows;
+namespace Shmuelie.Interop.Windows;
 
 internal static unsafe class WinString
 {
@@ -15,4 +15,7 @@ internal static unsafe class WinString
 
     [DllImport("combase", ExactSpelling = true)]
     public static extern uint WindowsGetStringLen(void* @string);
+
+    [DllImport("combase", ExactSpelling = true)]
+    public static extern ushort* WindowsGetStringRawBuffer(void* @string, uint* length);
 }

@@ -18,4 +18,6 @@ internal static partial class E
     public const int E_HANDLE = unchecked((int)(0x80070006));
 
     public const int E_UNEXPECTED = unchecked((int)(0x8000FFFF));
+
+    public const int E_INVALIDARG = unchecked((int)0x80070057);
 }
