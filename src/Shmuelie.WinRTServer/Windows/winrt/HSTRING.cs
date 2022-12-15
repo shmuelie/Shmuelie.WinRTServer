@@ -21,62 +21,11 @@ internal readonly unsafe partial struct HSTRING : IComparable, IComparable<HSTRI
 
     public static HSTRING NULL => new HSTRING(null);
 
-    public static bool operator ==(HSTRING left, HSTRING right) => left.Value == right.Value;
+    public static bool operator ==(HSTRING left, HSTRING right) => left.Equals(right);
 
-    public static bool operator !=(HSTRING left, HSTRING right) => left.Value != right.Value;
+    public static bool operator !=(HSTRING left, HSTRING right) => !left.Equals(right);
 
-    public static bool operator <(HSTRING left, HSTRING right) => left.Value < right.Value;
-
-    public static bool operator <=(HSTRING left, HSTRING right) => left.Value <= right.Value;
-
-    public static bool operator >(HSTRING left, HSTRING right) => left.Value > right.Value;
-
-    public static bool operator >=(HSTRING left, HSTRING right) => left.Value >= right.Value;
-
-    public static explicit operator HSTRING(void* value) => new HSTRING(value);
-
-    public static implicit operator void*(HSTRING value) => value.Value;
-
-    public static explicit operator HSTRING(byte value) => new HSTRING(unchecked((void*)(value)));
-
-    public static explicit operator byte(HSTRING value) => (byte)(value.Value);
-
-    public static explicit operator HSTRING(short value) => new HSTRING(unchecked((void*)(value)));
-
-    public static explicit operator short(HSTRING value) => (short)(value.Value);
-
-    public static explicit operator HSTRING(int value) => new HSTRING(unchecked((void*)(value)));
-
-    public static explicit operator int(HSTRING value) => (int)(value.Value);
-
-    public static explicit operator HSTRING(long value) => new HSTRING(unchecked((void*)(value)));
-
-    public static explicit operator long(HSTRING value) => (long)(value.Value);
-
-    public static explicit operator HSTRING(nint value) => new HSTRING(unchecked((void*)(value)));
-
-    public static implicit operator nint(HSTRING value) => (nint)(value.Value);
-
-    public static explicit operator HSTRING(sbyte value) => new HSTRING(unchecked((void*)(value)));
-
-    public static explicit operator sbyte(HSTRING value) => (sbyte)(value.Value);
-
-    public static explicit operator HSTRING(ushort value) => new HSTRING(unchecked((void*)(value)));
-
-    public static explicit operator ushort(HSTRING value) => (ushort)(value.Value);
-
-    public static explicit operator HSTRING(uint value) => new HSTRING(unchecked((void*)(value)));
-
-    public static explicit operator uint(HSTRING value) => (uint)(value.Value);
-
-    public static explicit operator HSTRING(ulong value) => new HSTRING(unchecked((void*)(value)));
-
-    public static explicit operator ulong(HSTRING value) => (ulong)(value.Value);
-
-    public static explicit operator HSTRING(nuint value) => new HSTRING(unchecked((void*)(value)));
-
-    public static implicit operator nuint(HSTRING value) => (nuint)(value.Value);
-
+    /// <inheritdoc/>
     public int CompareTo(object? obj)
     {
         if (obj is HSTRING other)
@@ -87,15 +36,54 @@ internal readonly unsafe partial struct HSTRING : IComparable, IComparable<HSTRI
         return (obj is null) ? 1 : throw new ArgumentException("obj is not an instance of HSTRING.");
     }
 
-    public int CompareTo(HSTRING other) => ((nuint)(Value)).CompareTo((nuint)(other.Value));
+    /// <inheritdoc/>
+    public int CompareTo(HSTRING other)
+    {
+        int result;
+        WinString.WindowsCompareStringOrdinal(this, other, &result);
+        return result;
+    }
 
+    /// <inheritdoc/>
     public override bool Equals(object? obj) => (obj is HSTRING other) && Equals(other);
 
-    public bool Equals(HSTRING other) => ((nuint)(Value)).Equals((nuint)(other.Value));
+    /// <inheritdoc/>
+    public bool Equals(HSTRING other) => CompareTo(other) == 0;
 
+    /// <inheritdoc/>
     public override int GetHashCode() => ((nuint)(Value)).GetHashCode();
 
-    public override string ToString() => ((nuint)(Value)).ToString((sizeof(nint) == 4) ? "X8" : "X16");
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        if (Value is null)
+        {
+            return string.Empty;
+        }
 
-    public string ToString(string? format, IFormatProvider? formatProvider) => ((nuint)(Value)).ToString(format, formatProvider);
+        uint characterCount;
+        ushort* characters = WinString.WindowsGetStringRawBuffer(this, &characterCount);
+
+        if (characters is null || characterCount == 0)
+        {
+            return string.Empty;
+        }
+
+        return new string((char*)characters, 0, (int)characterCount);
+    }
+
+    public string ToString(string? format, IFormatProvider? formatProvider)
+    {
+        if (format is null)
+        {
+            return ToString();
+        }
+
+        if (format.Equals("x", StringComparison.OrdinalIgnoreCase))
+        {
+            return ((nuint)(Value)).ToString(format, formatProvider);
+        }
+
+        throw new FormatException("Unsupported format");
+    }
 }
