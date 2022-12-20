@@ -16,6 +16,5 @@
     <Content Include="$(ApplicationIcon)">
       <Link>$(MSBuildProjectName).ico</Link>
     </Content>
-    <None Remove="$(MSBuildProjectName).xml" />
   </ItemGroup>
 </Project>
