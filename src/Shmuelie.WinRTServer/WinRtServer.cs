@@ -15,11 +15,6 @@ namespace Shmuelie.WinRTServer;
 /// <threadsafety static="true" instance="false"/>
 public sealed unsafe class WinRtServer
 {
-    /// <summary>
-    /// If Windows Runtime was initialized before starting server, do not uninitialize on close.
-    /// </summary>
-    private readonly bool shouldNotUninitialize;
-
     private readonly Dictionary<string, BaseActivationFactory> factories = new();
 
     private readonly DllGetActivationFactory activationFactoryCallbackWrapper;
@@ -36,15 +31,11 @@ public sealed unsafe class WinRtServer
         activationFactoryCallbackWrapper = ActivationFactoryCallback;
         activationFactoryCallbackPointer = (delegate* unmanaged[Stdcall]<HSTRING, IActivationFactory**, int>)Marshal.GetFunctionPointerForDelegate(activationFactoryCallbackWrapper);
         int result = RoInitialize(RO_INIT_TYPE.RO_INIT_MULTITHREADED);
-        if (result == S.S_OK)
+        if (result == S.S_OK || result == S.S_FALSE)
         {
             return;
         }
-        if (result == S.S_FALSE)
-        {
-            shouldNotUninitialize = true;
-            return;
-        }
+
         Marshal.ThrowExceptionForHR(result);
     }
 
