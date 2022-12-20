@@ -10,9 +10,6 @@ namespace Shmuelie.Interop.Windows;
 /// </summary>
 internal static partial class E
 {
-    // #define E_NOT_VALID_STATE HRESULT_FROM_WIN32(ERROR_INVALID_STATE)
-    public const int E_NOT_VALID_STATE = -2147019873;
-
     public const int E_NOINTERFACE = unchecked((int)(0x80004002));
 
     public const int E_HANDLE = unchecked((int)(0x80070006));

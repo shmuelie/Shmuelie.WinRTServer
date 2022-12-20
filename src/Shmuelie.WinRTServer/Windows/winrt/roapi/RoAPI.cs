@@ -12,7 +12,4 @@ internal static unsafe class RoAPI
 
     [DllImport("combase", ExactSpelling = true)]
     public static extern void RoRevokeActivationFactories(RO_REGISTRATION_COOKIE cookie);
-
-    [DllImport("combase", ExactSpelling = true)]
-    public static extern void RoUninitialize();
 }
