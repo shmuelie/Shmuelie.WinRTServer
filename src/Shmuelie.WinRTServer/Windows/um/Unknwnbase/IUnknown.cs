@@ -7,6 +7,7 @@ namespace Shmuelie.Interop.Windows;
 /// <summary>
 /// A struct mapping the native COM <c>IUnknown</c> interface.
 /// </summary>
+/// <seealso href="https://learn.microsoft.com/en-us/windows/win32/api/unknwn/nn-unknwn-iunknown">IUnknown interface (unknwn.h)</seealso>
 [Guid("00000000-0000-0000-C000-000000000046")]
 internal unsafe struct IUnknown
 {

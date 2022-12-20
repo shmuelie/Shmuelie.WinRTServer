@@ -4,9 +4,16 @@ using System.Runtime.InteropServices;
 
 namespace Shmuelie.Interop.Windows;
 
+/// <summary>
+/// Sets and queries global properties of the Component Object Model (COM) runtime.
+/// </summary>
+/// <seealso href="https://learn.microsoft.com/en-us/windows/win32/api/objidlbase/nn-objidlbase-iglobaloptions">IGlobalOptions interface (objidlbase.h)</seealso>
 [Guid("0000015B-0000-0000-C000-000000000046")]
 internal unsafe partial struct IGlobalOptions
 {
+    /// <summary>
+    /// The CLSID for <see cref="IGlobalOptions"/>.
+    /// </summary>
     public static readonly Guid CLSID = new(0x0000034b, 0x0000, 0x0000, 0xC0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x46);
 
 #pragma warning disable CS0649

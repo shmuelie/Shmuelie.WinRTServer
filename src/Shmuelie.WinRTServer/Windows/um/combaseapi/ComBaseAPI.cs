@@ -45,6 +45,7 @@ internal static unsafe class ComBaseAPI
     ///   </item>
     /// </list>
     /// </returns>
+    /// <seealso href="https://learn.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-cocreateinstance">CoCreateInstance function (combaseapi.h)</seealso>
     [DllImport("ole32", ExactSpelling = true)]
     public static extern int CoCreateInstance(Guid* rclsid, IUnknown* pUnkOuter, uint dwClsContext, Guid* riid, void** ppv);
 
@@ -69,6 +70,7 @@ internal static unsafe class ComBaseAPI
     ///   </item>
     /// </list>
     /// </returns>
+    /// <seealso href="https://learn.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-coregisterclassobject">CoRegisterClassObject function (combaseapi.h)</seealso>
     [DllImport("ole32", ExactSpelling = true)]
     public static extern int CoRegisterClassObject(Guid* rclsid, IUnknown* pUnk, uint dwClsContext, uint flags, uint* lpdwRegister);
 
@@ -76,6 +78,7 @@ internal static unsafe class ComBaseAPI
     /// Called by a server that can register multiple class objects to inform the SCM about all registered classes, and permits activation requests for those class objects.
     /// </summary>
     /// <returns>This function returns S_OK to indicate that the activation of class objects was successfully resumed.</returns>
+    /// <seealso href="https://learn.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-coresumeclassobjects">CoResumeClassObjects function (combaseapi.h)</seealso>
     [DllImport("ole32", ExactSpelling = true)]
     public static extern int CoResumeClassObjects();
 
@@ -83,6 +86,7 @@ internal static unsafe class ComBaseAPI
     /// Prevents any new activation requests from the SCM on all class objects registered within the process.
     /// </summary>
     /// <returns>This function returns S_OK to indicate that the activation of class objects was successfully suspended.</returns>
+    /// <seealso href="https://learn.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-cosuspendclassobjects">CoSuspendClassObjects function (combaseapi.h)</seealso>
     [DllImport("ole32", ExactSpelling = true)]
     public static extern int CoSuspendClassObjects();
 
@@ -90,6 +94,7 @@ internal static unsafe class ComBaseAPI
     /// Increments a global per-process reference count.
     /// </summary>
     /// <returns>The current reference count.</returns>
+    /// <seealso href="https://learn.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-coaddrefserverprocess">CoAddRefServerProcess function (combaseapi.h)</seealso>
     [DllImport("ole32", ExactSpelling = true)]
     public static extern uint CoAddRefServerProcess();
 
@@ -97,6 +102,7 @@ internal static unsafe class ComBaseAPI
     /// Decrements the global per-process reference count.
     /// </summary>
     /// <returns>If the server application should initiate its cleanup, the function returns 0; otherwise, the function returns a nonzero value.</returns>
+    /// <seealso href="https://learn.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-coreleaseserverprocess">CoReleaseServerProcess function (combaseapi.h)</seealso>
     [DllImport("ole32", ExactSpelling = true)]
     public static extern uint CoReleaseServerProcess();
 
@@ -117,6 +123,7 @@ internal static unsafe class ComBaseAPI
     ///   </item>
     /// </list>
     /// </returns>
+    /// <seealso href="https://learn.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-corevokeclassobject">CoRevokeClassObject function (combaseapi.h)</seealso>
     [DllImport("ole32", ExactSpelling = true)]
     public static extern int CoRevokeClassObject(uint dwRegister);
 }

@@ -5,15 +5,26 @@ using static Shmuelie.WinRTServer.UIntPtrExtensions;
 
 namespace Shmuelie.Interop.Windows;
 
+/// <summary>
+/// Represents activation factories that are registered by calling the RoRegisterActivationFactories function.
+/// </summary>
+/// <seealso href="https://learn.microsoft.com/en-us/windows/win32/winrt/ro-registration-cookie">RO_REGISTRATION_COOKIE</seealso>
 internal readonly unsafe partial struct RO_REGISTRATION_COOKIE : IComparable, IComparable<RO_REGISTRATION_COOKIE>, IEquatable<RO_REGISTRATION_COOKIE>, IFormattable
 {
     public readonly void* Value;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RO_REGISTRATION_COOKIE"/> struct.
+    /// </summary>
+    /// <param name="value"></param>
     public RO_REGISTRATION_COOKIE(void* value)
     {
         Value = value;
     }
 
+    /// <summary>
+    /// Gets a null <see cref="RO_REGISTRATION_COOKIE"/>.
+    /// </summary>
     public static RO_REGISTRATION_COOKIE NULL => new RO_REGISTRATION_COOKIE(null);
 
     public static bool operator ==(RO_REGISTRATION_COOKIE left, RO_REGISTRATION_COOKIE right) => left.Value == right.Value;
@@ -72,6 +83,7 @@ internal readonly unsafe partial struct RO_REGISTRATION_COOKIE : IComparable, IC
 
     public static implicit operator nuint(RO_REGISTRATION_COOKIE value) => (nuint)(value.Value);
 
+    /// <inheritdoc/>
     public int CompareTo(object? obj)
     {
         if (obj is RO_REGISTRATION_COOKIE other)
@@ -82,15 +94,21 @@ internal readonly unsafe partial struct RO_REGISTRATION_COOKIE : IComparable, IC
         return (obj is null) ? 1 : throw new ArgumentException("obj is not an instance of RO_REGISTRATION_COOKIE.");
     }
 
+    /// <inheritdoc/>
     public int CompareTo(RO_REGISTRATION_COOKIE other) => ((nuint)(Value)).CompareTo((nuint)(other.Value));
 
+    /// <inheritdoc/>
     public override bool Equals(object? obj) => (obj is RO_REGISTRATION_COOKIE other) && Equals(other);
 
+    /// <inheritdoc/>
     public bool Equals(RO_REGISTRATION_COOKIE other) => ((nuint)(Value)).Equals((nuint)(other.Value));
 
+    /// <inheritdoc/>
     public override int GetHashCode() => ((nuint)(Value)).GetHashCode();
 
+    /// <inheritdoc/>
     public override string ToString() => ((nuint)(Value)).ToString((sizeof(nint) == 4) ? "X8" : "X16");
 
+    /// <inheritdoc/>
     public string ToString(string? format, IFormatProvider? formatProvider) => ((nuint)(Value)).ToString(format, formatProvider);
 }
