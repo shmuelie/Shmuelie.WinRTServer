@@ -6,12 +6,16 @@ using static Shmuelie.WinRTServer.UIntPtrExtensions;
 namespace Shmuelie.Interop.Windows;
 
 /// <summary>
-/// A handle to a Windows Runtime string.
+/// A sequential collection of UTF-16 Unicode characters representing a text string. The <see cref="HSTRING"/> type encapsulates HSTRING behind an interface similar to that of <see cref="string"/>. A HSTRING is a handle to a Windows Runtime string.
 /// </summary>
 internal readonly unsafe partial struct HSTRING : IComparable, IComparable<HSTRING>, IEquatable<HSTRING>, IFormattable
 {
     public readonly void* Value;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="HSTRING"/> struct.
+    /// </summary>
+    /// <param name="value">The pointer to the native <c>HSTRING</c>.</param>
     public HSTRING(void* value)
     {
         Value = value;
@@ -72,6 +76,10 @@ internal readonly unsafe partial struct HSTRING : IComparable, IComparable<HSTRI
         return new string((char*)characters, 0, (int)characterCount);
     }
 
+    /// <inheritdoc/>
+    /// <remarks>
+    /// If <paramref name="format"/> is <c>x</c> or <c>X</c>, the instance is formatted an <see cref="UIntPtr"/>.
+    /// </remarks>
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
         if (format is null)
