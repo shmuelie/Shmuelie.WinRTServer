@@ -10,7 +10,7 @@ namespace Shmuelie.Interop.Windows;
 /// </summary>
 internal readonly unsafe partial struct HSTRING : IComparable, IComparable<HSTRING>, IEquatable<HSTRING>, IFormattable
 {
-    public readonly void* Value;
+    private readonly void* Value;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="HSTRING"/> struct.

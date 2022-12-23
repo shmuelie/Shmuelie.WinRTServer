@@ -76,7 +76,7 @@ public sealed unsafe class WinRtServer
 
     private int ActivationFactoryCallback(HSTRING activatableClassId, IActivationFactory** factory)
     {
-        if (activatableClassId.Value is null || factory is null)
+        if (activatableClassId == HSTRING.NULL || factory is null)
         {
             return E.E_INVALIDARG;
         }
