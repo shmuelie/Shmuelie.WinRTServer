@@ -16,7 +16,7 @@ internal readonly unsafe partial struct HSTRING : IComparable, IComparable<HSTRI
     /// Initializes a new instance of the <see cref="HSTRING"/> struct.
     /// </summary>
     /// <param name="value">The pointer to the native <c>HSTRING</c>.</param>
-    public HSTRING(void* value)
+    private HSTRING(void* value)
     {
         Value = value;
     }
