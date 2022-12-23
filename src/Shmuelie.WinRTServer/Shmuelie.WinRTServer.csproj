@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net6.0-windows</TargetFrameworks>
     <ApplicationIcon>..\..\$(MSBuildProjectName).ico</ApplicationIcon>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
   <!-- .NET Standard 2.0 polyfill packages -->
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
@@ -16,6 +17,9 @@
   <ItemGroup>
     <Content Include="$(ApplicationIcon)">
       <Link>$(MSBuildProjectName).ico</Link>
+    </Content>
+    <Content Include="..\..\$(MSBuildProjectName)-64.png" PackFolder="\">
+      <Link>icon.png</Link>
     </Content>
   </ItemGroup>
 </Project>

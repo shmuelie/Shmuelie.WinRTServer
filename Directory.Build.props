@@ -18,7 +18,7 @@
     As such, this needs to be changed before a new release as well.
   -->
   <PropertyGroup>
-    <ShmuelieWinRTServerPackageVersion>2.0.0</ShmuelieWinRTServerPackageVersion>
+    <ShmuelieWinRTServerPackageVersion>1.0.0</ShmuelieWinRTServerPackageVersion>
     <IsCommitOnReleaseBranch>false</IsCommitOnReleaseBranch>
   </PropertyGroup>
 
@@ -61,8 +61,8 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageIcon>icon.png</PackageIcon>
-    <PackageIconUrl>https://user-images.githubusercontent.com/10199417/110238403-b8811080-7f41-11eb-8cfe-e47e7e58f05b.png</PackageIconUrl>
-    <PackageTags>dotnet net netcore netstandard csharp library graphics directx shader hlsl compute gpu performance parallel windows</PackageTags>
+    <PackageIconUrl>https://github.com/shmuelie/Shmuelie.WinRTServer/blob/main/Shmuelie.WinRTServer-64.png?raw=true</PackageIconUrl>
+    <PackageTags>dotnet net netcore netstandard csharp library windows com winrt oop outofprocess rpc</PackageTags>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
