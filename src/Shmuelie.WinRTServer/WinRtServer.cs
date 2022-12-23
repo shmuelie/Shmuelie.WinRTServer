@@ -74,6 +74,37 @@ public sealed unsafe class WinRtServer
         return true;
     }
 
+    /// <summary>
+    /// Unregister an activation factory with the server.
+    /// </summary>
+    /// <param name="factory">The activation factory to unregister.</param>
+    /// <returns><see langword="true"/> if <paramref name="factory"/> was unregistered; otherwise, <see langword="false"/>.</returns>
+    /// <exception cref="ObjectDisposedException">The instance is disposed.</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="factory"/> is <see langword="null"/>.</exception>
+    /// <exception cref="InvalidOperationException">The server is running.</exception>
+    public bool UnregisterActivationFactory(BaseActivationFactory factory)
+    {
+        if (IsDisposed)
+        {
+            throw new ObjectDisposedException(nameof(WinRtServer));
+        }
+        if (IsRunning)
+        {
+            throw new InvalidOperationException("Can only remove activation factories when server is not running");
+        }
+        if (factory is null)
+        {
+            throw new ArgumentNullException(nameof(factory));
+        }
+
+        if (factories.Remove(factory.ActivatableClassId))
+        {
+            factory.InstanceCreated -= Factory_InstanceCreated;
+            return true;
+        }
+        return false;
+    }
+
     private int ActivationFactoryCallback(HSTRING activatableClassId, IActivationFactory** factory)
     {
         if (activatableClassId == HSTRING.NULL || factory is null)
