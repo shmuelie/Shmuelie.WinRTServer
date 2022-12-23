@@ -8,7 +8,7 @@ env:
 
 jobs:
 
-  # Build the whole ComputeSharp solution, in Debug
+  # Build the whole Shmuelie.WinRTServer solution, in Debug
   build-solution-debug:
     runs-on: windows-2022
     steps:
@@ -34,7 +34,7 @@ jobs:
         path: msbuild.binlog
         if-no-files-found: error
 
-  # Build the whole ComputeSharp solution, in Release
+  # Build the whole Shmuelie.WinRTServer solution, in Release
   build-solution-release:
     runs-on: windows-2022
     steps:
