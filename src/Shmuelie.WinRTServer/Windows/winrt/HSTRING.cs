@@ -55,7 +55,23 @@ internal readonly unsafe partial struct HSTRING : IComparable, IComparable<HSTRI
     public bool Equals(HSTRING other) => CompareTo(other) == 0;
 
     /// <inheritdoc/>
-    public override int GetHashCode() => ((nuint)(Value)).GetHashCode();
+    public override int GetHashCode()
+    {
+        uint characterCount;
+        ushort* characters = WinString.WindowsGetStringRawBuffer(this, &characterCount);
+
+        if (characterCount == 0)
+        {
+            return string.Empty.GetHashCode();
+        }
+
+        HashCode hashCode = new();
+        for (uint characterIndex = 0; characterIndex < characterCount; characterIndex++)
+        {
+            hashCode.Add(characters[characterIndex]);
+        }
+        return hashCode.ToHashCode();
+    }
 
     /// <inheritdoc/>
     public override string ToString()
