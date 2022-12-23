@@ -9,7 +9,7 @@ using static Shmuelie.Interop.Windows.Windows;
 namespace Shmuelie.WinRTServer;
 
 /// <summary>
-/// CCW for <see cref="BaseClassFactory" />
+/// CCW for <see cref="BaseClassFactory" />.
 /// </summary>
 internal unsafe struct BaseClassFactoryProxy
 {

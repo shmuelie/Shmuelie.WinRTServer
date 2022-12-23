@@ -7,6 +7,9 @@ using static Shmuelie.Interop.Windows.Windows;
 
 namespace Shmuelie.WinRTServer;
 
+/// <summary>
+/// CCW for <see cref="BaseActivationFactory" />.
+/// </summary>
 internal unsafe struct BaseActivationFactoryProxy
 {
     private static readonly void** Vtbl = InitVtbl();

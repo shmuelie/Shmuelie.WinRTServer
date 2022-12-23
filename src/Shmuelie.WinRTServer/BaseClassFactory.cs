@@ -5,7 +5,7 @@ namespace Shmuelie.WinRTServer;
 /// <summary>
 /// Base for a COM class factory for a .NET type.
 /// </summary>
-/// <seealso cref="Shmuelie.Interop.Windows.IClassFactory"/>
+/// <seealso cref="Interop.Windows.IClassFactory"/>
 /// <remarks>Does not support aggregation. Will always return <c>CLASS_E_NOAGGREGATION</c> if requested.</remarks>
 public abstract class BaseClassFactory
 {
@@ -36,6 +36,11 @@ public abstract class BaseClassFactory
         get;
     }
 
+    /// <summary>
+    /// Raises the <see cref="InstanceCreated"/> event.
+    /// </summary>
+    /// <param name="instance">The created instance.</param>
+    /// <event cref="InstanceCreated"/>
     internal void OnInstanceCreated(object instance)
     {
         InstanceCreated?.Invoke(this, new InstanceCreatedEventArgs(instance));
