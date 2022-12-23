@@ -11,7 +11,7 @@ namespace Shmuelie.Interop.Windows;
 /// <seealso href="https://learn.microsoft.com/en-us/windows/win32/winrt/ro-registration-cookie">RO_REGISTRATION_COOKIE</seealso>
 internal readonly unsafe partial struct RO_REGISTRATION_COOKIE : IComparable, IComparable<RO_REGISTRATION_COOKIE>, IEquatable<RO_REGISTRATION_COOKIE>, IFormattable
 {
-    public readonly void* Value;
+    private readonly void* Value;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="RO_REGISTRATION_COOKIE"/> struct.

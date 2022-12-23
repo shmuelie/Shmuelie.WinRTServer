@@ -108,7 +108,7 @@ public sealed unsafe class WinRtServer
     /// <summary>
     /// Gets a value indicating whether the server is running.
     /// </summary>
-    public bool IsRunning => registrationCookie.Value is not null;
+    public bool IsRunning => registrationCookie != RO_REGISTRATION_COOKIE.NULL;
 
     /// <summary>
     /// Starts the server.
