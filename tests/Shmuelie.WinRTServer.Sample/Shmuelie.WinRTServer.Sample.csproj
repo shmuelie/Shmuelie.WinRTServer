@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net481;net462</TargetFrameworks>
+    <OutputType>winexe</OutputType>
+    <TargetPlatformVersion>10.0.22000.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Windows.SDK.Contracts" Version="10.0.22000.197" />
+    <ProjectReference Include="..\..\src\Shmuelie.WinRTServer\Shmuelie.WinRTServer.csproj" />
+  </ItemGroup>
+</Project>

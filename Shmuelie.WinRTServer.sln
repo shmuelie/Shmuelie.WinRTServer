@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{E1670C4F-46C
 		src\Directory.Build.props = src\Directory.Build.props
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shmuelie.WinRTServer.Sample", "tests\Shmuelie.WinRTServer.Sample\Shmuelie.WinRTServer.Sample.csproj", "{11D78FF7-1A6C-4D78-A896-3E95F277909A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,12 +37,17 @@ Global
 		{F09FEFE0-ED5E-4A17-9C54-DB6C1CD559E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F09FEFE0-ED5E-4A17-9C54-DB6C1CD559E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F09FEFE0-ED5E-4A17-9C54-DB6C1CD559E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11D78FF7-1A6C-4D78-A896-3E95F277909A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11D78FF7-1A6C-4D78-A896-3E95F277909A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11D78FF7-1A6C-4D78-A896-3E95F277909A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11D78FF7-1A6C-4D78-A896-3E95F277909A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F09FEFE0-ED5E-4A17-9C54-DB6C1CD559E9} = {E1670C4F-46C0-45BE-A351-E504DCB17A45}
+		{11D78FF7-1A6C-4D78-A896-3E95F277909A} = {CB701FA8-9663-444D-9610-1A8CDFF30E61}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {97F14D53-B029-4E3E-B7DE-51A510B2D428}
