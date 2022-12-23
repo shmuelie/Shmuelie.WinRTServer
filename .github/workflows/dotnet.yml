@@ -13,7 +13,7 @@ jobs:
     runs-on: windows-2022
     steps:
     - name: Git checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1.0.3
     - name: Setup .NET Core 3.1 SDK
@@ -39,7 +39,7 @@ jobs:
     runs-on: windows-2022
     steps:
     - name: Git checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1.0.3
     - name: Setup .NET Core 3.1 SDK
@@ -53,44 +53,3 @@ jobs:
     - name: Build
       run: msbuild -t:restore,build /p:Configuration=Release
       shell: cmd
-
-  # Build the .msbuildproj projects and the UWP/WinUI projects to generate all the NuGet packages.
-  # This workflow also uploads the resulting packages as artifacts.
-  build-packages:
-    runs-on: windows-2022
-    steps:
-    - name: Git checkout
-      uses: actions/checkout@v2
-    - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.0.3
-    - name: Setup .NET 6 SDK
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 6.0.x
-    - name: Build ComputeSharp.Core package
-      run: dotnet build src\ComputeSharp.Core.Package\ComputeSharp.Core.Package.msbuildproj -c Release
-      shell: cmd
-    - name: Build ComputeSharp package
-      run: dotnet build src\ComputeSharp.Package\ComputeSharp.Package.msbuildproj -c Release
-      shell: cmd
-    - name: Build ComputeSharp.Dynamic package
-      run: dotnet build src\ComputeSharp.Dynamic.Package\ComputeSharp.Dynamic.Package.msbuildproj -c Release
-      shell: cmd
-    - name: Build ComputeSharp.D2D1 package
-      run: dotnet build src\ComputeSharp.D2D1.Package\ComputeSharp.D2D1.Package.msbuildproj -c Release
-      shell: cmd
-    - name: Build ComputeSharp.Uwp package
-      run: msbuild src\ComputeSharp.Uwp\ComputeSharp.Uwp.csproj -t:restore,build,pack /p:Configuration=Release
-      shell: cmd
-    - name: Restore ComputeSharp.WinUI project
-      run: msbuild src\ComputeSharp.WinUI\ComputeSharp.WinUI.csproj -t:restore /p:Configuration=Release
-      shell: cmd
-    - name: Build ComputeSharp.WinUI package
-      run: msbuild src\ComputeSharp.WinUI\ComputeSharp.WinUI.csproj -t:pack /p:Configuration=Release
-      shell: cmd # Packing needs to be done separately and with no previous build target for it to work correctly
-    - name: Upload package artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: nuget_preview
-        path: artifacts\*.nupkg
-        if-no-files-found: error
