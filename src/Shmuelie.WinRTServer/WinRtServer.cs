@@ -68,8 +68,6 @@ public sealed unsafe class WinRtServer
             return false;
         }
 
-        factory.InstanceCreated += Factory_InstanceCreated;
-
         factories.Add(factory.ActivatableClassId, factory);
         return true;
     }
@@ -97,12 +95,7 @@ public sealed unsafe class WinRtServer
             throw new ArgumentNullException(nameof(factory));
         }
 
-        if (factories.Remove(factory.ActivatableClassId))
-        {
-            factory.InstanceCreated -= Factory_InstanceCreated;
-            return true;
-        }
-        return false;
+        return factories.Remove(factory.ActivatableClassId);
     }
 
     private int ActivationFactoryCallback(HSTRING activatableClassId, IActivationFactory** factory)
@@ -120,11 +113,6 @@ public sealed unsafe class WinRtServer
 
         *factory = (IActivationFactory*)BaseActivationFactoryProxy.Create(managedFactory);
         return S.S_OK;
-    }
-
-    private void Factory_InstanceCreated(object? sender, InstanceCreatedEventArgs e)
-    {
-        throw new NotImplementedException();
     }
 
     /// <summary>
