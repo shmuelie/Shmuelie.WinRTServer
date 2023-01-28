@@ -67,7 +67,7 @@ public sealed class ComServer : IAsyncDisposable
             return;
         }
 
-        Marshal.ThrowExceptionForHR(CoSuspendClassObjects());
+        _ = CoSuspendClassObjects();
         uint? instanceCount = null;
         GC.Collect();
         for (LinkedListNode<WeakReference>? node = liveServers.First; node != null; node = node.Next)
@@ -91,7 +91,7 @@ public sealed class ComServer : IAsyncDisposable
         }
         if (lifetimeCheckTimer.Enabled)
         {
-            Marshal.ThrowExceptionForHR(CoResumeClassObjects());
+            _ = CoResumeClassObjects();
         }
     }
 
