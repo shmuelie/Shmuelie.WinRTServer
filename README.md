@@ -13,6 +13,58 @@ using this in .NET much easier.
 
 > **Note**: COM and Windows Runtime are Windows only.
 
+# Usage
+
+Currently to create an Out-of-Process server requires the C++/WinRT tooling
+(though no actual C++ code) and a "contract" project. Eventually these
+restrictions will be removed.
+
+## Contract Project
+
+The contract project is a C# project that contains the interfaces of the remote
+objects. Output is a WinMD that is referenced by the other projects. The interfaces have some rules:
+
+1. The interface must have a GUID assigned using the
+   `Windows.Foundation.Metadata.GuidAttribute` attribute, not the
+   `System.Runtime.InteropServices.GuidAttribute` attribute.
+2. Asynchronous methods must use the WinRT types (`IAsyncAction`,
+   `IAsyncActionWithProgress<TProgress>`, `IAsyncOperation<TResult>`,
+   `IAsyncOperationWithProgress<TResult, TProgress>`) instead of `Task` and
+   `Task<T>`.
+3. Types in method parameters, type parameters, and return types must be:
+   
+   - A blittable type.
+   - An interface that has a [.NET/WinRT Mapping][4].
+   - A WinRT type.
+   - Another interface in the project.
+
+## Metadata Project
+
+The metadata project is a C++/WinRT project that uses [MIDL 3.0][5] to create
+proxy types in a WinMD that can be referenced by the client of the OOP Server.
+No actual C++ code is needed, only the IDL.
+
+The IDL is very simple, only needing `runtimeclass`es that implement the
+interface from the contract project. Unlike in C#, in MIDL 3.0 the type
+automatically has the members from the interface so they do not need to be
+listed again.
+
+## Server Project
+
+The server project is the only project that references `Shmuelie.WinRTServer`.
+It will contain implementations of the interfaces from the contract and when run
+should register them with an instance of `COMServer`. The implementations must
+have a GUID using the `System.Runtime.InteropServices.GuidAttribute` attribute.
+
+Because the interfaces must use the WinRT asynchronous types instead of the .NET
+ones, the implementation will likely need to use `AsyncInfo` to help adapt
+between the two systems.
+
+## Client Project
+
+
 [1]: https://github.com/Shmuelie/Shmuelie.WinRTServer/actions
 [2]: https://www.nuget.org/stats/packages/Shmuelie.WinRTServer?groupby=Version
 [3]: https://www.nuget.org/packages/Shmuelie.WinRTServer/
+[4]: https://learn.microsoft.com/en-us/windows/apps/develop/platform/csharp-winrt/net-mappings-of-winrt-types
+[5]: https://learn.microsoft.com/en-us/uwp/midl-3/
