@@ -11,7 +11,6 @@ namespace Shmuelie.WinRTServer;
 /// <summary>
 /// An Out of Process Windows Runtime Server.
 /// </summary>
-/// <see cref="IAsyncDisposable"/>
 /// <threadsafety static="true" instance="false"/>
 public sealed unsafe class WinRtServer
 {
@@ -45,15 +44,10 @@ public sealed unsafe class WinRtServer
     /// <param name="factory">The activation factory to register.</param>
     /// <returns><see langword="true"/> if <paramref name="factory"/> was registered; otherwise, <see langword="false"/>.</returns>
     /// <remarks>Only one factory can be registered for a Activatable Class ID.</remarks>
-    /// <exception cref="ObjectDisposedException">The instance is disposed.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="factory"/> is <see langword="null"/>.</exception>
     /// <exception cref="InvalidOperationException">The server is running.</exception>
     public bool RegisterActivationFactory(BaseActivationFactory factory)
     {
-        if (IsDisposed)
-        {
-            throw new ObjectDisposedException(nameof(WinRtServer));
-        }
         if (IsRunning)
         {
             throw new InvalidOperationException("Can only add activation factories when server is not running");
@@ -77,15 +71,10 @@ public sealed unsafe class WinRtServer
     /// </summary>
     /// <param name="factory">The activation factory to unregister.</param>
     /// <returns><see langword="true"/> if <paramref name="factory"/> was unregistered; otherwise, <see langword="false"/>.</returns>
-    /// <exception cref="ObjectDisposedException">The instance is disposed.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="factory"/> is <see langword="null"/>.</exception>
     /// <exception cref="InvalidOperationException">The server is running.</exception>
     public bool UnregisterActivationFactory(BaseActivationFactory factory)
     {
-        if (IsDisposed)
-        {
-            throw new ObjectDisposedException(nameof(WinRtServer));
-        }
         if (IsRunning)
         {
             throw new InvalidOperationException("Can only remove activation factories when server is not running");
@@ -132,13 +121,8 @@ public sealed unsafe class WinRtServer
     /// <summary>
     /// Starts the server.
     /// </summary>
-    /// <exception cref="ObjectDisposedException">The instance is disposed.</exception>
     public void Start()
     {
-        if (IsDisposed)
-        {
-            throw new ObjectDisposedException(nameof(WinRtServer));
-        }
         if (IsRunning)
         {
             return;
@@ -190,13 +174,8 @@ public sealed unsafe class WinRtServer
     /// <summary>
     /// Stops the server.
     /// </summary>
-    /// <exception cref="ObjectDisposedException">The instance is disposed.</exception>
     public void Stop()
     {
-        if (IsDisposed)
-        {
-            throw new ObjectDisposedException(nameof(WinRtServer));
-        }
         if (!IsRunning)
         {
             return;
