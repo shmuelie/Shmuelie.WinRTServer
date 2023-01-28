@@ -10,6 +10,8 @@ public static class ComServerExtensions
     /// <summary>
     /// Register a type with the server.
     /// </summary>
+    /// <typeparam name="T">The type to register.</typeparam>
+    /// <typeparam name="TInterface">The interface that <typeparamref name="T"/> implements.</typeparam>
     /// <param name="server">The instance.</param>
     /// <returns><see langword="true"/> if type was registered; otherwise, <see langword="false"/>.</returns>
     /// <remarks>Type can only be registered once.</remarks>
