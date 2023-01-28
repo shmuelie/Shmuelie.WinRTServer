@@ -1,0 +1,7 @@
+﻿<Application
+    x:Class="Shmuelie.WinRTServer.Sample.UwpClient.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Shmuelie.WinRTServer.Sample.UwpClient">
+
+</Application>

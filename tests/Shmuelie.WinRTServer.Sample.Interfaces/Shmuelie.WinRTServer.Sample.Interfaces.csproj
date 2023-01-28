@@ -1,12 +1,14 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="MSBuild.Sdk.Extras/3.0.44">
   <PropertyGroup>
-    <TargetFrameworks>net481;net462</TargetFrameworks>
-    <OutputType>winexe</OutputType>
     <TargetPlatformVersion>10.0.22000.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
+    <TargetFramework>net462</TargetFramework>
+    <ExtrasUwpMetaPackageVersion>6.2.13</ExtrasUwpMetaPackageVersion>
+    <Platforms>x64;x86</Platforms>
+    <OutputType>winmdobj</OutputType>
+    <DebugType>full</DebugType>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.SDK.Contracts" Version="10.0.22000.197" />
-    <ProjectReference Include="..\..\src\Shmuelie.WinRTServer\Shmuelie.WinRTServer.csproj" />
   </ItemGroup>
 </Project>

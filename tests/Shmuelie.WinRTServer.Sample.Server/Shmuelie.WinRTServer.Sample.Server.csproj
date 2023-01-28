@@ -1,0 +1,33 @@
+﻿<Project Sdk="MSBuild.Sdk.Extras/3.0.44">
+  <PropertyGroup>
+    <TargetPlatformVersion>10.0.22000.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
+    <TargetFramework>net462</TargetFramework>
+    <Platforms>x64;x86</Platforms>
+    <Nullable>disable</Nullable>
+    <ExtrasUwpMetaPackageVersion>6.2.13</ExtrasUwpMetaPackageVersion>
+    <AssetTargetFallback>$(AssetTargetFallback);netstandard2.0</AssetTargetFallback>
+    <!-- NU1702 is a warning caused by UWP SDK Style projects referencing NetStandard 2.0. No way to fix so just suppressing. -->
+    <NoWarn>$(NoWarn);NU1702</NoWarn>
+    <LangVersion>10</LangVersion>
+    <OutputType>winexe</OutputType>
+    <DebugType>full</DebugType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Windows.SDK.Contracts" Version="10.0.22000.197" />
+    <ProjectReference Include="..\..\src\Shmuelie.WinRTServer\Shmuelie.WinRTServer.csproj" />
+    <ProjectReference Include="..\Shmuelie.WinRTServer.Sample.Interfaces\Shmuelie.WinRTServer.Sample.Interfaces.csproj" />
+  </ItemGroup>
+  <Target Name="BuiltProjectOutputGroup" DependsOnTargets="_SetBuildInnerTarget;DispatchToInnerBuilds" Returns="@(OutputItems)">
+    <ItemGroup>
+      <OutputItems Include="$(MSBuildProjectDirectory)\bin\$(Platform)\$(Configuration)\net462\*">
+        <TargetFramework>net462</TargetFramework>
+        <TargetFileName>%(Filename).%(Extension)</TargetFileName>
+        <TargetPlatformIdentifier>Windows</TargetPlatformIdentifier>
+        <TargetDir>%(RootDir)%(Directory)</TargetDir>
+        <FinalOutputPath>%(FullPath)</FinalOutputPath>
+      </OutputItems>
+    </ItemGroup>
+  </Target>
+</Project>
