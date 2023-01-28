@@ -16,8 +16,8 @@ using this in .NET much easier.
 # Usage
 
 Currently to create an Out-of-Process server requires the C++/WinRT tooling
-(though no actual C++ code) and a "contract" project. Eventually these
-restrictions will be removed.
+(though no actual C++ code) and a "contract" project. These two limitations will
+be removed in a future version of the library.
 
 ## Contract Project
 
@@ -47,7 +47,8 @@ No actual C++ code is needed, only the IDL.
 The IDL is very simple, only needing `runtimeclass`es that implement the
 interface from the contract project. Unlike in C#, in MIDL 3.0 the type
 automatically has the members from the interface so they do not need to be
-listed again.
+listed again. Importantly the `runtimeclass` must have an empty constructor,
+otherwise the proxy type cannot be created..
 
 ## Server Project
 
@@ -62,9 +63,19 @@ between the two systems.
 
 ## Client Project
 
+An application to use the server project, using the metadata project to generate
+the proxy information. If the client is a UWP project, see [this blog post][6]
+for how to create the instances.
+
+# Sample
+
+To help understand usage, a sample using a UWP client app is included under the
+test directory. Simply run the `Shmuelie.WinRTServer.Sample.Package` project to
+see it in action.
 
 [1]: https://github.com/Shmuelie/Shmuelie.WinRTServer/actions
 [2]: https://www.nuget.org/stats/packages/Shmuelie.WinRTServer?groupby=Version
 [3]: https://www.nuget.org/packages/Shmuelie.WinRTServer/
 [4]: https://learn.microsoft.com/en-us/windows/apps/develop/platform/csharp-winrt/net-mappings-of-winrt-types
 [5]: https://learn.microsoft.com/en-us/uwp/midl-3/
+[6]: https://devblogs.microsoft.com/ifdef-windows/the-journey-of-moving-from-cpp-winrt-to-csharp-in-the-microsoft-store/
