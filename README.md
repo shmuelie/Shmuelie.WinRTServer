@@ -56,9 +56,8 @@ otherwise the proxy type cannot be created..
 
 The server project is the only project that references `Shmuelie.WinRTServer`.
 It will contain implementations of the interfaces from the contract and when run
-should register them with an instance of `COMServer` or `WinRTServer`. The
-implementations must have a GUID using the
-`System.Runtime.InteropServices.GuidAttribute` attribute.
+should register them with an instance of `COMServer`. The implementations must
+have a GUID using the `System.Runtime.InteropServices.GuidAttribute` attribute.
 
 Because the interfaces must use the WinRT asynchronous types instead of the .NET
 ones, the implementation will likely need to use `AsyncInfo` to help adapt
