@@ -4,6 +4,7 @@
     <ApplicationIcon>..\..\$(MSBuildProjectName).ico</ApplicationIcon>
     <IsPackable>true</IsPackable>
     <Description>Out-of-Process WinRT/COM Server</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
   <!-- .NET Standard 2.0 polyfill packages -->
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
@@ -22,5 +23,11 @@
     <Content Include="..\..\$(MSBuildProjectName)-128.png" PackFolder="\">
       <Link>icon.png</Link>
     </Content>
+    <None Include="../../README.md" PackFolder="\">
+      <Visible>false</Visible>
+    </None>
+    <None Include="../../LICENSE" PackFolder="\">
+      <Visible>false</Visible>
+    </None>
   </ItemGroup>
 </Project>
