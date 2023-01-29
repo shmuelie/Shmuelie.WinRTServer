@@ -31,3 +31,27 @@ jobs:
         name: msbuild_log_${{matrix.configuration}}.binlog
         path: msbuild.binlog
         if-no-files-found: error
+
+  # Build the only in Release to generate all the NuGet packages.
+  # This workflow also uploads the resulting packages as artifacts.
+  build-packages:
+    runs-on: windows-2022
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v3
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.1
+    - name: Setup NuGet
+      uses: nuget/setup-nuget@v1
+    - name: NuGet Restore
+      run: nuget restore
+    - name: Build
+      run: msbuild .\src\Shmuelie.WinRTServer\Shmuelie.WinRTServer.csproj -t:restore,build -p:Configuration=Release
+    - name: packages
+      run: msbuild .\src\Shmuelie.WinRTServer\Shmuelie.WinRTServer.csproj -t:pack -p:Configuration=Release
+    - name: Upload package artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: nuget_packages
+        path: artifacts\*.nupkg
+        if-no-files-found: error
