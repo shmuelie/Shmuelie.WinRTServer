@@ -29,7 +29,7 @@
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <CppWinRTEnableReferenceProjection>false</CppWinRTEnableReferenceProjection>
-    <ContinueOnError>true</ContinueOnError>
+    <RestoreProjectStyle>Packages.config</RestoreProjectStyle>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)'=='Debug'" Label="Configuration">
@@ -45,7 +45,7 @@
     <IntDir>$(ProjectDir)obj\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Shmuelie.WinRTServer.Sample.Interfaces\Shmuelie.WinRTServer.Sample.Interfaces.csproj">
+    <ProjectReference Include="..\Shmuelie.WinRTServer.Sample.Interfaces\Shmuelie.WinRTServer.Sample.Interfaces.csproj" Condition="Exists('..\..\packages\Microsoft.Windows.CppWinRT.2.0.221121.5\build\native\Microsoft.Windows.CppWinRT.targets')">
       <Project>{7e420eeb-3d6c-49fb-9e60-ae448bac8b1f}</Project>
     </ProjectReference>
   </ItemGroup>

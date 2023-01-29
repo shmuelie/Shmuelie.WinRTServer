@@ -13,7 +13,6 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
-        platform: [x64, arm64]
     runs-on: windows-2022
     steps:
     - name: Git checkout
@@ -21,10 +20,10 @@ jobs:
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1.1
     - name: Build
-      run: msbuild -t:restore,build /p:Configuration=${{matrix.configuration}} /p:Platform=${{matrix.platform}} /bl
+      run: msbuild -t:restore,build /p:Configuration=${{matrix.configuration}} /p:Platform=x64 /bl
     - name: Upload MSBuild binary log
       uses: actions/upload-artifact@v3
       with:
-        name: msbuild_log_${{matrix.configuration}}_${{matrix.platform}}
+        name: msbuild_log_${{matrix.configuration}}
         path: msbuild.binlog
         if-no-files-found: error
