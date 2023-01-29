@@ -44,7 +44,7 @@
   <PropertyGroup>
     <AssemblyVersion>$(ShmuelieWinRTServerPackageVersion).0</AssemblyVersion>
     <VersionPrefix>$(ShmuelieWinRTServerPackageVersion)</VersionPrefix>
-    <VersionSuffix Condition="'$(EXCLUDE_SUFFIX_FROM_VERSION)' != 'true' AND '$(IsCommitOnReleaseBranch)' != 'true'">alpha</VersionSuffix>
+    <VersionSuffix Condition="'$(GITHUB_EVENT_NAME)' != 'pull_request' AND '$(IsCommitOnReleaseBranch)' != 'true'">alpha</VersionSuffix>
     <VersionSuffix Condition="'$(GITHUB_EVENT_NAME)' == 'pull_request' AND '$(IsCommitOnReleaseBranch)' != 'true'">pr</VersionSuffix>
   </PropertyGroup>
 
