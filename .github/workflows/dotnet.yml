@@ -47,7 +47,7 @@ jobs:
       run: nuget restore
     - name: Build
       run: msbuild .\src\Shmuelie.WinRTServer\Shmuelie.WinRTServer.csproj -t:restore,build -p:Configuration=Release
-    - name: packages
+    - name: Pack
       run: msbuild .\src\Shmuelie.WinRTServer\Shmuelie.WinRTServer.csproj -t:pack -p:Configuration=Release
     - name: Upload package artifacts
       uses: actions/upload-artifact@v3
