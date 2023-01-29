@@ -32,7 +32,7 @@ objects. Output is a WinMD that is referenced by the other projects. The interfa
    `IAsyncOperationWithProgress<TResult, TProgress>`) instead of `Task` and
    `Task<T>`.
 3. Types in method parameters, type parameters, and return types must be:
-   
+
    - A blittable type.
    - An interface that has a [.NET/WinRT Mapping][4].
    - A WinRT type.
@@ -50,7 +50,12 @@ The IDL is very simple, only needing `runtimeclass`es that implement the
 interface from the contract project. Unlike in C#, in MIDL 3.0 the type
 automatically has the members from the interface so they do not need to be
 listed again. Importantly the `runtimeclass` must have an empty constructor,
-otherwise the proxy type cannot be created..
+otherwise the proxy type cannot be created.
+
+> :exclamation:**Important**: Because of the mix of SDK Style and C++/WinRT,
+> `nuget restore` is needed to restore for C++/WinRT. In addition
+> `<RestoreProjectStyle>Packages.config</RestoreProjectStyle>` is needed in the
+> C++ project file.
 
 ## Server Project
 
