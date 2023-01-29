@@ -16,7 +16,7 @@
     <PackageReference Include="System.Runtime.InteropServices.WindowsRuntime" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="$(ApplicationIcon)">
+    <Content Include="$(ApplicationIcon)" Pack="false">
       <Link>$(MSBuildProjectName).ico</Link>
     </Content>
     <Content Include="..\..\$(MSBuildProjectName)-64.png" PackFolder="\">
