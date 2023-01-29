@@ -3,6 +3,7 @@
     <TargetFrameworks>netstandard2.0;net6.0-windows</TargetFrameworks>
     <ApplicationIcon>..\..\$(MSBuildProjectName).ico</ApplicationIcon>
     <IsPackable>true</IsPackable>
+    <Description>Out-of-Process WinRT/COM Server</Description>
   </PropertyGroup>
   <!-- .NET Standard 2.0 polyfill packages -->
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
