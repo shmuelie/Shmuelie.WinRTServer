@@ -80,6 +80,9 @@ To help understand usage, a sample using a UWP client app is included under the
 test directory. Simply run the `Shmuelie.WinRTServer.Sample.Package` project to
 see it in action.
 
+> **Note**: If Visual Studio fails to build the Metadata project restarting
+> Visual Studio should fix the problem.
+
 # Alternatives
 
 If both applications are full trust applications other RPC/IPC technology might
