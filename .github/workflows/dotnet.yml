@@ -28,7 +28,7 @@ jobs:
     - name: Upload MSBuild binary log
       uses: actions/upload-artifact@v3
       with:
-        name: msbuild_log_${{matrix.configuration}}.binlog
+        name: msbuild_log_${{matrix.configuration}}
         path: msbuild.binlog
         if-no-files-found: error
 
