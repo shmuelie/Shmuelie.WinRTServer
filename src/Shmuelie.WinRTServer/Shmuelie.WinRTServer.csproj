@@ -19,7 +19,7 @@
     <Content Include="$(ApplicationIcon)" Pack="false">
       <Link>$(MSBuildProjectName).ico</Link>
     </Content>
-    <Content Include="..\..\$(MSBuildProjectName)-64.png" PackFolder="\">
+    <Content Include="..\..\$(MSBuildProjectName)-128.png" PackFolder="\">
       <Link>icon.png</Link>
     </Content>
   </ItemGroup>
