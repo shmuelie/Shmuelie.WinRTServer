@@ -4,4 +4,9 @@
     {
         RemoteThing();
     }
+
+    runtimeclass RemoteActivation : [default] Shmuelie.WinRTServer.Sample.Interfaces.IRemoteActivation
+    {
+        RemoteActivation();
+    }
 }
