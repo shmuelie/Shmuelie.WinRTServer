@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices.WindowsRuntime;
+﻿using System;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace Shmuelie.WinRTServer;
 
@@ -17,5 +18,20 @@ public abstract class BaseActivationFactory : IActivationFactory
     public abstract string ActivatableClassId
     {
         get;
+    }
+
+    /// <summary>
+    /// Occurs when a new instance is created.
+    /// </summary>
+    public event EventHandler<InstanceCreatedEventArgs>? InstanceCreated;
+
+    /// <summary>
+    /// Raises the <see cref="InstanceCreated"/> event.
+    /// </summary>
+    /// <param name="instance">The created instance.</param>
+    /// <event cref="InstanceCreated"/>
+    internal void OnInstanceCreated(object instance)
+    {
+        InstanceCreated?.Invoke(this, new InstanceCreatedEventArgs(instance));
     }
 }

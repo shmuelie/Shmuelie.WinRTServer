@@ -235,6 +235,9 @@ internal unsafe struct BaseActivationFactoryProxy
                 {
                     return result;
                 }
+
+                factory.OnInstanceCreated(managedInstance);
+
                 return S.S_OK;
 
             }
