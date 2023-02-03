@@ -6,6 +6,7 @@
   xmlns:com2="http://schemas.microsoft.com/appx/manifest/com/windows10/2"
   xmlns:com3="http://schemas.microsoft.com/appx/manifest/com/windows10/3"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5"
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
   IgnorableNamespaces="uap rescap">
 
@@ -21,8 +22,7 @@
   </Properties>
 
   <Dependencies>
-    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
-    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.14393.0" MaxVersionTested="10.0.14393.0" />
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.18362.0" MaxVersionTested="10.0.22000.0" />
   </Dependencies>
 
   <Resources>
@@ -64,9 +64,17 @@
       </Extensions>
     </Application>
   </Applications>
-
   <Capabilities>
     <Capability Name="internetClient" />
     <rescap:Capability Name="runFullTrust" />
   </Capabilities>
+  <Extensions>
+    <Extension Category="windows.activatableClass.outOfProcessServer">
+      <OutOfProcessServer ServerName="Shmuelie.WinRTServer.WinRtServer" uap5:IdentityType="activateAsPackage" uap5:RunFullTrust="false">
+        <Path>Shmuelie.WinRTServer.Sample.Server\Shmuelie.WinRTServer.Sample.Server.exe</Path>
+        <Instancing>singleInstance</Instancing>
+        <ActivatableClass ActivatableClassId="Shmuelie.WinRTServer.Sample.RemoteActivation" />
+      </OutOfProcessServer>
+    </Extension>
+  </Extensions>
 </Package>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Shmuelie.WinRTServer.Sample.Interfaces;
 
@@ -8,6 +9,15 @@ public static class Program
 {
     public async static Task Main()
     {
+        if (Debugger.IsAttached)
+        {
+            Debugger.Break();
+        }
+        else
+        {
+            Debugger.Launch();
+        }
+
         await Task.WhenAll(RunComServer(), RunWinRtServer());
 
         static async Task RunComServer()
