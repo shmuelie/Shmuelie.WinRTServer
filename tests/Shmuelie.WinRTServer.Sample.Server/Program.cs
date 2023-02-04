@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Shmuelie.WinRTServer.Sample.Interfaces;
 
@@ -7,20 +7,9 @@ namespace Shmuelie.WinRTServer.Sample.Server;
 
 public static class Program
 {
-    public async static Task Main()
+    public async static Task Main(string[] args)
     {
-        if (Debugger.IsAttached)
-        {
-            Debugger.Break();
-        }
-        else
-        {
-            Debugger.Launch();
-        }
-
-        await Task.WhenAll(RunComServer(), RunWinRtServer());
-
-        static async Task RunComServer()
+        if (args.Contains("-COM"))
         {
             await using (ComServer server = new ComServer())
             {
@@ -29,8 +18,7 @@ public static class Program
                 await server.WaitForFirstObjectAsync();
             }
         }
-
-        static async Task RunWinRtServer()
+        else if (args.Contains("-WINRT"))
         {
             await using (WinRtServer server = new WinRtServer())
             {
