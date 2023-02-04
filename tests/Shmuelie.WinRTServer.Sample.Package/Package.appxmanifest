@@ -43,6 +43,17 @@
         <uap:SplashScreen Image="Images\SplashScreen.png" />
       </uap:VisualElements>
     </Application>
+    <Application Id="Shmuelie.WinRTServer.Sample.WpfNetFxClient"
+      Executable="Shmuelie.WinRTServer.Sample.WpfNetFxClient\Shmuelie.WinRTServer.Sample.WpfNetFxClient.exe"
+      EntryPoint="Windows.FullTrustApplication">
+      <uap:VisualElements
+        DisplayName="WPF .NET Framework Client"
+        Description="WPF .NET Framework Client"
+        BackgroundColor="transparent"
+        Square150x150Logo="Images\Square150x150Logo.png"
+        Square44x44Logo="Images\Square44x44Logo.png">
+      </uap:VisualElements>
+    </Application>
     <Application Id="Shmuelie.WinRTServer.Sample.Server"
       Executable="Shmuelie.WinRTServer.Sample.Server\Shmuelie.WinRTServer.Sample.Server.exe"
       EntryPoint="Windows.FullTrustApplication">

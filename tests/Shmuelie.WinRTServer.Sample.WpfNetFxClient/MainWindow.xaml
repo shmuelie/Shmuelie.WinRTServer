@@ -1,0 +1,30 @@
+﻿<Window x:Class="Shmuelie.WinRTServer.Sample.WpfNetFxClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Shmuelie.WinRTServer.Sample.WpfNetFxClient"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="RemBtn" Click="RemBtn_Click">Rem</Button>
+                <TextBlock x:Name="RemResponse" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="DelayBtn" Click="DelayBtn_Click">Delay</Button>
+                <ProgressBar x:Name="DelayProg" Width="100" VerticalAlignment="Stretch" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="LoopBtn" Click="LoopBtn_Click">Loop</Button>
+                <ProgressBar x:Name="LoopProg" VerticalAlignment="Stretch" Width="200" Minimum="0" Maximum="100" Value="0" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="ListBtn" Click="ListBtn_Click">List</Button>
+                <ProgressBar x:Name="ListProg" VerticalAlignment="Stretch" Width="200" Minimum="0" Maximum="10" Value="0" />
+                <TextBlock x:Name="ListResp" />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
