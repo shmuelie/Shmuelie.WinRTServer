@@ -83,5 +83,6 @@
       <TargetFramework>net462</TargetFramework>
     </ProjectReference>
     <ProjectReference Include="..\Shmuelie.WinRTServer.Sample.UwpClient\Shmuelie.WinRTServer.Sample.UwpClient.csproj" />
+    <ProjectReference Include="..\Shmuelie.WinRTServer.Sample.WpfNetFxClient\Shmuelie.WinRTServer.Sample.WpfNetFxClient.csproj" />
   </ItemGroup>
 </Project>

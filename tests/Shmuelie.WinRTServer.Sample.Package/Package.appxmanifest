@@ -6,6 +6,7 @@
   xmlns:com2="http://schemas.microsoft.com/appx/manifest/com/windows10/2"
   xmlns:com3="http://schemas.microsoft.com/appx/manifest/com/windows10/3"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5"
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
   IgnorableNamespaces="uap rescap">
 
@@ -21,8 +22,7 @@
   </Properties>
 
   <Dependencies>
-    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
-    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.14393.0" MaxVersionTested="10.0.14393.0" />
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.18362.0" MaxVersionTested="10.0.22000.0" />
   </Dependencies>
 
   <Resources>
@@ -43,6 +43,17 @@
         <uap:SplashScreen Image="Images\SplashScreen.png" />
       </uap:VisualElements>
     </Application>
+    <Application Id="Shmuelie.WinRTServer.Sample.WpfNetFxClient"
+      Executable="Shmuelie.WinRTServer.Sample.WpfNetFxClient\Shmuelie.WinRTServer.Sample.WpfNetFxClient.exe"
+      EntryPoint="Windows.FullTrustApplication">
+      <uap:VisualElements
+        DisplayName="WPF .NET Framework Client"
+        Description="WPF .NET Framework Client"
+        BackgroundColor="transparent"
+        Square150x150Logo="Images\Square150x150Logo.png"
+        Square44x44Logo="Images\Square44x44Logo.png">
+      </uap:VisualElements>
+    </Application>
     <Application Id="Shmuelie.WinRTServer.Sample.Server"
       Executable="Shmuelie.WinRTServer.Sample.Server\Shmuelie.WinRTServer.Sample.Server.exe"
       EntryPoint="Windows.FullTrustApplication">
@@ -54,9 +65,13 @@
         Square44x44Logo="Images\Square44x44Logo.png" AppListEntry="none">
       </uap:VisualElements>
       <Extensions>
+        <!-- Only needed for COM activation -->
         <com2:Extension Category="windows.comServer">
           <com2:ComServer>
-            <com3:ExeServer Executable="Shmuelie.WinRTServer.Sample.Server\Shmuelie.WinRTServer.Sample.Server.exe" DisplayName="Local Server" LaunchAndActivationPermission="O:SYG:SYD:(A;;11;;;WD)(A;;11;;;RC)(A;;11;;;AC)(A;;11;;;AN)S:P(ML;;NX;;;S-1-16-0)">
+            <com3:ExeServer Executable="Shmuelie.WinRTServer.Sample.Server\Shmuelie.WinRTServer.Sample.Server.exe"
+                            DisplayName="Local Server"
+                            LaunchAndActivationPermission="O:SYG:SYD:(A;;11;;;WD)(A;;11;;;RC)(A;;11;;;AC)(A;;11;;;AN)S:P(ML;;NX;;;S-1-16-0)"
+                            Arguments="-COM">
               <com:Class Id="4F59AF92-A98D-4A20-8C8D-1C076647A6AE" DisplayName="RemoteThing Class" />
             </com3:ExeServer>
           </com2:ComServer>
@@ -64,9 +79,19 @@
       </Extensions>
     </Application>
   </Applications>
-
   <Capabilities>
     <Capability Name="internetClient" />
     <rescap:Capability Name="runFullTrust" />
   </Capabilities>
+  <Extensions>
+    <!-- Only needed for WinRT activation -->
+    <Extension Category="windows.activatableClass.outOfProcessServer">
+      <OutOfProcessServer ServerName="Shmuelie.WinRTServer.WinRtServer" uap5:IdentityType="activateAsPackage" uap5:RunFullTrust="false">
+        <Path>Shmuelie.WinRTServer.Sample.Server\Shmuelie.WinRTServer.Sample.Server.exe</Path>
+        <Arguments>-WINRT</Arguments>
+        <Instancing>singleInstance</Instancing>
+        <ActivatableClass ActivatableClassId="Shmuelie.WinRTServer.Sample.RemoteActivation" />
+      </OutOfProcessServer>
+    </Extension>
+  </Extensions>
 </Package>

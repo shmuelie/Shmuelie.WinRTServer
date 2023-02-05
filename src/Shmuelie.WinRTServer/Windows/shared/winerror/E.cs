@@ -19,4 +19,9 @@ internal static partial class E
     /// Unexpected failure
     /// </summary>
     public const int E_UNEXPECTED = unchecked((int)(0x8000FFFF));
+
+    /// <summary>
+    /// One or more arguments are not valid
+    /// </summary>
+    public const int E_INVALIDARG = unchecked((int)0x80070057);
 }

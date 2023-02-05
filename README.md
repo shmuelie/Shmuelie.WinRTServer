@@ -61,8 +61,9 @@ otherwise the proxy type cannot be created.
 
 The server project is the only project that references `Shmuelie.WinRTServer`.
 It will contain implementations of the interfaces from the contract and when run
-should register them with an instance of `COMServer`. The implementations must
-have a GUID using the `System.Runtime.InteropServices.GuidAttribute` attribute.
+should register them with an instance of `COMServer` for COM activation and
+`WinRtServer` for WinRT activation. The implementations must have a GUID using
+the `System.Runtime.InteropServices.GuidAttribute` attribute.
 
 Because the interfaces must use the WinRT asynchronous types instead of the .NET
 ones, the implementation will likely need to use `AsyncInfo` to help adapt
@@ -70,9 +71,17 @@ between the two systems.
 
 ## Client Project
 
-An application to use the server project, using the metadata project to generate
-the proxy information. If the client is a UWP project, see [this blog post][6]
-for how to create the instances.
+A client can be both full trust applications (Win32, WPF, WinForms, etc) or a
+UWP app.
+
+A UWP client cannot use WinRT activation and must use COM style activation. The
+UWP sample app shows how to do this. To understand the details behind it, see
+[this blog post][6].
+
+A full trust client can use WinRT activation, which allows you to create the
+remote instances simply by `new SomeType()`, like you would for any other type.
+The same WPF application shows this in action (using with WinForms would be
+similar).
 
 # Sample
 
