@@ -1,4 +1,4 @@
-![Out-of-Process WinRT/COM Server](Shmuelie.WinRTServer.Title.png)
+![Out-of-Process WinRT/COM Server](https://raw.githubusercontent.com/shmuelie/Shmuelie.WinRTServer/main/Shmuelie.WinRTServer.Title.png)
 ==================================================================
 
 [![.NET](https://github.com/Shmuelie/Shmuelie.WinRTServer/workflows/.NET/badge.svg)][1] [![NuGet](https://img.shields.io/nuget/dt/Shmuelie.WinRTServer.svg)][2] [![NuGet](https://img.shields.io/nuget/vpre/Shmuelie.WinRTServer.svg)][3]
