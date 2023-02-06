@@ -16,4 +16,6 @@ public interface IRemoteThing
     IAsyncActionWithProgress<LoopProgress> LoopAsync(int total);
 
     IAsyncOperationWithProgress<IReadOnlyList<int>, ListProgress> GenerateListAsync(ListOptions options);
+
+    event TypedEventHandler<IRemoteThing, object> LoopCompleted;
 }

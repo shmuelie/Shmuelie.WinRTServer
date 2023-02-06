@@ -16,6 +16,12 @@ public sealed partial class MainPage : Page
     {
         this.InitializeComponent();
         _remoteThing = CreateRemoteThing();
+        _remoteThing.LoopCompleted += _remoteThing_LoopCompleted;
+    }
+
+    private void _remoteThing_LoopCompleted(IRemoteThing sender, object args)
+    {
+        _ = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => LoopProg.Value = 0);
     }
 
     private static unsafe RemoteThing CreateRemoteThing()

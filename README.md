@@ -31,14 +31,16 @@ objects. Output is a WinMD that is referenced by the other projects. The interfa
    `IAsyncActionWithProgress<TProgress>`, `IAsyncOperation<TResult>`,
    `IAsyncOperationWithProgress<TResult, TProgress>`) instead of `Task` and
    `Task<T>`.
-3. Types in method parameters, type parameters, and return types must be:
+3. Event delegates must be either `TypedEventHandler<TSender, TResult>` or
+   `EventHandler<TResult>` instead of `EventHandler` and `EventHandler<T>`.
+4. Types in method parameters, type parameters, and return types must be:
 
    - A blittable type.
    - An interface that has a [.NET/WinRT Mapping][4].
    - A WinRT type.
    - Another interface in the project.
 
-4. Methods, properties, and events are all supported.
+5. Methods, properties, and events are all supported.
 
 ## Metadata Project
 

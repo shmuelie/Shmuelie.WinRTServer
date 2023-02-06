@@ -58,6 +58,7 @@ public sealed class RemoteThing : IRemoteThing
             cancellationToken.ThrowIfCancellationRequested();
             progress?.Report(new LoopProgress() { Count = i, Total = total });
         }
+        LoopCompleted?.Invoke(this, null);
     }
 
     [DebuggerNonUserCode]
@@ -65,4 +66,6 @@ public sealed class RemoteThing : IRemoteThing
     {
         return AsyncInfo.Run<LoopProgress>((c, p) => LoopAsync(total, p, c));
     }
+
+    public event TypedEventHandler<IRemoteThing, object> LoopCompleted;
 }
