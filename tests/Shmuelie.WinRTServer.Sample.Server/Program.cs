@@ -22,7 +22,7 @@ public static class Program
         {
             await using (WinRtServer server = new WinRtServer())
             {
-                server.RegisterClass<RemoteActivation>();
+                server.RegisterClass<RemoteThing>();
                 server.Start();
                 await server.WaitForFirstObjectAsync();
             }

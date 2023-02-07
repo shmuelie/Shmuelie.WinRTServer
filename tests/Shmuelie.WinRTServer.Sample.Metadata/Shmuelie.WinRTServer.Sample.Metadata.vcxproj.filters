@@ -5,6 +5,5 @@
   </ItemGroup>
   <ItemGroup>
     <Midl Include="RemoteThing.idl" />
-    <Midl Include="RemoteActivation.idl" />
   </ItemGroup>
 </Project>
