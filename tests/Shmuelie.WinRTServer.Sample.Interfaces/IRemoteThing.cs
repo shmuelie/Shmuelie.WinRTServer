@@ -18,4 +18,6 @@ public interface IRemoteThing
     IAsyncOperationWithProgress<IReadOnlyList<int>, ListProgress> GenerateListAsync(ListOptions options);
 
     event TypedEventHandler<IRemoteThing, object> LoopCompleted;
+
+    DateTimeOffset NowUtc { get; }
 }

@@ -17,6 +17,7 @@ public sealed partial class MainPage : Page
         this.InitializeComponent();
         _remoteThing = CreateRemoteThing();
         _remoteThing.LoopCompleted += _remoteThing_LoopCompleted;
+        DateTimeUtcBtn.Content = _remoteThing.NowUtc.ToString();
     }
 
     private void _remoteThing_LoopCompleted(IRemoteThing sender, object args)
@@ -69,5 +70,10 @@ public sealed partial class MainPage : Page
         }));
         ListResp.Text = string.Join(";", l);
         ListBtn.IsEnabled = true;
+    }
+
+    private void DateTimeUtcBtn_Click(object sender, RoutedEventArgs e)
+    {
+        DateTimeUtcBtn.Content = _remoteThing.NowUtc.ToString();
     }
 }
