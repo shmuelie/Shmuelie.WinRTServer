@@ -9,24 +9,24 @@ namespace Shmuelie.WinRTServer.Sample.WpfNetFxClient
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly RemoteActivation remoteActivation;
+        private readonly RemoteThing remoteThing;
 
         public MainWindow()
         {
             InitializeComponent();
-            remoteActivation = new RemoteActivation();
+            remoteThing = new RemoteThing();
         }
 
         private void RemBtn_Click(object sender, RoutedEventArgs e)
         {
-            RemResponse.Text = remoteActivation.Rem(5, 4).ToString();
+            RemResponse.Text = remoteThing.Rem(5, 4).ToString();
         }
 
         private async void DelayBtn_Click(object sender, RoutedEventArgs e)
         {
             DelayBtn.IsEnabled = false;
             DelayProg.IsIndeterminate = true;
-            await remoteActivation.DelayAsync(3000);
+            await remoteThing.DelayAsync(3000);
             DelayProg.IsIndeterminate = false;
             DelayBtn.IsEnabled = true;
         }
@@ -34,7 +34,7 @@ namespace Shmuelie.WinRTServer.Sample.WpfNetFxClient
         private async void LoopBtn_Click(object sender, RoutedEventArgs e)
         {
             LoopBtn.IsEnabled = false;
-            await remoteActivation.LoopAsync(100).AsTask(new Progress<LoopProgress>(p =>
+            await remoteThing.LoopAsync(100).AsTask(new Progress<LoopProgress>(p =>
             {
                 _ = Dispatcher.InvokeAsync(() => LoopProg.Value = p.Count);
             }));
@@ -44,7 +44,7 @@ namespace Shmuelie.WinRTServer.Sample.WpfNetFxClient
         private async void ListBtn_Click(object sender, RoutedEventArgs e)
         {
             ListBtn.IsEnabled = false;
-            var l = await remoteActivation.GenerateListAsync(new ListOptions() { Count = 10, DelayTicks = 1000 }).AsTask(new Progress<ListProgress>(p =>
+            var l = await remoteThing.GenerateListAsync(new ListOptions() { Count = 10, DelayTicks = 1000 }).AsTask(new Progress<ListProgress>(p =>
             {
                 _ = Dispatcher.InvokeAsync(() => ListProg.Value = p.Count);
             }));

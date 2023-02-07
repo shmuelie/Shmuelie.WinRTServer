@@ -1,7 +1,0 @@
-namespace Shmuelie.WinRTServer.Sample
-{
-    runtimeclass RemoteActivation : [default] Shmuelie.WinRTServer.Sample.Interfaces.IRemoteActivation
-    {
-        RemoteActivation();
-    }
-}
