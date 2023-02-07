@@ -15,6 +15,12 @@ namespace Shmuelie.WinRTServer.Sample.WpfNetFxClient
         {
             InitializeComponent();
             remoteThing = new RemoteThing();
+            remoteThing.LoopCompleted += RemoteThing_LoopCompleted;
+        }
+
+        private void RemoteThing_LoopCompleted(IRemoteThing sender, object args)
+        {
+            _ = Dispatcher.InvokeAsync(() => LoopProg.Value = 0);
         }
 
         private void RemBtn_Click(object sender, RoutedEventArgs e)
