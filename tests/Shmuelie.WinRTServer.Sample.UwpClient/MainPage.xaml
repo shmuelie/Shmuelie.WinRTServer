@@ -26,6 +26,7 @@
                 <ProgressBar x:Name="ListProg" VerticalAlignment="Stretch" Width="200" Minimum="0" Maximum="10" Value="0" />
                 <TextBlock x:Name="ListResp" />
             </StackPanel>
+            <Button x:Name="DateTimeUtcBtn" HorizontalAlignment="Left" Click="DateTimeUtcBtn_Click" />
         </StackPanel>
     </Grid>
 </Page>

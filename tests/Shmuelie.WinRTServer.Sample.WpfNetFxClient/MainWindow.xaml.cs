@@ -16,6 +16,7 @@ namespace Shmuelie.WinRTServer.Sample.WpfNetFxClient
             InitializeComponent();
             remoteThing = new RemoteThing();
             remoteThing.LoopCompleted += RemoteThing_LoopCompleted;
+            DateTimeUtcBtn.Content = remoteThing.NowUtc.ToString();
         }
 
         private void RemoteThing_LoopCompleted(IRemoteThing sender, object args)
@@ -57,5 +58,10 @@ namespace Shmuelie.WinRTServer.Sample.WpfNetFxClient
             ListResp.Text = string.Join(";", l);
             ListBtn.IsEnabled = true;
         }
+
+        private void DateTimeUtcBtn_Click(object sender, RoutedEventArgs e)
+        {
+            DateTimeUtcBtn.Content = remoteThing.NowUtc.ToString();
+    }
     }
 }

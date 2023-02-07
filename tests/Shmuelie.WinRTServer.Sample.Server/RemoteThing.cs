@@ -68,4 +68,6 @@ public sealed class RemoteThing : IRemoteThing
     }
 
     public event TypedEventHandler<IRemoteThing, object> LoopCompleted;
+
+    public DateTimeOffset NowUtc => DateTimeOffset.UtcNow;
 }
