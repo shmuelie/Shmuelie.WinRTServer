@@ -73,6 +73,8 @@
                             LaunchAndActivationPermission="O:SYG:SYD:(A;;11;;;WD)(A;;11;;;RC)(A;;11;;;AC)(A;;11;;;AN)S:P(ML;;NX;;;S-1-16-0)"
                             Arguments="-COM">
               <com:Class Id="4F59AF92-A98D-4A20-8C8D-1C076647A6AE" DisplayName="RemoteThing Class" />
+              <com:Class Id="4F59AF92-A98D-4A20-8C8D-1C076647A6AF" DisplayName="Times Class" />
+              <com:Class Id="4F59AF92-A98D-4A20-8C8D-1C076647A6B0" DisplayName="Input Class" />
             </com3:ExeServer>
           </com2:ComServer>
         </com2:Extension>
@@ -92,6 +94,8 @@
         <Arguments>-WINRT</Arguments>
         <Instancing>singleInstance</Instancing>
         <ActivatableClass ActivatableClassId="Shmuelie.WinRTServer.Sample.RemoteThing" />
+        <ActivatableClass ActivatableClassId="Shmuelie.WinRTServer.Sample.Times" />
+        <ActivatableClass ActivatableClassId="Shmuelie.WinRTServer.Sample.Input" />
       </OutOfProcessServer>
     </Extension>
   </Extensions>

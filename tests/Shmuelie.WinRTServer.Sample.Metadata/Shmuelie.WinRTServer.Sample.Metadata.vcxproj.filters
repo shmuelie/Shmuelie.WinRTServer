@@ -4,6 +4,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="RemoteThing.idl" />
+    <Midl Include="Types.idl" />
   </ItemGroup>
 </Project>
