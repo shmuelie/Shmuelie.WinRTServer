@@ -91,7 +91,7 @@
         <Path>Shmuelie.WinRTServer.Sample.Server\Shmuelie.WinRTServer.Sample.Server.exe</Path>
         <Arguments>-WINRT</Arguments>
         <Instancing>singleInstance</Instancing>
-        <ActivatableClass ActivatableClassId="Shmuelie.WinRTServer.Sample.RemoteActivation" />
+        <ActivatableClass ActivatableClassId="Shmuelie.WinRTServer.Sample.RemoteThing" />
       </OutOfProcessServer>
     </Extension>
   </Extensions>
