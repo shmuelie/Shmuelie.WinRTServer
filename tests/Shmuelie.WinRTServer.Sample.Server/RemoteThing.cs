@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
 using Shmuelie.WinRTServer.Sample.Interfaces;
 using Windows.Foundation;
+using Windows.Storage.Streams;
 
 namespace Shmuelie.WinRTServer.Sample;
 
@@ -70,4 +72,15 @@ public sealed class RemoteThing : IRemoteThing
     public event TypedEventHandler<IRemoteThing, object> LoopCompleted;
 
     public DateTimeOffset NowUtc => DateTimeOffset.UtcNow;
+
+    public Stream OpenFile(string path)
+    {
+        return File.OpenRead(path);
+    }
+
+    [DebuggerNonUserCode]
+    IInputStream IRemoteThing.OpenFile(string path)
+    {
+        return OpenFile(path).AsInputStream();
+    }
 }
