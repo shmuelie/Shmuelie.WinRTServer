@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Shmuelie.WinRTServer.Sample.Interfaces;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -36,8 +37,20 @@ public sealed partial class MainPage : Page
         return remoteThing;
     }
 
+    private static unsafe Input CreateInput()
+    {
+        Guid classId = Guid.Parse("4F59AF92-A98D-4A20-8C8D-1C076647A6B0");
+        Guid iid = new Guid(0x2474f7c0, 0x9db1, 0x4f4f, 0xb6, 0x14, 0xdc, 0x5a, 0x89, 0x5, 0xb, 0x65);
+        uint hresult = CoCreateInputInstance(&classId, null, 0x4U, &iid, out Input input);
+        Marshal.ThrowExceptionForHR((int)hresult);
+        return input;
+    }
+
     [DllImport("ole32", EntryPoint = "CoCreateInstance", ExactSpelling = true)]
     private unsafe static extern uint CoCreateRemoteThingInstance(Guid* rclsid, void* pUnkOuter, uint dwClsContext, Guid* riid, out RemoteThing ppv);
+
+    [DllImport("ole32", EntryPoint = "CoCreateInstance", ExactSpelling = true)]
+    private unsafe static extern uint CoCreateInputInstance(Guid* rclsid, void* pUnkOuter, uint dwClsContext, Guid* riid, out Input ppv);
 
     private void RemBtn_Click(object sender, RoutedEventArgs e)
     {
@@ -85,5 +98,16 @@ public sealed partial class MainPage : Page
         byte[] buffer = new byte[10];
         await data.ReadAsync(buffer, 0, buffer.Length);
         OpenFileTxt.Text = string.Join("", buffer.Select(b => b.ToString("X2")));
+    }
+
+    private void GetTimesBtn_Click(object sender, RoutedEventArgs e)
+    {
+        var input = CreateInput();
+        input.Description = "This is a description";
+        input.Name = "This is a name";
+        var times = remoteThing.GetTimes(input);
+        LocalTimeTxt.Text = times.LocalNow.ToString();
+        UtcTimeTxt.Text = times.UtcNow.ToString();
+        NameAndDescriptionTxt.Text = times.NameAndDescription;
     }
 }

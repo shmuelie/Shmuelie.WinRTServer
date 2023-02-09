@@ -14,6 +14,8 @@ public static class Program
             await using (ComServer server = new ComServer())
             {
                 server.RegisterClass<RemoteThing, IRemoteThing>();
+                server.RegisterClass<Times, ITimes>();
+                server.RegisterClass<Input, IInput>();
                 server.Start();
                 await server.WaitForFirstObjectAsync();
             }
@@ -23,6 +25,8 @@ public static class Program
             await using (WinRtServer server = new WinRtServer())
             {
                 server.RegisterClass<RemoteThing>();
+                server.RegisterClass<Times>();
+                server.RegisterClass<Input>();
                 server.Start();
                 await server.WaitForFirstObjectAsync();
             }

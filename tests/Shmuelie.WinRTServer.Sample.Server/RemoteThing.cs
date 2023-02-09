@@ -83,4 +83,14 @@ public sealed class RemoteThing : IRemoteThing
     {
         return OpenFile(path).AsInputStream();
     }
+
+    public ITimes GetTimes(IInput input)
+    {
+        return new Times()
+        {
+            LocalNow = DateTimeOffset.Now,
+            UtcNow = DateTimeOffset.UtcNow,
+            NameAndDescription = input.Name + " " + input.Description
+        };
+    }
 }

@@ -31,6 +31,12 @@
                 <Button x:Name="OpenFileBtn" Click="OpenFileBtn_Click">Open</Button>
                 <TextBlock x:Name="OpenFileTxt" />
             </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="GetTimesBtn" Click="GetTimesBtn_Click">GetTimes</Button>
+                <TextBlock x:Name="LocalTimeTxt" />
+                <TextBlock x:Name="UtcTimeTxt" />
+                <TextBlock x:Name="NameAndDescriptionTxt" />
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Page>

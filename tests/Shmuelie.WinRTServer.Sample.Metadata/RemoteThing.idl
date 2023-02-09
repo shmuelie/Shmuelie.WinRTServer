@@ -1,7 +1,0 @@
-﻿namespace Shmuelie.WinRTServer.Sample
-{
-    runtimeclass RemoteThing : [default] Shmuelie.WinRTServer.Sample.Interfaces.IRemoteThing
-    {
-        RemoteThing();
-    }
-}

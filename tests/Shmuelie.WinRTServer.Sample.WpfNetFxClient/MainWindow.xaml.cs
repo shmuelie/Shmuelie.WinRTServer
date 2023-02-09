@@ -73,5 +73,18 @@ namespace Shmuelie.WinRTServer.Sample.WpfNetFxClient
             await data.ReadAsync(buffer, 0, buffer.Length);
             OpenFileTxt.Text = string.Join("", buffer.Select(b => b.ToString("X2")));
         }
+
+        private void GetTimesBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var input = new Input()
+            {
+                Description = "This is a description",
+                Name = "This is a name"
+            };
+            var times = remoteThing.GetTimes(input);
+            LocalTimeTxt.Text = times.LocalNow.ToString();
+            UtcTimeTxt.Text = times.UtcNow.ToString();
+            NameAndDescriptionTxt.Text = times.NameAndDescription;
+        }
     }
 }

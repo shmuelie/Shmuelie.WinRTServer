@@ -23,4 +23,6 @@ public interface IRemoteThing
     DateTimeOffset NowUtc { get; }
 
     IInputStream OpenFile(string path);
+
+    ITimes GetTimes(IInput input);
 }
