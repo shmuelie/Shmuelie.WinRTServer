@@ -10,14 +10,14 @@ namespace Shmuelie.WinRTServer.Sample.UwpClient;
 
 public sealed partial class MainPage : Page
 {
-    private readonly RemoteThing _remoteThing;
+    private readonly RemoteThing remoteThing;
 
     public MainPage()
     {
         this.InitializeComponent();
-        _remoteThing = CreateRemoteThing();
-        _remoteThing.LoopCompleted += _remoteThing_LoopCompleted;
-        DateTimeUtcBtn.Content = _remoteThing.NowUtc.ToString();
+        remoteThing = CreateRemoteThing();
+        remoteThing.LoopCompleted += _remoteThing_LoopCompleted;
+        DateTimeUtcBtn.Content = remoteThing.NowUtc.ToString();
     }
 
     private void _remoteThing_LoopCompleted(IRemoteThing sender, object args)
@@ -39,14 +39,14 @@ public sealed partial class MainPage : Page
 
     private void RemBtn_Click(object sender, RoutedEventArgs e)
     {
-        RemResponse.Text = _remoteThing.Rem(5, 4).ToString();
+        RemResponse.Text = remoteThing.Rem(5, 4).ToString();
     }
 
     private async void DelayBtn_Click(object sender, RoutedEventArgs e)
     {
         DelayBtn.IsEnabled = false;
         DelayProg.IsIndeterminate = true;
-        await _remoteThing.DelayAsync(3000);
+        await remoteThing.DelayAsync(3000);
         DelayProg.IsIndeterminate = false;
         DelayBtn.IsEnabled = true;
     }
@@ -54,7 +54,7 @@ public sealed partial class MainPage : Page
     private async void LoopBtn_Click(object sender, RoutedEventArgs e)
     {
         LoopBtn.IsEnabled = false;
-        await _remoteThing.LoopAsync(100).AsTask(new Progress<LoopProgress>(p =>
+        await remoteThing.LoopAsync(100).AsTask(new Progress<LoopProgress>(p =>
         {
             _ = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => LoopProg.Value = p.Count);
         }));
@@ -64,7 +64,7 @@ public sealed partial class MainPage : Page
     private async void ListBtn_Click(object sender, RoutedEventArgs e)
     {
         ListBtn.IsEnabled = false;
-        var l = await _remoteThing.GenerateListAsync(new ListOptions() { Count = 10, DelayTicks = 1000 }).AsTask(new Progress<ListProgress>(p =>
+        var l = await remoteThing.GenerateListAsync(new ListOptions() { Count = 10, DelayTicks = 1000 }).AsTask(new Progress<ListProgress>(p =>
         {
             _ = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => ListProg.Value = p.Count);
         }));
@@ -74,6 +74,6 @@ public sealed partial class MainPage : Page
 
     private void DateTimeUtcBtn_Click(object sender, RoutedEventArgs e)
     {
-        DateTimeUtcBtn.Content = _remoteThing.NowUtc.ToString();
+        DateTimeUtcBtn.Content = remoteThing.NowUtc.ToString();
     }
 }
