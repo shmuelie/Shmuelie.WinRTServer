@@ -82,11 +82,12 @@
   <Capabilities>
     <Capability Name="internetClient" />
     <rescap:Capability Name="runFullTrust" />
+    <rescap:Capability Name="unvirtualizedResources" />
   </Capabilities>
   <Extensions>
     <!-- Only needed for WinRT activation -->
     <Extension Category="windows.activatableClass.outOfProcessServer">
-      <OutOfProcessServer ServerName="Shmuelie.WinRTServer.WinRtServer" uap5:IdentityType="activateAsPackage" uap5:RunFullTrust="false">
+      <OutOfProcessServer ServerName="Shmuelie.WinRTServer.WinRtServer" uap5:IdentityType="activateAsPackage" uap5:RunFullTrust="true">
         <Path>Shmuelie.WinRTServer.Sample.Server\Shmuelie.WinRTServer.Sample.Server.exe</Path>
         <Arguments>-WINRT</Arguments>
         <Instancing>singleInstance</Instancing>
