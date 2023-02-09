@@ -27,6 +27,10 @@
                 <TextBlock x:Name="ListResp" />
             </StackPanel>
             <Button x:Name="DateTimeUtcBtn" HorizontalAlignment="Left" Click="DateTimeUtcBtn_Click" />
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="OpenFileBtn" Click="OpenFileBtn_Click">Open</Button>
+                <TextBlock x:Name="OpenFileTxt" />
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Page>

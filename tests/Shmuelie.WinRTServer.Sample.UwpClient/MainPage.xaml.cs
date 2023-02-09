@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Shmuelie.WinRTServer.Sample.Interfaces;
 using Windows.UI.Xaml;
@@ -75,5 +77,13 @@ public sealed partial class MainPage : Page
     private void DateTimeUtcBtn_Click(object sender, RoutedEventArgs e)
     {
         DateTimeUtcBtn.Content = remoteThing.NowUtc.ToString();
+    }
+
+    private async void OpenFileBtn_Click(object sender, RoutedEventArgs e)
+    {
+        var data = remoteThing.OpenFile("C:\\Windows\\explorer.exe").AsStreamForRead();
+        byte[] buffer = new byte[10];
+        await data.ReadAsync(buffer, 0, buffer.Length);
+        OpenFileTxt.Text = string.Join("", buffer.Select(b => b.ToString("X2")));
     }
 }

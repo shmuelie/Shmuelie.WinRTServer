@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Windows.Foundation;
 using Windows.Foundation.Metadata;
+using Windows.Storage.Streams;
 
 namespace Shmuelie.WinRTServer.Sample.Interfaces;
 
@@ -20,4 +21,6 @@ public interface IRemoteThing
     event TypedEventHandler<IRemoteThing, object> LoopCompleted;
 
     DateTimeOffset NowUtc { get; }
+
+    IInputStream OpenFile(string path);
 }
