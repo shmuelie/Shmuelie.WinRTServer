@@ -43,6 +43,8 @@ Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "Shmuelie.WinRTServer.Sample
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shmuelie.WinRTServer.Sample.WpfNetFxClient", "tests\Shmuelie.WinRTServer.Sample.WpfNetFxClient\Shmuelie.WinRTServer.Sample.WpfNetFxClient.csproj", "{6B799403-7548-4FD8-9AF8-76BD13473029}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shmuelie.WinRTServer.Sample.CppConsoleClient", "tests\Shmuelie.WinRTServer.Sample.CppConsoleClient\Shmuelie.WinRTServer.Sample.CppConsoleClient.vcxproj", "{A78E8601-3191-4987-B61A-E48256869A39}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -81,6 +83,10 @@ Global
 		{6B799403-7548-4FD8-9AF8-76BD13473029}.Debug|x64.Build.0 = Debug|x64
 		{6B799403-7548-4FD8-9AF8-76BD13473029}.Release|x64.ActiveCfg = Release|x64
 		{6B799403-7548-4FD8-9AF8-76BD13473029}.Release|x64.Build.0 = Release|x64
+		{A78E8601-3191-4987-B61A-E48256869A39}.Debug|x64.ActiveCfg = Debug|x64
+		{A78E8601-3191-4987-B61A-E48256869A39}.Debug|x64.Build.0 = Debug|x64
+		{A78E8601-3191-4987-B61A-E48256869A39}.Release|x64.ActiveCfg = Release|x64
+		{A78E8601-3191-4987-B61A-E48256869A39}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -93,6 +99,7 @@ Global
 		{1C27B092-88C3-4631-848B-F7165F8CF5E9} = {CB701FA8-9663-444D-9610-1A8CDFF30E61}
 		{080D9051-AF78-4B2A-B5CC-9F5BA79A0A9B} = {CB701FA8-9663-444D-9610-1A8CDFF30E61}
 		{6B799403-7548-4FD8-9AF8-76BD13473029} = {CB701FA8-9663-444D-9610-1A8CDFF30E61}
+		{A78E8601-3191-4987-B61A-E48256869A39} = {CB701FA8-9663-444D-9610-1A8CDFF30E61}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {97F14D53-B029-4E3E-B7DE-51A510B2D428}
