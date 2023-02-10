@@ -84,5 +84,6 @@
     </ProjectReference>
     <ProjectReference Include="..\Shmuelie.WinRTServer.Sample.UwpClient\Shmuelie.WinRTServer.Sample.UwpClient.csproj" />
     <ProjectReference Include="..\Shmuelie.WinRTServer.Sample.WpfNetFxClient\Shmuelie.WinRTServer.Sample.WpfNetFxClient.csproj" />
+    <ProjectReference Include="..\Shmuelie.WinRTServer.Sample.CppConsoleClient\Shmuelie.WinRTServer.Sample.CppConsoleClient.vcxproj" />
   </ItemGroup>
 </Project>
