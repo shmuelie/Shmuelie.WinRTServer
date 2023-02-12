@@ -19,9 +19,21 @@ IAsyncOperation<int> AsyncMain()
     printf("Delay");
     IndefiniteSpinner spinner;
     spinner.ShowSpinner();
-    co_await remoteThing.DelayAsync(6000);
+    co_await remoteThing.DelayAsync(3000);
     spinner.StopSpinner();
     printf("Delayed\n");
+
+    printf("Looping\n");
+    ProgressBar bar;
+    bar.ShowProgress(0, 30);
+    auto loopOp{ remoteThing.LoopAsync(30) };
+    loopOp.Progress([&bar](auto const&, LoopProgress p)
+        {
+            bar.ShowProgress(p.Count, p.Total);
+        });
+    co_await loopOp;
+    bar.EndProgress(true);
+    printf("Looped\n");
 
     system("pause");
 
