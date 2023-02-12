@@ -2,6 +2,8 @@
 #include <winrt/Shmuelie.WinRTServer.Sample.Interfaces.h>
 #include <winrt/Shmuelie.WinRTServer.Sample.h>
 
+#include "Progress.h"
+
 using namespace winrt;
 using namespace Windows::Foundation;
 using namespace Shmuelie::WinRTServer::Sample;
@@ -14,9 +16,14 @@ IAsyncOperation<int> AsyncMain()
     int32_t rem = remoteThing.Rem(5, 4);
     printf("Rem: %i\n", rem);
 
-    printf("Delay Start...");
-    co_await remoteThing.DelayAsync(3000);
-    printf("Stop\n");
+    printf("Delay");
+    IndefiniteSpinner spinner;
+    spinner.ShowSpinner();
+    co_await remoteThing.DelayAsync(6000);
+    spinner.StopSpinner();
+    printf("Delayed\n");
+
+    system("pause");
 
     co_return 0;
 }
