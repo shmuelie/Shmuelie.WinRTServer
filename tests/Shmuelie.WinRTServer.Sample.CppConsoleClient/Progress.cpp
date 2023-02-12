@@ -77,10 +77,18 @@ void ProgressBar::EndProgress(bool hideProgressWhenDone)
     }
 }
 
+constexpr size_t blockWidth = 30;
+
 void ProgressBar::ClearLine()
 {
-    // Best effort when no VT (arbitrary number of spaces that seems to work)
-    std::cout << "\r";
+    std::cout << "\r  ";
+
+    for (size_t i = 0; i < blockWidth; ++i)
+    {
+        std::cout << ' ';
+    }
+
+    std::cout << "     \r";
 }
 
 void ProgressBar::ShowProgressNoVT(uint64_t current, uint64_t maximum)
@@ -89,9 +97,8 @@ void ProgressBar::ShowProgressNoVT(uint64_t current, uint64_t maximum)
 
     if (maximum)
     {
-        const char* const blockOn = u8"\x2588";
-        const char* const blockOff = u8"\x2592";
-        constexpr size_t blockWidth = 30;
+        const char* const blockOn = u8"=";
+        const char* const blockOff = u8" ";
 
         double percentage = static_cast<double>(current) / maximum;
         size_t blocksOn = static_cast<size_t>(std::floor(percentage * blockWidth));
