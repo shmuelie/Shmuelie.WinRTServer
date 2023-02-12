@@ -106,7 +106,7 @@ UWP sample app shows how to do this. To understand the details behind it, see
 
 A full trust client can use WinRT activation, which allows you to create the
 remote instances simply by `new SomeType()`, like you would for any other type.
-The same WPF application shows this in action (using with WinForms would be
+The sample WPF application shows this in action (using with WinForms would be
 similar).
 
 # Sample
