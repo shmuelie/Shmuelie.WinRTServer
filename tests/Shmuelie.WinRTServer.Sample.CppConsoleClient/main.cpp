@@ -37,6 +37,8 @@ IAsyncOperation<int> AsyncMain()
     bar.EndProgress(true);
     std::cout << "Looped" << std::endl;
 
+    std::cout << "Now: " << clock::to_sys(remoteThing.NowUtc()) << std::endl;
+
     system("pause");
 
     co_return 0;
