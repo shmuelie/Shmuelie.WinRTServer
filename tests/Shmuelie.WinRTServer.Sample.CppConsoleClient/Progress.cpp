@@ -97,8 +97,8 @@ void ProgressBar::ShowProgressNoVT(uint64_t current, uint64_t maximum)
 
     if (maximum)
     {
-        const char* const blockOn = u8"=";
-        const char* const blockOff = u8" ";
+        const char* const blockOn = "=";
+        const char* const blockOff = " ";
 
         double percentage = static_cast<double>(current) / maximum;
         size_t blocksOn = static_cast<size_t>(std::floor(percentage * blockWidth));
