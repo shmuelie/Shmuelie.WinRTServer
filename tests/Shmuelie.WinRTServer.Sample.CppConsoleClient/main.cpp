@@ -4,6 +4,8 @@
 
 #include "Progress.h"
 
+#include <iostream>
+
 using namespace winrt;
 using namespace Windows::Foundation;
 using namespace Shmuelie::WinRTServer::Sample;
@@ -14,16 +16,16 @@ IAsyncOperation<int> AsyncMain()
     RemoteThing remoteThing;
 
     int32_t rem = remoteThing.Rem(5, 4);
-    printf("Rem: %i\n", rem);
+    std::cout << "Rem: " << rem << std::endl;
 
-    printf("Delay");
+    std::cout << "Delay";
     IndefiniteSpinner spinner;
     spinner.ShowSpinner();
     co_await remoteThing.DelayAsync(3000);
     spinner.StopSpinner();
-    printf("Delayed\n");
+    std::cout << "Delayed" << std::endl;
 
-    printf("Looping\n");
+    std::cout << "Looping" << std::endl;
     ProgressBar bar;
     bar.ShowProgress(0, 30);
     auto loopOp{ remoteThing.LoopAsync(30) };
@@ -33,7 +35,7 @@ IAsyncOperation<int> AsyncMain()
         });
     co_await loopOp;
     bar.EndProgress(true);
-    printf("Looped\n");
+    std::cout << "Looped" << std::endl;
 
     system("pause");
 
