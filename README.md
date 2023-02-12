@@ -13,6 +13,30 @@ process of creating the "server" in .NET much easier.
 
 > **Note**: COM and Windows Runtime are Windows only.
 
+# Why?
+
+## Cross Language
+
+Because this uses COM/WinRT for the communication any language that can use COM
+can use this library. As an example of this, the sample includes a simple C++
+console application that talks to the .NET/C# server.
+
+## Complex Types
+
+Most RPC/ICP systems are just sending messages between the two processes. At
+most they can serialize an object graph. COM allows for more complicated
+objects, where the returned types can have methods, events, and properties. If
+you could do it with a local object, you can do it with a remote object. The
+samples include using most of these abilities, including having the remote
+process load a file as a stream and having the local process use the stream
+without having to send the whole file across.
+
+## Built in Support for Types
+
+Many of the types you are used to using are supported out of the box like
+collection types, map types, streams, etc. This allows you to not have to worry
+about how the IPC works.
+
 # Usage
 
 Currently to create an Out-of-Process server requires the C++/WinRT tooling
@@ -87,24 +111,12 @@ similar).
 
 # Sample
 
-To help understand usage, a sample using a UWP client app is included under the
+To help understand usage, a sample using a UWP client app, and WPF app, and a C++ console app is included under the
 test directory. Simply run the `Shmuelie.WinRTServer.Sample.Package` project to
 see it in action.
 
 > **Note**: If Visual Studio fails to build the Metadata project restarting
 > Visual Studio should fix the problem.
-
-# Alternatives
-
-If both applications are full trust applications other RPC/IPC technology might
-be easier to use. The main advantages of using COM/WinRT are that any language
-that can use COM can be the client and the runtime handles how to
-serialize/marshal types.
-
-If the client is a UWP application, the options are more limited. AppServices
-from the Community toolkit is easier to use but does not support more complex
-scenarios that COM/WinRT OOP does like events, properties, and complex object
-graphs.
 
 [1]: https://github.com/Shmuelie/Shmuelie.WinRTServer/actions
 [2]: https://www.nuget.org/stats/packages/Shmuelie.WinRTServer?groupby=Version
