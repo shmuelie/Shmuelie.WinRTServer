@@ -112,9 +112,6 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="PropertySheet.props" />
-    <Text Include="readme.txt">
-      <DeploymentContent>false</DeploymentContent>
-    </Text>
     <Reference Include="..\Shmuelie.WinRTServer.Sample.Metadata\bin\$(Platform)\$(Configuration)\*.winmd">
       <Name>%(Filename)</Name>
       <IsWinMDFile>true</IsWinMDFile>
