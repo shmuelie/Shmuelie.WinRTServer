@@ -5,6 +5,7 @@
 #include "Progress.h"
 
 #include <iostream>
+#include <algorithm>
 
 using namespace winrt;
 using namespace Windows::Foundation;
@@ -36,6 +37,25 @@ IAsyncOperation<int> AsyncMain()
     co_await loopOp;
     bar.EndProgress(true);
     std::cout << "Looped" << std::endl;
+
+    std::cout << "Listing" << std::endl;
+
+    ListOptions options;
+    options.Count = 10;
+    options.DelayTicks = 1000;
+    bar.ShowProgress(0, 10);
+    auto listOp{ remoteThing.GenerateListAsync(options) };
+    listOp.Progress([&bar](auto const&, ListProgress p)
+        {
+            bar.ShowProgress(p.Count, p.Total);
+        });
+    const auto& listResult = co_await listOp;
+    bar.EndProgress(true);
+    std::cout << "List: " << std::endl;
+    std::for_each(listResult.begin(), listResult.end(), [](int32_t i)
+        {
+            std::cout << "\t" << i << std::endl;
+        });
 
     std::cout << "Now: " << clock::to_sys(remoteThing.NowUtc()) << std::endl;
 
