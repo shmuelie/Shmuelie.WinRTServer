@@ -9,6 +9,7 @@
 
 using namespace winrt;
 using namespace Windows::Foundation;
+using namespace Windows::Storage::Streams;
 using namespace Shmuelie::WinRTServer::Sample;
 using namespace Shmuelie::WinRTServer::Sample::Interfaces;
 
@@ -58,6 +59,19 @@ IAsyncOperation<int> AsyncMain()
         });
 
     std::cout << "Now: " << clock::to_sys(remoteThing.NowUtc()) << std::endl;
+
+    std::cout << "Open File";
+
+    auto data = remoteThing.OpenFile(L"C:\\Windows\\explorer.exe");
+    Buffer buffer{ 10 };
+    spinner.ShowSpinner();
+    IBuffer read = co_await data.ReadAsync(buffer, buffer.Capacity(), InputStreamOptions::None);
+    spinner.StopSpinner();
+    std::cout << "Data:" << std::endl;
+    for (uint32_t i = 0; i < read.Length(); i++)
+    {
+        std::cout << "\t" << (uint32_t)*(read.data() + i) << std::endl;
+    }
 
     system("pause");
 
