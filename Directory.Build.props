@@ -18,7 +18,7 @@
     As such, this needs to be changed before a new release as well.
   -->
   <PropertyGroup>
-    <ShmuelieWinRTServerPackageVersion>1.0.0</ShmuelieWinRTServerPackageVersion>
+    <ShmuelieWinRTServerPackageVersion>1.1.0</ShmuelieWinRTServerPackageVersion>
     <IsCommitOnReleaseBranch>false</IsCommitOnReleaseBranch>
   </PropertyGroup>
 
