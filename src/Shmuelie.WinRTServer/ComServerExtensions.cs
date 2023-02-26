@@ -29,6 +29,28 @@ public static class ComServerExtensions
     }
 
     /// <summary>
+    /// Register a type with the server.
+    /// </summary>
+    /// <typeparam name="T">The type to register.</typeparam>
+    /// <typeparam name="TInterface">The interface that <typeparamref name="T"/> implements.</typeparam>
+    /// <param name="server">The instance.</param>
+    /// <param name="factory">Method to create instance of <typeparamref name="T"/>.</param>
+    /// <returns><see langword="true"/> if type was registered; otherwise, <see langword="false"/>.</returns>
+    /// <remarks>Type can only be registered once.</remarks>
+    /// <exception cref="ObjectDisposedException">The instance is disposed.</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="server"/> is <see langword="null"/>.</exception>
+    /// <exception cref="InvalidOperationException">The server is running.</exception>
+    public static bool RegisterClass<T, TInterface>(this ComServer server, Func<T> factory) where T : class, TInterface
+    {
+        if (server is null)
+        {
+            throw new ArgumentNullException(nameof(server));
+        }
+
+        return server.RegisterClassFactory(new DelegateClassFactory<T, TInterface>(factory));
+    }
+
+    /// <summary>
     /// Register a class factory with the server.
     /// </summary>
     /// <typeparam name="T">The type of the factory to register.</typeparam>
