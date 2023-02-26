@@ -29,6 +29,26 @@ public static class ComServerExtensions
     }
 
     /// <summary>
+    /// Register a class factory with the server.
+    /// </summary>
+    /// <typeparam name="T">The type of the factory to register.</typeparam>
+    /// /// <param name="server">The instance.</param>
+    /// <returns><see langword="true"/> if an instance of <typeparamref name="T"/> was registered; otherwise, <see langword="false"/>.</returns>
+    /// <remarks>Only one factory can be registered for a CLSID.</remarks>
+    /// <exception cref="ObjectDisposedException">The instance is disposed.</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="server"/> is <see langword="null"/>.</exception>
+    /// <exception cref="InvalidOperationException">The server is running.</exception>
+    public static bool RegisterClassFactory<T>(this ComServer server) where T : BaseClassFactory, new()
+    {
+        if (server is null)
+        {
+            throw new ArgumentNullException(nameof(server));
+        }
+
+        return server.RegisterClassFactory(new T());
+    }
+
+    /// <summary>
     /// Unregister a class factory.
     /// </summary>
     /// <param name="server">The instance.</param>
