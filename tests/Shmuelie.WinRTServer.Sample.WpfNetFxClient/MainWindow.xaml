@@ -7,35 +7,11 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <StackPanel Orientation="Vertical">
-            <StackPanel Orientation="Horizontal">
-                <Button x:Name="RemBtn" Click="RemBtn_Click">Rem</Button>
-                <TextBlock x:Name="RemResponse" />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Button x:Name="DelayBtn" Click="DelayBtn_Click">Delay</Button>
-                <ProgressBar x:Name="DelayProg" Width="100" VerticalAlignment="Stretch" />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Button x:Name="LoopBtn" Click="LoopBtn_Click">Loop</Button>
-                <ProgressBar x:Name="LoopProg" VerticalAlignment="Stretch" Width="200" Minimum="0" Maximum="100" Value="0" />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Button x:Name="ListBtn" Click="ListBtn_Click">List</Button>
-                <ProgressBar x:Name="ListProg" VerticalAlignment="Stretch" Width="200" Minimum="0" Maximum="10" Value="0" />
-                <TextBlock x:Name="ListResp" />
-            </StackPanel>
-            <Button x:Name="DateTimeUtcBtn" HorizontalAlignment="Left" Click="DateTimeUtcBtn_Click" />
-            <StackPanel Orientation="Horizontal">
-                <Button x:Name="OpenFileBtn" Click="OpenFileBtn_Click">Open</Button>
-                <TextBlock x:Name="OpenFileTxt" />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Button x:Name="GetTimesBtn" Click="GetTimesBtn_Click">GetTimes</Button>
-                <TextBlock x:Name="LocalTimeTxt" />
-                <TextBlock x:Name="UtcTimeTxt" />
-                <TextBlock x:Name="NameAndDescriptionTxt" />
-            </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Button Content="Increment" Command="{Binding IncrementCommand, Mode=OneTime}" />
+            <Button Content="Decrement" Command="{Binding DecrementCommand, Mode=OneTime}" />
+            <TextBlock Text="{Binding Count, Mode=OneWay}" Width="100" />
+            <Button Content="Reset" Command="{Binding ClearCommand, Mode=OneTime}" />
         </StackPanel>
     </Grid>
 </Window>

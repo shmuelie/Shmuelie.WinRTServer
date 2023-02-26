@@ -1,17 +1,7 @@
 ﻿namespace Shmuelie.WinRTServer.Sample
 {
-    runtimeclass RemoteThing : [default] Shmuelie.WinRTServer.Sample.Interfaces.IRemoteThing
+    runtimeclass MainPageViewModel : [default] Shmuelie.WinRTServer.Sample.Interfaces.IMainPageViewModel
     {
-        RemoteThing();
-    }
-
-    runtimeclass Input : [default] Shmuelie.WinRTServer.Sample.Interfaces.IInput
-    {
-        Input();
-    }
-
-    runtimeclass Times : [default] Shmuelie.WinRTServer.Sample.Interfaces.ITimes
-    {
-        Times();
+        MainPageViewModel();
     }
 }

@@ -4,15 +4,13 @@
     <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
     <TargetFramework>net462</TargetFramework>
     <Platforms>x64;x86</Platforms>
-    <Nullable>disable</Nullable>
+    <Nullable>enable</Nullable>
     <ExtrasUwpMetaPackageVersion>6.2.13</ExtrasUwpMetaPackageVersion>
     <AssetTargetFallback>$(AssetTargetFallback);netstandard2.0</AssetTargetFallback>
     <!-- NU1702 is a warning caused by UWP SDK Style projects referencing NetStandard 2.0. No way to fix so just suppressing. -->
     <NoWarn>$(NoWarn);NU1702</NoWarn>
     <LangVersion>10</LangVersion>
     <OutputType>winexe</OutputType>
-    <DebugType>full</DebugType>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.SDK.Contracts" Version="10.0.22000.197" />

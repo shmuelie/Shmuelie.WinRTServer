@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Shmuelie.WinRTServer.Sample.Interfaces;
 
 namespace Shmuelie.WinRTServer.Sample.Server;
 
@@ -9,13 +8,13 @@ public static class Program
 {
     public async static Task Main(string[] args)
     {
+        MainPageViewModelFactory factory = new();
+
         if (args.Contains("-COM"))
         {
             await using (ComServer server = new ComServer())
             {
-                server.RegisterClass<RemoteThing, IRemoteThing>();
-                server.RegisterClass<Times, ITimes>();
-                server.RegisterClass<Input, IInput>();
+                server.RegisterClassFactory(factory.ClassFactory);
                 server.Start();
                 await server.WaitForFirstObjectAsync();
             }
@@ -24,9 +23,7 @@ public static class Program
         {
             await using (WinRtServer server = new WinRtServer())
             {
-                server.RegisterClass<RemoteThing>();
-                server.RegisterClass<Times>();
-                server.RegisterClass<Input>();
+                server.RegisterActivationFactory(factory.ActivationFactory);
                 server.Start();
                 await server.WaitForFirstObjectAsync();
             }
