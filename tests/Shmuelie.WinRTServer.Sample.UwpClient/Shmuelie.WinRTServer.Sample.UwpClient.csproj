@@ -124,8 +124,6 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MainPageViewModelProxy.cs" />
-    <Compile Include="RemotePropertyChangedAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -161,6 +159,12 @@
       <Name>%(Filename)</Name>
       <IsWinMDFile>true</IsWinMDFile>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Shmuelie.WinRTServer.Sample.Proxies\Shmuelie.WinRTServer.Sample.Proxies.csproj">
+      <Project>{acabe67d-3e53-414d-8066-0cfa598e15c9}</Project>
+      <Name>Shmuelie.WinRTServer.Sample.Proxies</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

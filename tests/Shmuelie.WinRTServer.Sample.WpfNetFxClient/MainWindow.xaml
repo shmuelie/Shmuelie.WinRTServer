@@ -8,10 +8,10 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <StackPanel Orientation="Horizontal">
-            <Button Content="Increment" Command="{Binding IncrementCommand, Mode=OneTime}" />
-            <Button Content="Decrement" Command="{Binding DecrementCommand, Mode=OneTime}" />
-            <TextBlock Text="{Binding Count, Mode=OneWay}" Width="100" />
-            <Button Content="Reset" Command="{Binding ClearCommand, Mode=OneTime}" />
+            <Button Content="Increment" Command="{Binding Mode=OneTime, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}, Path=ViewModel.IncrementCommand}" />
+            <Button Content="Decrement" Command="{Binding Mode=OneTime, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}, Path=ViewModel.DecrementCommand}" />
+            <TextBlock Text="{Binding Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}, Path=ViewModel.Count}" Width="100" />
+            <Button Content="Reset" Command="{Binding Mode=OneTime, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}, Path=ViewModel.ClearCommand}" />
         </StackPanel>
     </Grid>
 </Window>

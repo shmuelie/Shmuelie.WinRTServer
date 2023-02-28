@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Windows.Input;
+using Shmuelie.WinRTServer.Sample.Interfaces;
 
 namespace Shmuelie.WinRTServer.Sample;
 
-internal sealed class BasicCommand : ICommand
+internal sealed class BasicCommand : IRemoteCommand
 {
     private bool canExecute;
 
@@ -16,7 +17,7 @@ internal sealed class BasicCommand : ICommand
         this.canExecute = canExecute;
     }
 
-    public event EventHandler? CanExecuteChanged;
+    public event EventHandler<object>? CanExecuteChanged;
 
     public bool CanExecute(object parameter)
     {

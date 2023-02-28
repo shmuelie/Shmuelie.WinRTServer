@@ -1,4 +1,5 @@
 ﻿using Windows.UI.Xaml.Controls;
+using Shmuelie.WinRTServer.Sample.Proxies;
 
 #nullable enable
 

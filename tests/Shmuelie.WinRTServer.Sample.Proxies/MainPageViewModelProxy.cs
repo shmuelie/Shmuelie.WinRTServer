@@ -1,25 +1,31 @@
-﻿using System.Runtime.InteropServices;
-using System;
+﻿using System;
+using System.Runtime.InteropServices;
 using System.Windows.Input;
+#if UAP10_0
+using Dispatcher = Windows.UI.Core.CoreDispatcher;
+#else
 using System.Windows.Threading;
+#endif
 
-namespace Shmuelie.WinRTServer.Sample.WpfNetFxClient;
+namespace Shmuelie.WinRTServer.Sample.Proxies;
 
-[Serializable]
-internal sealed class MainPageViewModelProxy : RemotePropertyChangedAdapter
+public sealed class MainPageViewModelProxy : RemotePropertyChangedAdapter
 {
     private readonly MainPageViewModel viewModel;
 
     private MainPageViewModelProxy(Dispatcher dispatcher, MainPageViewModel viewModel) : base(viewModel, dispatcher)
     {
         this.viewModel = viewModel;
+        IncrementCommand = new RemoteCommandAdapter(viewModel.IncrementCommand, dispatcher);
+        DecrementCommand = new RemoteCommandAdapter(viewModel.DecrementCommand, dispatcher);
+        ClearCommand = new RemoteCommandAdapter(viewModel.ClearCommand, dispatcher);
     }
 
-    public ICommand IncrementCommand => viewModel.IncrementCommand;
+    public ICommand IncrementCommand { get; }
 
-    public ICommand DecrementCommand => viewModel.DecrementCommand;
+    public ICommand DecrementCommand { get; }
 
-    public ICommand ClearCommand => viewModel.ClearCommand;
+    public ICommand ClearCommand { get; }
 
     public int Count => viewModel.Count;
 

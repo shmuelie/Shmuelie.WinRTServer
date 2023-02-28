@@ -74,7 +74,7 @@
   </ItemGroup>
   <Import Project="$(WapProjPath)\Microsoft.DesktopBridge.targets" />
   <PropertyGroup>
-    <AssetTargetFallback>native;$(AssetTargetFallback)</AssetTargetFallback>
+    <AssetTargetFallback>native;$(AssetTargetFallback);net481</AssetTargetFallback>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.1" PrivateAssets="all" />
@@ -83,7 +83,7 @@
     <ProjectReference Include="..\Shmuelie.WinRTServer.Sample.Server\Shmuelie.WinRTServer.Sample.Server.csproj">
       <OutputItemType>exe</OutputItemType>
       <Targets>DispatchToInnerBuilds</Targets>
-      <TargetFramework>net462</TargetFramework>
+      <TargetFramework>net481</TargetFramework>
     </ProjectReference>
     <ProjectReference Include="..\Shmuelie.WinRTServer.Sample.UwpClient\Shmuelie.WinRTServer.Sample.UwpClient.csproj" />
     <ProjectReference Include="..\Shmuelie.WinRTServer.Sample.WpfNetFxClient\Shmuelie.WinRTServer.Sample.WpfNetFxClient.csproj" />

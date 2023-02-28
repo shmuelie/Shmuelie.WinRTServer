@@ -16,7 +16,7 @@ public static class Program
             {
                 server.RegisterClassFactory(factory.ClassFactory);
                 server.Start();
-                await server.WaitForFirstObjectAsync();
+                await Task.Delay(-1);
             }
         }
         else if (args.Contains("-WINRT"))
@@ -25,7 +25,7 @@ public static class Program
             {
                 server.RegisterActivationFactory(factory.ActivationFactory);
                 server.Start();
-                await server.WaitForFirstObjectAsync();
+                await Task.Delay(-1);
             }
         }
     }

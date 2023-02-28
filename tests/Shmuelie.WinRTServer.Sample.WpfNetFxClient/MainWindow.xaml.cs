@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using Shmuelie.WinRTServer.Sample.Proxies;
 
 namespace Shmuelie.WinRTServer.Sample.WpfNetFxClient
 {
@@ -10,7 +11,9 @@ namespace Shmuelie.WinRTServer.Sample.WpfNetFxClient
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = MainPageViewModelProxy.Create(Dispatcher);
+            ViewModel = MainPageViewModelProxy.Create(Dispatcher);
         }
+
+        public MainPageViewModelProxy ViewModel { get; }
     }
 }

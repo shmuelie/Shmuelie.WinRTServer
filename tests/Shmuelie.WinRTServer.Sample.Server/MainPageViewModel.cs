@@ -62,11 +62,11 @@ internal class MainPageViewModel : IMainPageViewModel
         OnCountChanged();
     }
 
-    public ICommand IncrementCommand => incrementCommand;
+    public IRemoteCommand IncrementCommand => incrementCommand;
 
-    public ICommand DecrementCommand => decrementCommand;
+    public IRemoteCommand DecrementCommand => decrementCommand;
 
-    public ICommand ClearCommand => clearCommand;
+    public IRemoteCommand ClearCommand => clearCommand;
 
     public int Count { get; private set; }
 
