@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
+using Shmuelie.WinRTServer.Sample.Interfaces;
 #if UAP10_0
 using Dispatcher = Windows.UI.Core.CoreDispatcher;
 #else
@@ -37,7 +38,7 @@ public sealed class MainPageViewModelProxy : RemotePropertyChangedAdapter
     private static unsafe MainPageViewModel CreateMainPageViewModel()
     {
         Guid classId = Guid.Parse("4F59AF92-A98D-4A20-8C8D-1D076647A6B0");
-        Guid iid = new Guid(0x2474f7c0, 0x9db1, 0x4f4f, 0xb6, 0x14, 0xdd, 0x5a, 0x89, 0x5, 0xb, 0x65);
+        Guid iid = typeof(IMainPageViewModel).GUID;
         uint hresult = CoCreateInstance(&classId, null, 0x4U, &iid, out MainPageViewModel mainPageViewModel);
         Marshal.ThrowExceptionForHR((int)hresult);
         return mainPageViewModel;
