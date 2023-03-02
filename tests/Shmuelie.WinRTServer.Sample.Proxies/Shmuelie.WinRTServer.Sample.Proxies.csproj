@@ -2,16 +2,25 @@
   <PropertyGroup>
     <TargetPlatformVersion>10.0.22000.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
-    <TargetFrameworks>uap10.0;net481;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>uap10.0;net481;netcoreapp3.1;net6.0-windows$(TargetPlatformVersion)</TargetFrameworks>
     <UseWPF Condition="'$(TargetFramework)' != 'uap10.0'">true</UseWPF>
     <ExtrasUwpMetaPackageVersion>6.2.14</ExtrasUwpMetaPackageVersion>
     <Platforms>x64;x86</Platforms>
     <Nullable>enable</Nullable>
+    <CsWinRTIncludes>Shmuelie.WinRTServer.Sample</CsWinRTIncludes>
+    <CsWinRTIncludesPrivate>Shmuelie.WinRTServer.Sample</CsWinRTIncludesPrivate>
+    <DefineConstants Condition="'$(TargetFramework)' == 'net6.0-windows$(TargetPlatformVersion)'">$(DefineConstants);NET</DefineConstants>
+    <DebugType>full</DebugType>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="..\Shmuelie.WinRTServer.Sample.Metadata\bin\$(Platform)\$(Configuration)\*.winmd">
+    <PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.0.1" Condition="'$(TargetFramework)' == 'net6.0-windows$(TargetPlatformVersion)'" />
+    <Reference Include="..\Shmuelie.WinRTServer.Sample.Metadata\bin\$(Platform)\$(Configuration)\*.winmd" Condition="'$(TargetFramework)' != 'net6.0-windows$(TargetPlatformVersion)'">
       <Name>%(Filename)</Name>
       <IsWinMDFile>true</IsWinMDFile>
     </Reference>
+    <CsWinRTInputs Include="..\Shmuelie.WinRTServer.Sample.Metadata\bin\$(Platform)\$(Configuration)\*.winmd" Condition="'$(TargetFramework)' == 'net6.0-windows$(TargetPlatformVersion)'">
+      <Name>%(Filename)</Name>
+      <IsWinMDFile>true</IsWinMDFile>
+    </CsWinRTInputs>
   </ItemGroup>
 </Project>

@@ -39,11 +39,27 @@ public sealed class MainPageViewModelProxy : RemotePropertyChangedAdapter
     {
         Guid classId = Guid.Parse("4F59AF92-A98D-4A20-8C8D-1D076647A6B0");
         Guid iid = typeof(IMainPageViewModel).GUID;
-        uint hresult = CoCreateInstance(&classId, null, 0x4U, &iid, out MainPageViewModel mainPageViewModel);
+        uint hresult =
+#if NET6_0_WINDOWS10_0_22000_0
+            CoCreateInstance(&classId, null, 0x4U, &iid, out IntPtr ppv)
+#else
+            CoCreateInstance(&classId, null, 0x4U, &iid, out MainPageViewModel mainPageViewModel)
+#endif
+            ;
         Marshal.ThrowExceptionForHR((int)hresult);
+#if NET6_0_WINDOWS10_0_22000_0
+        return MainPageViewModel.FromAbi(ppv);
+#else
         return mainPageViewModel;
+#endif
     }
 
     [DllImport("ole32")]
-    private unsafe static extern uint CoCreateInstance(Guid* rclsid, void* pUnkOuter, uint dwClsContext, Guid* riid, out MainPageViewModel ppv);
+    private unsafe static extern uint CoCreateInstance(Guid* rclsid, void* pUnkOuter, uint dwClsContext, Guid* riid, out
+#if NET6_0_WINDOWS10_0_22000_0
+        IntPtr
+#else
+        MainPageViewModel
+#endif
+        ppv);
 }
