@@ -3,10 +3,11 @@
     <TargetPlatformVersion>10.0.22000.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
     <TargetFramework>net462</TargetFramework>
-    <ExtrasUwpMetaPackageVersion>6.2.13</ExtrasUwpMetaPackageVersion>
+    <ExtrasUwpMetaPackageVersion>6.2.14</ExtrasUwpMetaPackageVersion>
     <Platforms>x64;x86</Platforms>
     <OutputType>winmdobj</OutputType>
     <DebugType>full</DebugType>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.SDK.Contracts" Version="10.0.22000.197" />
