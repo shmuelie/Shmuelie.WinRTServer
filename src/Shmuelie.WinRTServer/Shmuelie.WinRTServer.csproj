@@ -5,7 +5,7 @@
     <IsPackable>true</IsPackable>
     <Description>Out-of-Process WinRT/COM Server</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageReleaseNotes>More documentation and WinRT activation now supported.</PackageReleaseNotes>
+    <PackageReleaseNotes>Fixed lifetime management bug.</PackageReleaseNotes>
   </PropertyGroup>
   <!-- .NET Standard 2.0 polyfill packages -->
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
