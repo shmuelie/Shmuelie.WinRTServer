@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Windows.Input;
+using System.Runtime.InteropServices;
 using Shmuelie.WinRTServer.Sample.Interfaces;
 
 namespace Shmuelie.WinRTServer.Sample;
 
+[ClassInterface(ClassInterfaceType.None)]
 internal sealed class BasicCommand : IRemoteCommand
 {
     private bool canExecute;

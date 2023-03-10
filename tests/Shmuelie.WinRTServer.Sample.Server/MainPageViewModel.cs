@@ -5,6 +5,7 @@ using Shmuelie.WinRTServer.Sample.Interfaces;
 
 namespace Shmuelie.WinRTServer.Sample;
 
+[ClassInterface(ClassInterfaceType.None)]
 [Guid("4F59AF92-A98D-4A20-8C8D-1D076647A6B0")]
 internal class MainPageViewModel : IMainPageViewModel
 {
