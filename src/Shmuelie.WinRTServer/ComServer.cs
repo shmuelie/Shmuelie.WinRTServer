@@ -67,7 +67,6 @@ public sealed class ComServer : IAsyncDisposable
             return;
         }
 
-        _ = CoSuspendClassObjects();
         uint? instanceCount = null;
         GC.Collect();
         for (LinkedListNode<WeakReference>? node = liveServers.First; node != null; node = node.Next)
@@ -88,10 +87,6 @@ public sealed class ComServer : IAsyncDisposable
         if (instanceCount == 0)
         {
             Empty?.Invoke(this, EventArgs.Empty);
-        }
-        if (lifetimeCheckTimer.Enabled)
-        {
-            _ = CoResumeClassObjects();
         }
     }
 
