@@ -56,7 +56,7 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <AppxPackageSigningEnabled>false</AppxPackageSigningEnabled>
     <NoWarn>$(NoWarn);NU1702</NoWarn>
-    <EntryPointProjectUniqueName>..\Shmuelie.WinRTServer.Sample.UwpClient\Shmuelie.WinRTServer.Sample.UwpClient.csproj</EntryPointProjectUniqueName>
+    <EntryPointProjectUniqueName>..\Shmuelie.WinRTServer.Sample.WpfNet6Client\Shmuelie.WinRTServer.Sample.WpfNet6Client.csproj</EntryPointProjectUniqueName>
   </PropertyGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -86,6 +86,7 @@
       <TargetFramework>net462</TargetFramework>
     </ProjectReference>
     <ProjectReference Include="..\Shmuelie.WinRTServer.Sample.UwpClient\Shmuelie.WinRTServer.Sample.UwpClient.csproj" />
+    <ProjectReference Include="..\Shmuelie.WinRTServer.Sample.WpfNet6Client\Shmuelie.WinRTServer.Sample.WpfNet6Client.csproj" />
     <ProjectReference Include="..\Shmuelie.WinRTServer.Sample.WpfNetFxClient\Shmuelie.WinRTServer.Sample.WpfNetFxClient.csproj" />
     <ProjectReference Include="..\Shmuelie.WinRTServer.Sample.CppConsoleClient\Shmuelie.WinRTServer.Sample.CppConsoleClient.vcxproj" />
   </ItemGroup>
