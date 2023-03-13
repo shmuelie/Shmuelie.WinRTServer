@@ -55,7 +55,7 @@
     <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
     <DefaultLanguage>en-US</DefaultLanguage>
     <AppxPackageSigningEnabled>false</AppxPackageSigningEnabled>
-    <NoWarn>$(NoWarn);NU1702</NoWarn>
+    <NoWarn>$(NoWarn);NU1702;APPX1707;APPX0006</NoWarn>
     <EntryPointProjectUniqueName>..\Shmuelie.WinRTServer.Sample.WpfNet6Client\Shmuelie.WinRTServer.Sample.WpfNet6Client.csproj</EntryPointProjectUniqueName>
   </PropertyGroup>
   <ItemGroup>
