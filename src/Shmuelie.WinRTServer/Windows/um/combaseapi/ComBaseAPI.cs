@@ -6,7 +6,11 @@ namespace Shmuelie.Interop.Windows;
 /// <summary>
 /// APIs from the <c>combaseapi</c> header.
 /// </summary>
-internal static unsafe class ComBaseAPI
+internal static unsafe
+#if NET8_0_OR_GREATER
+    partial
+#endif
+    class ComBaseAPI
 {
     /// <summary>
     /// Creates and default-initializes a single object of the class associated with a specified CLSID.
@@ -46,8 +50,18 @@ internal static unsafe class ComBaseAPI
     /// </list>
     /// </returns>
     /// <seealso href="https://learn.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-cocreateinstance">CoCreateInstance function (combaseapi.h)</seealso>
+#if NET8_0_OR_GREATER
+    [LibraryImport("ole32")]
+#else
     [DllImport("ole32", ExactSpelling = true)]
-    public static extern int CoCreateInstance(Guid* rclsid, IUnknown* pUnkOuter, uint dwClsContext, Guid* riid, void** ppv);
+#endif
+    public static
+#if NET8_0_OR_GREATER
+        partial
+#else
+        extern
+#endif
+        int CoCreateInstance(Guid* rclsid, IUnknown* pUnkOuter, uint dwClsContext, Guid* riid, void** ppv);
 
     /// <summary>
     /// Registers an EXE class object with OLE so other applications can connect to it.
@@ -71,40 +85,90 @@ internal static unsafe class ComBaseAPI
     /// </list>
     /// </returns>
     /// <seealso href="https://learn.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-coregisterclassobject">CoRegisterClassObject function (combaseapi.h)</seealso>
+#if NET8_0_OR_GREATER
+    [LibraryImport("ole32")]
+#else
     [DllImport("ole32", ExactSpelling = true)]
-    public static extern int CoRegisterClassObject(Guid* rclsid, IUnknown* pUnk, uint dwClsContext, uint flags, uint* lpdwRegister);
+#endif
+    public static
+#if NET8_0_OR_GREATER
+        partial
+#else
+        extern
+#endif
+        int CoRegisterClassObject(Guid* rclsid, IUnknown* pUnk, uint dwClsContext, uint flags, uint* lpdwRegister);
 
     /// <summary>
     /// Called by a server that can register multiple class objects to inform the SCM about all registered classes, and permits activation requests for those class objects.
     /// </summary>
     /// <returns>This function returns S_OK to indicate that the activation of class objects was successfully resumed.</returns>
     /// <seealso href="https://learn.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-coresumeclassobjects">CoResumeClassObjects function (combaseapi.h)</seealso>
+#if NET8_0_OR_GREATER
+    [LibraryImport("ole32")]
+#else
     [DllImport("ole32", ExactSpelling = true)]
-    public static extern int CoResumeClassObjects();
+#endif
+    public static
+#if NET8_0_OR_GREATER
+        partial
+#else
+        extern
+#endif
+        int CoResumeClassObjects();
 
     /// <summary>
     /// Prevents any new activation requests from the SCM on all class objects registered within the process.
     /// </summary>
     /// <returns>This function returns S_OK to indicate that the activation of class objects was successfully suspended.</returns>
     /// <seealso href="https://learn.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-cosuspendclassobjects">CoSuspendClassObjects function (combaseapi.h)</seealso>
+#if NET8_0_OR_GREATER
+    [LibraryImport("ole32")]
+#else
     [DllImport("ole32", ExactSpelling = true)]
-    public static extern int CoSuspendClassObjects();
+#endif
+    public static
+#if NET8_0_OR_GREATER
+        partial
+#else
+        extern
+#endif
+        int CoSuspendClassObjects();
 
     /// <summary>
     /// Increments a global per-process reference count.
     /// </summary>
     /// <returns>The current reference count.</returns>
     /// <seealso href="https://learn.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-coaddrefserverprocess">CoAddRefServerProcess function (combaseapi.h)</seealso>
+#if NET8_0_OR_GREATER
+    [LibraryImport("ole32")]
+#else
     [DllImport("ole32", ExactSpelling = true)]
-    public static extern uint CoAddRefServerProcess();
+#endif
+    public static
+#if NET8_0_OR_GREATER
+        partial
+#else
+        extern
+#endif
+        uint CoAddRefServerProcess();
 
     /// <summary>
     /// Decrements the global per-process reference count.
     /// </summary>
     /// <returns>If the server application should initiate its cleanup, the function returns 0; otherwise, the function returns a nonzero value.</returns>
     /// <seealso href="https://learn.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-coreleaseserverprocess">CoReleaseServerProcess function (combaseapi.h)</seealso>
+#if NET8_0_OR_GREATER
+    [LibraryImport("ole32")]
+#else
     [DllImport("ole32", ExactSpelling = true)]
-    public static extern uint CoReleaseServerProcess();
+#endif
+    public static
+#if NET8_0_OR_GREATER
+        partial
+#else
+        extern
+#endif
+        uint CoReleaseServerProcess();
 
     /// <summary>
     /// Informs OLE that a class object, previously registered with the <see cref="CoRegisterClassObject" /> function, is no longer available for use.
@@ -124,6 +188,16 @@ internal static unsafe class ComBaseAPI
     /// </list>
     /// </returns>
     /// <seealso href="https://learn.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-corevokeclassobject">CoRevokeClassObject function (combaseapi.h)</seealso>
+#if NET8_0_OR_GREATER
+    [LibraryImport("ole32")]
+#else
     [DllImport("ole32", ExactSpelling = true)]
-    public static extern int CoRevokeClassObject(uint dwRegister);
+#endif
+    public static
+#if NET8_0_OR_GREATER
+        partial
+#else
+        extern
+#endif
+        int CoRevokeClassObject(uint dwRegister);
 }

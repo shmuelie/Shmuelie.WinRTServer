@@ -5,10 +5,11 @@ using System.Runtime.InteropServices;
 
 namespace Shmuelie.Interop.Windows;
 
+#pragma warning disable IDE1006 // Naming Styles
+
 /// <summary>
 /// Helpers from the <c>windows.h</c> header.
 /// </summary>
-[System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "ET001:Type name does not match file name", Justification = "Interop")]
 internal static class Windows
 {
     /// <summary>
@@ -18,7 +19,9 @@ internal static class Windows
     /// <typeparam name="T">The type to retrieve the GUID for.</typeparam>
     /// <returns>A <see cref="UuidOfType"/> value wrapping a pointer to the GUID data for the input type. This value can be either converted to a <see cref="Guid"/> pointer, or implicitly assigned to a <see cref="Guid"/> value.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#pragma warning disable IDE0060 // Remove unused parameter
     public static unsafe UuidOfType __uuidof<T>(T value) // for type inference similar to C++'s __uuidof
+#pragma warning restore IDE0060 // Remove unused parameter
         where T : unmanaged
     {
         return new(UUID<T>.RIID);
@@ -31,7 +34,9 @@ internal static class Windows
     /// <typeparam name="T">The type to retrieve the GUID for.</typeparam>
     /// <returns>A <see cref="UuidOfType"/> value wrapping a pointer to the GUID data for the input type. This value can be either converted to a <see cref="Guid"/> pointer, or implicitly assigned to a <see cref="Guid"/> value.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#pragma warning disable IDE0060 // Remove unused parameter
     public static unsafe UuidOfType __uuidof<T>(T* value) // for type inference similar to C++'s __uuidof
+#pragma warning restore IDE0060 // Remove unused parameter
         where T : unmanaged
     {
         return new(UUID<T>.RIID);
@@ -114,3 +119,5 @@ internal static class Windows
         }
     }
 }
+
+#pragma warning restore IDE1006 // Naming Styles

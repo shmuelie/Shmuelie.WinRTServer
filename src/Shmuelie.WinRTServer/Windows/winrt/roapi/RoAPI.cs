@@ -1,12 +1,15 @@
 ﻿using System.Runtime.InteropServices;
-using static System.Net.WebRequestMethods;
 
 namespace Shmuelie.Interop.Windows;
 
 /// <summary>
 /// APIs from the <c>roapi</c> header.
 /// </summary>
-internal static unsafe class RoAPI
+internal static unsafe
+#if NET8_0_OR_GREATER
+    partial
+#endif
+    class RoAPI
 {
     /// <summary>
     /// Initializes the Windows Runtime on the current thread with the specified concurrency model.
@@ -34,8 +37,18 @@ internal static unsafe class RoAPI
     /// </list>
     /// </returns>
     /// <seealso href="https://learn.microsoft.com/en-us/windows/win32/api/roapi/nf-roapi-roinitialize">RoInitialize function (roapi.h)</seealso>
+#if NET8_0_OR_GREATER
+    [LibraryImport("combase")]
+#else
     [DllImport("combase", ExactSpelling = true)]
-    public static extern int RoInitialize(RO_INIT_TYPE initType);
+#endif
+    public static
+#if NET8_0_OR_GREATER
+        partial
+#else
+        extern
+#endif
+        int RoInitialize(RO_INIT_TYPE initType);
 
     /// <summary>
     /// Registers an array out-of-process activation factories for a Windows Runtime exe server.
@@ -78,14 +91,34 @@ internal static unsafe class RoAPI
     /// </list>
     /// </returns>
     /// <seealso href="https://learn.microsoft.com/en-us/windows/win32/api/roapi/nf-roapi-roregisteractivationfactories">RoRegisterActivationFactories function (roapi.h)</seealso>
+#if NET8_0_OR_GREATER
+    [LibraryImport("combase")]
+#else
     [DllImport("combase", ExactSpelling = true)]
-    public static extern int RoRegisterActivationFactories(HSTRING* activatableClassIds, delegate* unmanaged[Stdcall]<HSTRING, IActivationFactory**, int>* activationFactoryCallbacks, uint count, RO_REGISTRATION_COOKIE* cookie);
+#endif
+    public static
+#if NET8_0_OR_GREATER
+        partial
+#else
+        extern
+#endif
+        int RoRegisterActivationFactories(HSTRING* activatableClassIds, delegate* unmanaged[Stdcall]<HSTRING, IActivationFactory**, int>* activationFactoryCallbacks, uint count, RO_REGISTRATION_COOKIE* cookie);
 
     /// <summary>
     /// Removes an array of registered activation factories from the Windows Runtime.
     /// </summary>
     /// <param name="cookie">A cookie that identifies the registered factories to remove.</param>
     /// <seealso href="https://learn.microsoft.com/en-us/windows/win32/api/roapi/nf-roapi-rorevokeactivationfactories">RoRevokeActivationFactories function (roapi.h)</seealso>
+#if NET8_0_OR_GREATER
+    [LibraryImport("combase")]
+#else
     [DllImport("combase", ExactSpelling = true)]
-    public static extern void RoRevokeActivationFactories(RO_REGISTRATION_COOKIE cookie);
+#endif
+    public static
+#if NET8_0_OR_GREATER
+        partial
+#else
+        extern
+#endif
+        void RoRevokeActivationFactories(RO_REGISTRATION_COOKIE cookie);
 }

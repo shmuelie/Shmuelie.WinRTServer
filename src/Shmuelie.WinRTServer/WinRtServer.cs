@@ -19,7 +19,7 @@ namespace Shmuelie.WinRTServer;
 /// <threadsafety static="true" instance="false"/>
 public sealed class WinRtServer : IAsyncDisposable
 {
-    private readonly Dictionary<string, BaseActivationFactory> factories = new();
+    private readonly Dictionary<string, BaseActivationFactory> factories = [];
 
     private readonly DllGetActivationFactory activationFactoryCallbackWrapper;
 
@@ -217,7 +217,7 @@ public sealed class WinRtServer : IAsyncDisposable
             return;
         }
 
-        string[] managedActivatableClassIds = factories.Keys.ToArray();
+        string[] managedActivatableClassIds = [.. factories.Keys];
         HSTRING* activatableClassIds = null;
         delegate* unmanaged[Stdcall]<HSTRING, IActivationFactory**, int>* activationFactoryCallbacks = null;
         try
@@ -253,7 +253,7 @@ public sealed class WinRtServer : IAsyncDisposable
             {
                 for (int activatableClassIdIndex = 0; activatableClassIdIndex < managedActivatableClassIds.Length; activatableClassIdIndex++)
                 {
-                    WindowsDeleteString(activatableClassIds[activatableClassIdIndex]);
+                    _ = WindowsDeleteString(activatableClassIds[activatableClassIdIndex]);
                 }
                 Marshal.FreeHGlobal((IntPtr)activatableClassIds);
             }

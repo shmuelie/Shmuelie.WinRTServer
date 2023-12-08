@@ -19,7 +19,7 @@ public sealed class ComServer : IAsyncDisposable
     /// <summary>
     /// Map of class factories and the registration cookie from the CLSID that the factory creates.
     /// </summary>
-    private readonly Dictionary<Guid, (BaseClassFactory factory, uint cookie)> factories = new();
+    private readonly Dictionary<Guid, (BaseClassFactory factory, uint cookie)> factories = [];
 
     /// <summary>
     /// Collection of created instances.
