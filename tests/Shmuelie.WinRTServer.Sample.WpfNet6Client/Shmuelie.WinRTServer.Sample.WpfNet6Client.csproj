@@ -3,7 +3,7 @@
     <TargetPlatformVersion>10.0.22000.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows$(TargetPlatformVersion)</TargetFramework>
+    <TargetFramework>net8.0-windows$(TargetPlatformVersion)</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <Platforms>x64;x86</Platforms>

@@ -56,7 +56,7 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <AppxPackageSigningEnabled>false</AppxPackageSigningEnabled>
     <NoWarn>$(NoWarn);NU1702;APPX1707;APPX0006</NoWarn>
-    <EntryPointProjectUniqueName>..\Shmuelie.WinRTServer.Sample.WpfNet6Client\Shmuelie.WinRTServer.Sample.WpfNet6Client.csproj</EntryPointProjectUniqueName>
+    <EntryPointProjectUniqueName>..\Shmuelie.WinRTServer.Sample.UwpClient\Shmuelie.WinRTServer.Sample.UwpClient.csproj</EntryPointProjectUniqueName>
   </PropertyGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -84,6 +84,11 @@
       <OutputItemType>exe</OutputItemType>
       <Targets>DispatchToInnerBuilds</Targets>
       <TargetFramework>net462</TargetFramework>
+    </ProjectReference>
+    <ProjectReference Include="..\Shmuelie.WinRTServer.Sample.ServerNet6\Shmuelie.WinRTServer.Sample.ServerNet6.csproj">
+      <OutputItemType>exe</OutputItemType>
+      <Targets>DispatchToInnerBuilds</Targets>
+      <TargetFramework>net8.0-windows10.0.22000.0</TargetFramework>
     </ProjectReference>
     <ProjectReference Include="..\Shmuelie.WinRTServer.Sample.UwpClient\Shmuelie.WinRTServer.Sample.UwpClient.csproj" />
     <ProjectReference Include="..\Shmuelie.WinRTServer.Sample.WpfNet6Client\Shmuelie.WinRTServer.Sample.WpfNet6Client.csproj" />

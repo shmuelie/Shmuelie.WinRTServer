@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetPlatformVersion>10.0.22000.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows10.0.22000.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <Platforms>x64;x86</Platforms>
+    <AssetTargetFallback>native;net481;$(AssetTargetFallback)</AssetTargetFallback>
+    <RuntimeIdentifiers>win-x64;$(RuntimeIdentifiers)</RuntimeIdentifiers>
+    <IsAotCompatible>true</IsAotCompatible>
+    <CsWinRTIncludes>Shmuelie.WinRTServer.Sample</CsWinRTIncludes>
+    <CsWinRTIncludesPrivate>Shmuelie.WinRTServer.Sample</CsWinRTIncludesPrivate>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.0.1" />
+    <ProjectReference Include="..\..\src\Shmuelie.WinRTServer\Shmuelie.WinRTServer.csproj" />
+    <CsWinRTInputs Include="..\Shmuelie.WinRTServer.Sample.Interfaces\bin\$(Platform)\$(Configuration)\net462\*.winmd">
+      <Name>%(Filename)</Name>
+      <IsWinMDFile>true</IsWinMDFile>
+    </CsWinRTInputs>
+  </ItemGroup>
+  <Target Name="BuiltProjectOutputGroup" DependsOnTargets="_SetBuildInnerTarget;DispatchToInnerBuilds" Returns="@(OutputItems)">
+    <ItemGroup>
+      <OutputItems Include="$(MSBuildProjectDirectory)\bin\$(Platform)\$(Configuration)\net8.0-windows10.0.22000.0\Shmuelie.WinRTServer.*">
+        <TargetFramework>net8.0-windows10.0.22000.0</TargetFramework>
+        <TargetFileName>%(Filename).%(Extension)</TargetFileName>
+        <TargetPlatformIdentifier>Windows</TargetPlatformIdentifier>
+        <TargetDir>%(RootDir)%(Directory)</TargetDir>
+        <FinalOutputPath>%(FullPath)</FinalOutputPath>
+      </OutputItems>
+    </ItemGroup>
+  </Target>
+</Project>
