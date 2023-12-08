@@ -30,7 +30,7 @@ public sealed partial class MainPage : Page
 
     private static unsafe RemoteThing CreateRemoteThing()
     {
-        Guid classId = Guid.Parse("4F59AF92-A98D-4A20-8C8D-1C076647A6AE");
+        Guid classId = Guid.Parse("474527DE-81CD-466E-ADCF-6E3809CD5033");
         Guid iid = new Guid(0x2474f7c0, 0x9db1, 0x4f4f, 0xb6, 0x14, 0xdc, 0x5a, 0x89, 0x5, 0xb, 0x64);
         uint hresult = CoCreateRemoteThingInstance(&classId, null, 0x4U, &iid, out RemoteThing remoteThing);
         Marshal.ThrowExceptionForHR((int)hresult);
@@ -39,7 +39,7 @@ public sealed partial class MainPage : Page
 
     private static unsafe Input CreateInput()
     {
-        Guid classId = Guid.Parse("4F59AF92-A98D-4A20-8C8D-1C076647A6B0");
+        Guid classId = Guid.Parse("2F8EDC40-C145-4128-B451-559D45CD9074");
         Guid iid = new Guid(0x2474f7c0, 0x9db1, 0x4f4f, 0xb6, 0x14, 0xdc, 0x5a, 0x89, 0x5, 0xb, 0x65);
         uint hresult = CoCreateInputInstance(&classId, null, 0x4U, &iid, out Input input);
         Marshal.ThrowExceptionForHR((int)hresult);

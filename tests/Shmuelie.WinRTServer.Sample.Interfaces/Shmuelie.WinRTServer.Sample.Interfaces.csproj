@@ -9,6 +9,6 @@
     <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Windows.SDK.Contracts" Version="10.0.22000.197" />
+    <PackageReference Include="Microsoft.Windows.SDK.Contracts" Version="10.0.22000.197" PrivateAssets="all" />
   </ItemGroup>
 </Project>

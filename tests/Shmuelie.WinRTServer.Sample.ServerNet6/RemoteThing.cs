@@ -12,7 +12,7 @@ using Windows.Storage.Streams;
 
 namespace Shmuelie.WinRTServer.Sample;
 
-[Guid("4F59AF92-A98D-4A20-8C8D-1C076647A6AE")]
+[Guid("474527DE-81CD-466E-ADCF-6E3809CD5033")]
 public sealed class RemoteThing : IRemoteThing
 {
     public int Rem(int a, int b)
@@ -31,7 +31,7 @@ public sealed class RemoteThing : IRemoteThing
         return AsyncInfo.Run(c => DelayAsync(ticks, c));
     }
 
-    public async Task<IReadOnlyList<int>> GenerateListAsync(ListOptions options, IProgress<ListProgress> progress = default, CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyList<int>> GenerateListAsync(ListOptions options, IProgress<ListProgress>? progress = default, CancellationToken cancellationToken = default)
     {
         List<int> list = [];
         for (int i = 0; i < options.Count; i++)
@@ -51,7 +51,7 @@ public sealed class RemoteThing : IRemoteThing
         return AsyncInfo.Run<IReadOnlyList<int>, ListProgress>((c, p) => GenerateListAsync(options, p, c));
     }
 
-    public async Task LoopAsync(int total, IProgress<LoopProgress> progress = default, CancellationToken cancellationToken = default)
+    public async Task LoopAsync(int total, IProgress<LoopProgress>? progress = default, CancellationToken cancellationToken = default)
     {
         for (int i = 0; i < total; i++)
         {
@@ -69,7 +69,7 @@ public sealed class RemoteThing : IRemoteThing
         return AsyncInfo.Run<LoopProgress>((c, p) => LoopAsync(total, p, c));
     }
 
-    public event TypedEventHandler<IRemoteThing, object> LoopCompleted;
+    public event TypedEventHandler<IRemoteThing, object?>? LoopCompleted;
 
     public DateTimeOffset NowUtc => DateTimeOffset.UtcNow;
 

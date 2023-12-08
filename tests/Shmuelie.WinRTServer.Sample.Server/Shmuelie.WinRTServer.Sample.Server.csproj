@@ -9,7 +9,6 @@
     <AssetTargetFallback>$(AssetTargetFallback);netstandard2.0</AssetTargetFallback>
     <!-- NU1702 is a warning caused by UWP SDK Style projects referencing NetStandard 2.0. No way to fix so just suppressing. -->
     <NoWarn>$(NoWarn);NU1702</NoWarn>
-    <LangVersion>10</LangVersion>
     <OutputType>winexe</OutputType>
     <DebugType>full</DebugType>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
