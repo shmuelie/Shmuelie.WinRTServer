@@ -1,11 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net6.0-windows</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net8.0-windows</TargetFrameworks>
     <ApplicationIcon>..\..\$(MSBuildProjectName).ico</ApplicationIcon>
     <IsPackable>true</IsPackable>
     <Description>Out-of-Process WinRT/COM Server</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageReleaseNotes>Fixed lifetime management bug.</PackageReleaseNotes>
+    <LangVersion>12</LangVersion>
   </PropertyGroup>
   <!-- .NET Standard 2.0 polyfill packages -->
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
@@ -30,5 +31,11 @@
     <None Include="../../LICENSE" PackFolder="\">
       <Visible>false</Visible>
     </None>
+    <None Include="..\..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
   </ItemGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' != 'netstandard2.0'">
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
 </Project>

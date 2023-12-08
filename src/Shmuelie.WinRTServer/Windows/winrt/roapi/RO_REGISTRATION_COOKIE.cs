@@ -9,18 +9,13 @@ namespace Shmuelie.Interop.Windows;
 /// Represents activation factories that are registered by calling the RoRegisterActivationFactories function.
 /// </summary>
 /// <seealso href="https://learn.microsoft.com/en-us/windows/win32/winrt/ro-registration-cookie">RO_REGISTRATION_COOKIE</seealso>
-internal readonly unsafe partial struct RO_REGISTRATION_COOKIE : IComparable, IComparable<RO_REGISTRATION_COOKIE>, IEquatable<RO_REGISTRATION_COOKIE>, IFormattable
+/// <remarks>
+/// Initializes a new instance of the <see cref="RO_REGISTRATION_COOKIE"/> struct.
+/// </remarks>
+/// <param name="value"></param>
+internal readonly unsafe partial struct RO_REGISTRATION_COOKIE(void* value) : IComparable, IComparable<RO_REGISTRATION_COOKIE>, IEquatable<RO_REGISTRATION_COOKIE>, IFormattable
 {
-    private readonly void* Value;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="RO_REGISTRATION_COOKIE"/> struct.
-    /// </summary>
-    /// <param name="value"></param>
-    public RO_REGISTRATION_COOKIE(void* value)
-    {
-        Value = value;
-    }
+    private readonly void* Value = value;
 
     /// <summary>
     /// Gets a null <see cref="RO_REGISTRATION_COOKIE"/>.

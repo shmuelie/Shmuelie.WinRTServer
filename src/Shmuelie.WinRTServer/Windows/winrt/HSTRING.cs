@@ -44,7 +44,7 @@ internal readonly unsafe partial struct HSTRING : IComparable, IComparable<HSTRI
     public int CompareTo(HSTRING other)
     {
         int result;
-        WinString.WindowsCompareStringOrdinal(this, other, &result);
+        _ = WinString.WindowsCompareStringOrdinal(this, other, &result);
         return result;
     }
 

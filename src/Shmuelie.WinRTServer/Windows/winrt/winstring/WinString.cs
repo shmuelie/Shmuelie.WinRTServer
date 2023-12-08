@@ -5,7 +5,11 @@ namespace Shmuelie.Interop.Windows;
 /// <summary>
 /// APIs from the <c>winstring</c> header.
 /// </summary>
-internal static unsafe class WinString
+internal static unsafe
+#if NET8_0_OR_GREATER
+    partial
+#endif
+    class WinString
 {
     /// <summary>
     /// Creates a new <see cref="HSTRING"/> based on the specified source string.
@@ -39,8 +43,18 @@ internal static unsafe class WinString
     /// </list>
     /// </returns>
     /// <seealso href="https://learn.microsoft.com/en-us/windows/win32/api/winstring/nf-winstring-windowscreatestring">WindowsCreateString function (winstring.h)</seealso>
+#if NET8_0_OR_GREATER
+    [LibraryImport("combase")]
+#else
     [DllImport("combase", ExactSpelling = true)]
-    public static extern int WindowsCreateString(ushort* sourceString, uint length, HSTRING* @string);
+#endif
+    public static
+#if NET8_0_OR_GREATER
+        partial
+#else
+        extern
+#endif
+        int WindowsCreateString(ushort* sourceString, uint length, HSTRING* @string);
 
     /// <summary>
     /// Decrements the reference count of a string buffer.
@@ -48,8 +62,18 @@ internal static unsafe class WinString
     /// <param name="string">The string to be deleted. If <paramref name="string"/> is a fast-pass string created by <c>WindowsCreateStringReference</c>, or if <paramref name="string"/> is <see langword="null"/> or empty, no action is taken and <c>S_OK</c> is returned.</param>
     /// <returns>This function always returns <c>S_OK</c>.</returns>
     /// <seealso href="https://learn.microsoft.com/en-us/windows/win32/api/winstring/nf-winstring-windowsdeletestring">WindowsDeleteString function (winstring.h)</seealso>
+#if NET8_0_OR_GREATER
+    [LibraryImport("combase")]
+#else
     [DllImport("combase", ExactSpelling = true)]
-    public static extern int WindowsDeleteString(HSTRING @string);
+#endif
+    public static
+#if NET8_0_OR_GREATER
+        partial
+#else
+        extern
+#endif
+        int WindowsDeleteString(HSTRING @string);
 
     /// <summary>
     /// Retrieves the backing buffer for the specified string.
@@ -70,8 +94,18 @@ internal static unsafe class WinString
     /// </param>
     /// <returns>A pointer to the buffer that provides the backing store for <paramref name="string"/>, or the empty string if <paramref name="string"/> is <see langword="null"/> or the empty string.</returns>
     /// <seealso href="https://learn.microsoft.com/en-us/windows/win32/api/winstring/nf-winstring-windowsgetstringrawbuffer">WindowsGetStringRawBuffer function (winstring.h)</seealso>
+#if NET8_0_OR_GREATER
+    [LibraryImport("combase")]
+#else
     [DllImport("combase", ExactSpelling = true)]
-    public static extern ushort* WindowsGetStringRawBuffer(HSTRING @string, uint* length);
+#endif
+    public static
+#if NET8_0_OR_GREATER
+        partial
+#else
+        extern
+#endif
+        ushort* WindowsGetStringRawBuffer(HSTRING @string, uint* length);
 
     /// <summary>
     /// Compares two specified <see cref="HSTRING"/> objects and returns an integer that indicates their relative position in a sort order.
@@ -97,6 +131,16 @@ internal static unsafe class WinString
     /// </list>
     /// </returns>
     /// <seealso href="https://learn.microsoft.com/en-us/windows/win32/api/winstring/nf-winstring-windowscomparestringordinal">WindowsCompareStringOrdinal function (winstring.h)</seealso>
+#if NET8_0_OR_GREATER
+    [LibraryImport("combase")]
+#else
     [DllImport("combase", ExactSpelling = true)]
-    public static extern int WindowsCompareStringOrdinal(HSTRING string1, HSTRING string2, int* result);
+#endif
+    public static
+#if NET8_0_OR_GREATER
+        partial
+#else
+        extern
+#endif
+        int WindowsCompareStringOrdinal(HSTRING string1, HSTRING string2, int* result);
 }
