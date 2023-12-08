@@ -1,9 +1,8 @@
-﻿<Project Sdk="MSBuild.Sdk.Extras/3.0.44">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetPlatformVersion>10.0.22000.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
     <TargetFramework>net462</TargetFramework>
-    <ExtrasUwpMetaPackageVersion>6.2.14</ExtrasUwpMetaPackageVersion>
     <Platforms>x64;x86</Platforms>
     <OutputType>winmdobj</OutputType>
     <DebugType>full</DebugType>
