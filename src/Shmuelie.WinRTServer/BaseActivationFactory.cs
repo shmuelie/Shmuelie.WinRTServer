@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace Shmuelie.WinRTServer;
 
 /// <summary>
 /// Base for a WinRT Activation Factory for a .NET type.
 /// </summary>
-/// <seealso cref="IActivationFactory"/>
-public abstract class BaseActivationFactory : IActivationFactory
+#if !NETSTANDARD
+[System.Runtime.Versioning.SupportedOSPlatform("windows8.0")]
+#endif
+public abstract class BaseActivationFactory
 {
     /// <inheritdoc/>
     public abstract object ActivateInstance();

@@ -4,11 +4,11 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Timers;
+using Windows.Win32.System.WinRT;
+using Windows.Win32.System.Com;
+using Windows.Win32.Foundation;
+using static Windows.Win32.PInvoke;
 using Shmuelie.Interop.Windows;
-using static Shmuelie.Interop.Windows.ComBaseAPI;
-using static Shmuelie.Interop.Windows.RoAPI;
-using static Shmuelie.Interop.Windows.Windows;
-using static Shmuelie.Interop.Windows.WinString;
 
 namespace Shmuelie.WinRTServer;
 
@@ -17,13 +17,16 @@ namespace Shmuelie.WinRTServer;
 /// </summary>
 /// <see cref="IAsyncDisposable"/>
 /// <threadsafety static="true" instance="false"/>
+#if !NETSTANDARD
+[System.Runtime.Versioning.SupportedOSPlatform("windows8.0")]
+#endif
 public sealed class WinRtServer : IAsyncDisposable
 {
     private readonly Dictionary<string, BaseActivationFactory> factories = [];
 
-    private readonly DllGetActivationFactory activationFactoryCallbackWrapper;
+    private readonly unsafe Delegate activationFactoryCallbackWrapper;
 
-    private unsafe readonly delegate* unmanaged[Stdcall]<HSTRING, IActivationFactory**, int> activationFactoryCallbackPointer;
+    private unsafe readonly delegate* unmanaged[Stdcall]<HSTRING, IActivationFactory**, HRESULT> activationFactoryCallbackPointer;
 
     /// <summary>
     /// Collection of created instances.
@@ -40,7 +43,7 @@ public sealed class WinRtServer : IAsyncDisposable
     /// </summary>
     private TaskCompletionSource<object>? firstInstanceCreated;
 
-    private RO_REGISTRATION_COOKIE registrationCookie = RO_REGISTRATION_COOKIE.NULL;
+    private RO_REGISTRATION_COOKIE registrationCookie = (RO_REGISTRATION_COOKIE)0;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="WinRtServer"/> class.
@@ -48,17 +51,18 @@ public sealed class WinRtServer : IAsyncDisposable
     public unsafe WinRtServer()
     {
         activationFactoryCallbackWrapper = ActivationFactoryCallback;
-        activationFactoryCallbackPointer = (delegate* unmanaged[Stdcall]<HSTRING, IActivationFactory**, int>)Marshal.GetFunctionPointerForDelegate(activationFactoryCallbackWrapper);
+        activationFactoryCallbackPointer = (delegate* unmanaged[Stdcall]<HSTRING, IActivationFactory**, HRESULT>)Marshal.GetFunctionPointerForDelegate(activationFactoryCallbackWrapper);
 
-        int result = RoInitialize(RO_INIT_TYPE.RO_INIT_MULTITHREADED);
-        if (result != S.S_OK && result != S.S_FALSE)
+        HRESULT result = RoInitialize(RO_INIT_TYPE.RO_INIT_MULTITHREADED);
+        if (result != HRESULT.S_OK && result != HRESULT.S_FALSE)
         {
             Marshal.ThrowExceptionForHR(result);
         }
 
         using ComPtr<IGlobalOptions> options = default;
-        Guid clsid = IGlobalOptions.CLSID;
-        if (CoCreateInstance(&clsid, null, (uint)CLSCTX.CLSCTX_INPROC_SERVER, __uuidof<IGlobalOptions>(), (void**)options.GetAddressOf()) == S.S_OK)
+        Guid clsid = CLSID_GlobalOptions;
+        Guid iid = IGlobalOptions.IID_Guid;
+        if (CoCreateInstance(&clsid, null, CLSCTX.CLSCTX_INPROC_SERVER, &iid, (void**)options.GetAddressOf()) == HRESULT.S_OK)
         {
             options.Get()->Set(GLOBALOPT_PROPERTIES.COMGLB_RO_SETTINGS, (nuint)GLOBALOPT_RO_FLAGS.COMGLB_FAST_RUNDOWN);
         }
@@ -172,21 +176,21 @@ public sealed class WinRtServer : IAsyncDisposable
         return factories.Remove(factory.ActivatableClassId);
     }
 
-    private unsafe int ActivationFactoryCallback(HSTRING activatableClassId, IActivationFactory** factory)
+    private unsafe HRESULT ActivationFactoryCallback(HSTRING activatableClassId, IActivationFactory** factory)
     {
-        if (activatableClassId == HSTRING.NULL || factory is null)
+        if (activatableClassId == HSTRING.Null || factory is null)
         {
-            return E.E_INVALIDARG;
+            return HRESULT.E_INVALIDARG;
         }
 
         if (!factories.TryGetValue(activatableClassId.ToString(), out BaseActivationFactory? managedFactory))
         {
             factory = null;
-            return E.E_NOINTERFACE;
+            return HRESULT.E_NOINTERFACE;
         }
 
         *factory = (IActivationFactory*)BaseActivationFactoryProxy.Create(managedFactory);
-        return S.S_OK;
+        return HRESULT.S_OK;
     }
 
     /// <summary>
@@ -201,7 +205,7 @@ public sealed class WinRtServer : IAsyncDisposable
     /// <summary>
     /// Gets a value indicating whether the server is running.
     /// </summary>
-    public bool IsRunning => registrationCookie != RO_REGISTRATION_COOKIE.NULL;
+    public bool IsRunning => registrationCookie != 0;
 
     /// <summary>
     /// Starts the server.
@@ -219,7 +223,7 @@ public sealed class WinRtServer : IAsyncDisposable
 
         string[] managedActivatableClassIds = [.. factories.Keys];
         HSTRING* activatableClassIds = null;
-        delegate* unmanaged[Stdcall]<HSTRING, IActivationFactory**, int>* activationFactoryCallbacks = null;
+        delegate* unmanaged[Stdcall]<HSTRING, IActivationFactory**, HRESULT>* activationFactoryCallbacks = null;
         try
         {
             activatableClassIds = (HSTRING*)Marshal.AllocHGlobal(sizeof(HSTRING) * managedActivatableClassIds.Length);
@@ -228,11 +232,11 @@ public sealed class WinRtServer : IAsyncDisposable
                 string managedActivatableClassId = managedActivatableClassIds[activatableClassIdIndex];
                 fixed (char* managedActivatableClassIdPtr = managedActivatableClassId)
                 {
-                    Marshal.ThrowExceptionForHR(WindowsCreateString((ushort*)managedActivatableClassIdPtr, (uint)managedActivatableClassId.Length, &activatableClassIds[activatableClassIdIndex]));
+                    Marshal.ThrowExceptionForHR(WindowsCreateString((PCWSTR)managedActivatableClassIdPtr, (uint)managedActivatableClassId.Length, &activatableClassIds[activatableClassIdIndex]));
                 }
             }
 
-            activationFactoryCallbacks = (delegate* unmanaged[Stdcall]<HSTRING, IActivationFactory**, int>*)Marshal.AllocHGlobal(sizeof(delegate* unmanaged[Stdcall]<HSTRING, IActivationFactory**, int>*) * managedActivatableClassIds.Length);
+            activationFactoryCallbacks = (delegate* unmanaged[Stdcall]<HSTRING, IActivationFactory**, HRESULT>*)Marshal.AllocHGlobal(sizeof(delegate* unmanaged[Stdcall]<HSTRING, IActivationFactory**, HRESULT>*) * managedActivatableClassIds.Length);
             for (int activationFactoryCallbackIndex = 0; activationFactoryCallbackIndex < managedActivatableClassIds.Length; activationFactoryCallbackIndex++)
             {
                 activationFactoryCallbacks[activationFactoryCallbackIndex] = activationFactoryCallbackPointer;
@@ -278,7 +282,7 @@ public sealed class WinRtServer : IAsyncDisposable
         }
 
         RoRevokeActivationFactories(registrationCookie);
-        registrationCookie = RO_REGISTRATION_COOKIE.NULL;
+        registrationCookie = (RO_REGISTRATION_COOKIE)0;
 
         firstInstanceCreated = null;
         lifetimeCheckTimer.Stop();
@@ -328,7 +332,7 @@ public sealed class WinRtServer : IAsyncDisposable
                 lifetimeCheckTimer.Dispose();
 
                 RoRevokeActivationFactories(registrationCookie);
-                registrationCookie = RO_REGISTRATION_COOKIE.NULL;
+                registrationCookie = (RO_REGISTRATION_COOKIE)0;
             }
             finally
             {

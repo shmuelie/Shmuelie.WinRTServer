@@ -2,9 +2,9 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
-using Shmuelie.Interop.Windows;
-using static Shmuelie.Interop.Windows.ComBaseAPI;
-using static Shmuelie.Interop.Windows.Windows;
+using Windows.Win32.Foundation;
+using Windows.Win32.System.Com;
+using static Windows.Win32.PInvoke;
 
 namespace Shmuelie.WinRTServer;
 
@@ -63,7 +63,7 @@ internal unsafe struct BaseClassFactoryProxy
     private static class Impl
     {
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int QueryInterfaceDelegate(BaseClassFactoryProxy* @this, Guid* riid, void** ppvObject);
+        public delegate HRESULT QueryInterfaceDelegate(BaseClassFactoryProxy* @this, Guid* riid, void** ppvObject);
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         public delegate uint AddRefDelegate(BaseClassFactoryProxy* @this);
@@ -72,10 +72,10 @@ internal unsafe struct BaseClassFactoryProxy
         public delegate uint ReleaseDelegate(BaseClassFactoryProxy* @this);
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int CreateInstanceDelegate(BaseClassFactoryProxy* @this, IUnknown* pUnkOuter, Guid* riid, void** ppvObject);
+        public delegate HRESULT CreateInstanceDelegate(BaseClassFactoryProxy* @this, IUnknown* pUnkOuter, Guid* riid, void** ppvObject);
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int LockServerDelegate(BaseClassFactoryProxy* @this, int fLock);
+        public delegate HRESULT LockServerDelegate(BaseClassFactoryProxy* @this, int fLock);
 
         /// <summary>
         /// The cached <see cref="QueryInterfaceDelegate"/> for <c>IUnknown.QueryInterface(REFIID, void**)</c>.
@@ -99,19 +99,19 @@ internal unsafe struct BaseClassFactoryProxy
         /// <summary>
         /// Implements <see href="https://docs.microsoft.com/en-us/windows/win32/api/unknwn/nf-unknwn-iunknown-queryinterface(refiid_void)"><c>IUnknown.QueryInterface(REFIID, void**)</c></see>.
         /// </summary>
-        private static int QueryInterface(BaseClassFactoryProxy* @this, Guid* riid, void** ppvObject)
+        private static HRESULT QueryInterface(BaseClassFactoryProxy* @this, Guid* riid, void** ppvObject)
         {
-            if (riid->Equals(__uuidof<IUnknown>()) ||
-                riid->Equals(__uuidof<IClassFactory>()))
+            if (riid->Equals(IUnknown.IID_Guid) ||
+                riid->Equals(IClassFactory.IID_Guid))
             {
                 _ = Interlocked.Increment(ref Unsafe.As<uint, int>(ref @this->_referenceCount));
 
                 *ppvObject = @this;
 
-                return S.S_OK;
+                return HRESULT.S_OK;
             }
 
-            return E.E_NOINTERFACE;
+            return HRESULT.E_NOINTERFACE;
         }
 
         /// <summary>
@@ -139,30 +139,30 @@ internal unsafe struct BaseClassFactoryProxy
             return referenceCount;
         }
 
-        public static int CreateInstance(BaseClassFactoryProxy* @this, IUnknown* pUnkOuter, Guid* riid, void** ppvObject)
+        public static HRESULT CreateInstance(BaseClassFactoryProxy* @this, IUnknown* pUnkOuter, Guid* riid, void** ppvObject)
         {
             try
             {
                 if (pUnkOuter is not null)
                 {
-                    return WinError.CLASS_E_NOAGGREGATION;
+                    return HRESULT.CLASS_E_NOAGGREGATION;
                 }
 
                 BaseClassFactory? factory = Unsafe.As<BaseClassFactory>(@this->_factory.Target);
 
                 if (factory is null)
                 {
-                    return E.E_HANDLE;
+                    return HRESULT.E_HANDLE;
                 }
 
-                if (!riid->Equals(__uuidof<IUnknown>()) && !riid->Equals(factory.Iid))
+                if (!riid->Equals(IUnknown.IID_Guid) && !riid->Equals(factory.Iid))
                 {
-                    return E.E_NOINTERFACE;
+                    return HRESULT.E_NOINTERFACE;
                 }
 
                 var instance = factory.CreateInstance();
 
-                if (riid->Equals(__uuidof<IUnknown>()))
+                if (riid->Equals(IUnknown.IID_Guid))
                 {
                     *ppvObject = (void*)Marshal.GetIUnknownForObject(instance);
                 }
@@ -172,7 +172,7 @@ internal unsafe struct BaseClassFactoryProxy
 
                     if (t is null)
                     {
-                        return E.E_UNEXPECTED;
+                        return HRESULT.E_UNEXPECTED;
                     }
 
                     *ppvObject = (void*)Marshal.GetComInterfaceForObject(instance, t);
@@ -182,12 +182,12 @@ internal unsafe struct BaseClassFactoryProxy
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HRESULT)Marshal.GetHRForException(e);
             }
-            return S.S_OK;
+            return HRESULT.S_OK;
         }
 
-        public static int LockServer(BaseClassFactoryProxy* @this, int fLock)
+        public static HRESULT LockServer(BaseClassFactoryProxy* @this, int fLock)
         {
             try
             {
@@ -202,9 +202,9 @@ internal unsafe struct BaseClassFactoryProxy
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HRESULT)Marshal.GetHRForException(e);
             }
-            return S.S_OK;
+            return HRESULT.S_OK;
         }
     }
 }

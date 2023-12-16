@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NETSTANDARD
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -121,3 +122,4 @@ internal static class Windows
 }
 
 #pragma warning restore IDE1006 // Naming Styles
+#endif

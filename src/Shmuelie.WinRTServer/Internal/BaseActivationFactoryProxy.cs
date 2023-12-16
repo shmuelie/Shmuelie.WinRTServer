@@ -2,14 +2,20 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
+using Windows.Win32.System.WinRT;
+using Windows.Win32.System.Com;
+using Windows.Win32.Foundation;
+using static Windows.Win32.PInvoke;
 using Shmuelie.Interop.Windows;
-using static Shmuelie.Interop.Windows.Windows;
 
 namespace Shmuelie.WinRTServer;
 
 /// <summary>
 /// CCW for <see cref="BaseActivationFactory" />.
 /// </summary>
+#if !NETSTANDARD
+[System.Runtime.Versioning.SupportedOSPlatform("windows8.0")]
+#endif
 internal unsafe struct BaseActivationFactoryProxy
 {
     private static readonly void** Vtbl = InitVtbl();
@@ -64,7 +70,7 @@ internal unsafe struct BaseActivationFactoryProxy
     private static class Impl
     {
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int QueryInterfaceDelegate(BaseActivationFactoryProxy* @this, Guid* riid, void** ppvObject);
+        public delegate HRESULT QueryInterfaceDelegate(BaseActivationFactoryProxy* @this, Guid* riid, void** ppvObject);
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         public delegate uint AddRefDelegate(BaseActivationFactoryProxy* @this);
@@ -73,16 +79,16 @@ internal unsafe struct BaseActivationFactoryProxy
         public delegate uint ReleaseDelegate(BaseActivationFactoryProxy* @this);
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int GetIidsDelegate(BaseActivationFactoryProxy* @this, uint* iidCount, Guid** iids);
+        public delegate HRESULT GetIidsDelegate(BaseActivationFactoryProxy* @this, uint* iidCount, Guid** iids);
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int GetRuntimeClassNameDelegate(BaseActivationFactoryProxy* @this, HSTRING* className);
+        public delegate HRESULT GetRuntimeClassNameDelegate(BaseActivationFactoryProxy* @this, HSTRING* className);
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int GetTrustLevelDelegate(BaseActivationFactoryProxy* @this, TrustLevel* trustLevel);
+        public delegate HRESULT GetTrustLevelDelegate(BaseActivationFactoryProxy* @this, TrustLevel* trustLevel);
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int ActivateInstanceDelegate(BaseActivationFactoryProxy* @this, IInspectable** instance);
+        public delegate HRESULT ActivateInstanceDelegate(BaseActivationFactoryProxy* @this, IInspectable** instance);
 
         /// <summary>
         /// The cached <see cref="QueryInterfaceDelegate"/> for <c>IUnknown.QueryInterface(REFIID, void**)</c>.
@@ -110,20 +116,20 @@ internal unsafe struct BaseActivationFactoryProxy
         /// <summary>
         /// Implements <see href="https://docs.microsoft.com/en-us/windows/win32/api/unknwn/nf-unknwn-iunknown-queryinterface(refiid_void)"><c>IUnknown.QueryInterface(REFIID, void**)</c></see>.
         /// </summary>
-        private static int QueryInterface(BaseActivationFactoryProxy* @this, Guid* riid, void** ppvObject)
+        private static HRESULT QueryInterface(BaseActivationFactoryProxy* @this, Guid* riid, void** ppvObject)
         {
-            if (riid->Equals(__uuidof<IUnknown>()) ||
-                riid->Equals(__uuidof<IInspectable>()) ||
-                riid->Equals(__uuidof<IActivationFactory>()))
+            if (riid->Equals(IUnknown.IID_Guid) ||
+                riid->Equals(IInspectable.IID_Guid) ||
+                riid->Equals(IActivationFactory.IID_Guid))
             {
                 _ = Interlocked.Increment(ref Unsafe.As<uint, int>(ref @this->_referenceCount));
 
                 *ppvObject = @this;
 
-                return S.S_OK;
+                return HRESULT.S_OK;
             }
 
-            return E.E_NOINTERFACE;
+            return HRESULT.E_NOINTERFACE;
         }
 
         /// <summary>
@@ -151,99 +157,99 @@ internal unsafe struct BaseActivationFactoryProxy
             return referenceCount;
         }
 
-        public static int GetIids(BaseActivationFactoryProxy* @this, uint* iidCount, Guid** iids)
+        public static HRESULT GetIids(BaseActivationFactoryProxy* @this, uint* iidCount, Guid** iids)
         {
             if (iidCount is null || iids is null)
             {
-                return E.E_INVALIDARG;
+                return HRESULT.E_INVALIDARG;
             }
 
             *iidCount = 1;
             *iids = (Guid*)Marshal.AllocHGlobal(sizeof(Guid));
-            *iids[0] = __uuidof<IActivationFactory>();
-            return S.S_OK;
+            *iids[0] = IActivationFactory.IID_Guid;
+            return HRESULT.S_OK;
         }
 
-        public static int GetRuntimeClassName(BaseActivationFactoryProxy* @this, HSTRING* className)
+        public static HRESULT GetRuntimeClassName(BaseActivationFactoryProxy* @this, HSTRING* className)
         {
             try
             {
                 if (className is null)
                 {
-                    return E.E_INVALIDARG;
+                    return HRESULT.E_INVALIDARG;
                 }
 
                 BaseActivationFactory? factory = Unsafe.As<BaseActivationFactory>(@this->_factory.Target);
 
                 if (factory is null)
                 {
-                    return E.E_HANDLE;
+                    return HRESULT.E_HANDLE;
                 }
 
                 string? fullName = factory.GetType().FullName;
 
                 if (fullName is null)
                 {
-                    return E.E_UNEXPECTED;
+                    return HRESULT.E_UNEXPECTED;
                 }
 
                 fixed (char* fullNamePtr = fullName)
                 {
-                    return WinString.WindowsCreateString((ushort*)fullNamePtr, (uint)fullName.Length, className);
+                    return WindowsCreateString((PCWSTR)fullNamePtr, (uint)fullName.Length, className);
                 }
 
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HRESULT)Marshal.GetHRForException(e);
             }
         }
 
-        public static int GetTrustLevel(BaseActivationFactoryProxy* @this, TrustLevel* trustLevel)
+        public static HRESULT GetTrustLevel(BaseActivationFactoryProxy* @this, TrustLevel* trustLevel)
         {
             if (trustLevel is null)
             {
-                return E.E_INVALIDARG;
+                return HRESULT.E_INVALIDARG;
             }
 
             *trustLevel = TrustLevel.BaseTrust;
-            return S.S_OK;
+            return HRESULT.S_OK;
         }
 
-        public static int ActivateInstance(BaseActivationFactoryProxy* @this, IInspectable** instance)
+        public static HRESULT ActivateInstance(BaseActivationFactoryProxy* @this, IInspectable** instance)
         {
             try
             {
                 if (instance is null)
                 {
-                    return E.E_INVALIDARG;
+                    return HRESULT.E_INVALIDARG;
                 }
 
                 BaseActivationFactory? factory = Unsafe.As<BaseActivationFactory>(@this->_factory.Target);
 
                 if (factory is null)
                 {
-                    return E.E_HANDLE;
+                    return HRESULT.E_HANDLE;
                 }
 
                 object managedInstance = factory.ActivateInstance();
 
                 using ComPtr<IUnknown> unkwnPtr = default;
                 unkwnPtr.Attach((IUnknown*)Marshal.GetIUnknownForObject(managedInstance));
-                int result = unkwnPtr.CopyTo(instance);
-                if (result != S.S_OK)
+                HRESULT result = unkwnPtr.CopyTo(instance);
+                if (result != HRESULT.S_OK)
                 {
                     return result;
                 }
 
                 factory.OnInstanceCreated(managedInstance);
 
-                return S.S_OK;
+                return HRESULT.S_OK;
 
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HRESULT)Marshal.GetHRForException(e);
             }
         }
     }
