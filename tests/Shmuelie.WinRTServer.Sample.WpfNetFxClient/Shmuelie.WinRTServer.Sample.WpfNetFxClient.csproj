@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <Platforms>x64;x86</Platforms>
+    <RuntimeIdentifiers>win-x64;$(RuntimeIdentifiers)</RuntimeIdentifiers>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.SDK.Contracts" Version="10.0.22000.197" />

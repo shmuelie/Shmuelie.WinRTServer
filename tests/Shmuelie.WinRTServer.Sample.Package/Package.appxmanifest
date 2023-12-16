@@ -138,7 +138,7 @@
     <!-- Only needed for WinRT activation -->
     <Extension Category="windows.activatableClass.outOfProcessServer">
       <OutOfProcessServer ServerName="Shmuelie.WinRTServer.WinRtServer" uap5:IdentityType="activateAsPackage" uap5:RunFullTrust="true">
-        <Path>Shmuelie.WinRTServer.Sample.Server\Shmuelie.WinRTServer.Sample.Server.exe</Path>
+        <Path>Shmuelie.WinRTServer.Sample.ServerNet6\Shmuelie.WinRTServer.Sample.ServerNet6.exe</Path>
         <Arguments>-WINRT</Arguments>
         <Instancing>singleInstance</Instancing>
         <ActivatableClass ActivatableClassId="Shmuelie.WinRTServer.Sample.RemoteThing" />

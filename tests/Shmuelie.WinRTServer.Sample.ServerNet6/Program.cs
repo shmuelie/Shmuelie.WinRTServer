@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Shmuelie.WinRTServer.Sample.Interfaces;
-
-[assembly: DisableRuntimeMarshalling]
 
 namespace Shmuelie.WinRTServer.Sample.Server;
 
