@@ -35,7 +35,4 @@
       <Link>.editorconfig</Link>
     </None>
   </ItemGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' != 'netstandard2.0'">
-    <IsAotCompatible>true</IsAotCompatible>
-  </PropertyGroup>
 </Project>
