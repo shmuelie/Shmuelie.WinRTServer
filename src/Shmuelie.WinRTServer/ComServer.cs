@@ -4,8 +4,9 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Timers;
 using Shmuelie.Interop.Windows;
-using static Shmuelie.Interop.Windows.ComBaseAPI;
-using static Shmuelie.Interop.Windows.Windows;
+using Windows.Win32.Foundation;
+using Windows.Win32.System.Com;
+using static Windows.Win32.PInvoke;
 
 namespace Shmuelie.WinRTServer;
 
@@ -42,8 +43,9 @@ public sealed class ComServer : IAsyncDisposable
     public unsafe ComServer()
     {
         using ComPtr<IGlobalOptions> options = default;
-        Guid clsid = IGlobalOptions.CLSID;
-        if (CoCreateInstance(&clsid, null, (uint)CLSCTX.CLSCTX_INPROC_SERVER, __uuidof<IGlobalOptions>(), (void**)options.GetAddressOf()) == S.S_OK)
+        Guid clsid = CLSID_GlobalOptions;
+        Guid iid = IGlobalOptions.IID_Guid;
+        if (CoCreateInstance(&clsid, null, CLSCTX.CLSCTX_INPROC_SERVER, &iid, (void**)options.GetAddressOf()) == HRESULT.S_OK)
         {
             options.Get()->Set(GLOBALOPT_PROPERTIES.COMGLB_RO_SETTINGS, (nuint)GLOBALOPT_RO_FLAGS.COMGLB_FAST_RUNDOWN);
         }
@@ -128,7 +130,7 @@ public sealed class ComServer : IAsyncDisposable
         proxy.Attach(BaseClassFactoryProxy.Create(factory));
 
         uint cookie;
-        Marshal.ThrowExceptionForHR(CoRegisterClassObject(&clsid, (IUnknown*)proxy.Get(), (uint)CLSCTX.CLSCTX_LOCAL_SERVER, (uint)(REGCLS.REGCLS_MULTIPLEUSE | REGCLS.REGCLS_SUSPENDED), &cookie));
+        Marshal.ThrowExceptionForHR(CoRegisterClassObject(&clsid, (IUnknown*)proxy.Get(), CLSCTX.CLSCTX_LOCAL_SERVER, (REGCLS.REGCLS_MULTIPLEUSE | REGCLS.REGCLS_SUSPENDED), &cookie));
 
         factories.Add(clsid, (factory, cookie));
         return true;

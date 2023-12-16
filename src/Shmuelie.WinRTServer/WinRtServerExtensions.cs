@@ -5,6 +5,9 @@ namespace Shmuelie.WinRTServer;
 /// <summary>
 /// Extensions for <see cref="WinRtServer"/>.
 /// </summary>
+#if !NETSTANDARD
+[System.Runtime.Versioning.SupportedOSPlatform("windows8.0")]
+#endif
 public static class WinRtServerExtensions
 {
     /// <summary>

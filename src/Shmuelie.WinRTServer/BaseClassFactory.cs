@@ -5,7 +5,6 @@ namespace Shmuelie.WinRTServer;
 /// <summary>
 /// Base for a COM class factory for a .NET type.
 /// </summary>
-/// <seealso cref="Interop.Windows.IClassFactory"/>
 /// <remarks>Does not support aggregation. Will always return <c>CLASS_E_NOAGGREGATION</c> if requested.</remarks>
 public abstract class BaseClassFactory
 {
