@@ -5,7 +5,7 @@
     <IsPackable>true</IsPackable>
     <Description>Out-of-Process WinRT/COM Server</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageReleaseNotes>Fixed lifetime management bug.</PackageReleaseNotes>
+    <PackageReleaseNotes>Added support for .NET5+ server support.</PackageReleaseNotes>
     <LangVersion>12</LangVersion>
   </PropertyGroup>
   <!-- .NET Standard 2.0 polyfill packages -->
