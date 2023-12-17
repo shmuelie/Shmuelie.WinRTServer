@@ -31,6 +31,7 @@ jobs:
         name: msbuild_log_${{matrix.configuration}}
         path: msbuild.binlog
         if-no-files-found: error
+      if: always()
 
   # Build the only in Release to generate all the NuGet packages.
   # This workflow also uploads the resulting packages as artifacts.
