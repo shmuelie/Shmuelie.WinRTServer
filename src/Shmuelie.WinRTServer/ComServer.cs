@@ -130,7 +130,7 @@ public sealed class ComServer : IAsyncDisposable
         proxy.Attach(BaseClassFactoryProxy.Create(factory));
 
         uint cookie;
-        Marshal.ThrowExceptionForHR(CoRegisterClassObject(&clsid, (IUnknown*)proxy.Get(), CLSCTX.CLSCTX_LOCAL_SERVER, (REGCLS.REGCLS_MULTIPLEUSE | REGCLS.REGCLS_SUSPENDED), &cookie));
+        CoRegisterClassObject(&clsid, (IUnknown*)proxy.Get(), CLSCTX.CLSCTX_LOCAL_SERVER, (REGCLS.REGCLS_MULTIPLEUSE | REGCLS.REGCLS_SUSPENDED), &cookie).ThrowOnFailure();
 
         factories.Add(clsid, (factory, cookie));
         return true;
@@ -163,7 +163,7 @@ public sealed class ComServer : IAsyncDisposable
 
         data.factory.InstanceCreated -= Factory_InstanceCreated;
 
-        Marshal.ThrowExceptionForHR(CoRevokeClassObject(data.cookie));
+        CoRevokeClassObject(data.cookie).ThrowOnFailure();
         return true;
     }
 
@@ -201,7 +201,7 @@ public sealed class ComServer : IAsyncDisposable
 
         firstInstanceCreated = new();
         lifetimeCheckTimer.Start();
-        Marshal.ThrowExceptionForHR(CoResumeClassObjects());
+        CoResumeClassObjects().ThrowOnFailure();
     }
 
     /// <summary>
@@ -221,7 +221,7 @@ public sealed class ComServer : IAsyncDisposable
 
         firstInstanceCreated = null;
         lifetimeCheckTimer.Stop();
-        Marshal.ThrowExceptionForHR(CoSuspendClassObjects());
+        CoSuspendClassObjects().ThrowOnFailure();
     }
 
     /// <summary>

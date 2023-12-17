@@ -56,7 +56,7 @@ public sealed class WinRtServer : IAsyncDisposable
         HRESULT result = RoInitialize(RO_INIT_TYPE.RO_INIT_MULTITHREADED);
         if (result != HRESULT.S_OK && result != HRESULT.S_FALSE)
         {
-            Marshal.ThrowExceptionForHR(result);
+            result.ThrowOnFailure();
         }
 
         using ComPtr<IGlobalOptions> options = default;
@@ -232,7 +232,7 @@ public sealed class WinRtServer : IAsyncDisposable
                 string managedActivatableClassId = managedActivatableClassIds[activatableClassIdIndex];
                 fixed (char* managedActivatableClassIdPtr = managedActivatableClassId)
                 {
-                    Marshal.ThrowExceptionForHR(WindowsCreateString((PCWSTR)managedActivatableClassIdPtr, (uint)managedActivatableClassId.Length, &activatableClassIds[activatableClassIdIndex]));
+                    WindowsCreateString((PCWSTR)managedActivatableClassIdPtr, (uint)managedActivatableClassId.Length, &activatableClassIds[activatableClassIdIndex]).ThrowOnFailure();
                 }
             }
 
@@ -244,7 +244,7 @@ public sealed class WinRtServer : IAsyncDisposable
 
             fixed (RO_REGISTRATION_COOKIE* cookie = &registrationCookie)
             {
-                Marshal.ThrowExceptionForHR(RoRegisterActivationFactories(activatableClassIds, activationFactoryCallbacks, (uint)managedActivatableClassIds.Length, cookie));
+                RoRegisterActivationFactories(activatableClassIds, activationFactoryCallbacks, (uint)managedActivatableClassIds.Length, cookie).ThrowOnFailure();
             }
         }
         finally
