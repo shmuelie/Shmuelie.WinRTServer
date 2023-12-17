@@ -183,7 +183,7 @@ public sealed class WinRtServer : IAsyncDisposable
             return HRESULT.E_INVALIDARG;
         }
 
-        if (!factories.TryGetValue(activatableClassId.ToString(), out BaseActivationFactory? managedFactory))
+        if (!factories.TryGetValue(activatableClassId.AsString(), out BaseActivationFactory? managedFactory))
         {
             factory = null;
             return HRESULT.E_NOINTERFACE;
