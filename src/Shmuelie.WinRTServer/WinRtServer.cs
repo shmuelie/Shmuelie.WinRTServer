@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Timers;
-using Windows.Win32.System.WinRT;
-using Windows.Win32.System.Com;
-using Windows.Win32.Foundation;
-using static Windows.Win32.PInvoke;
 using Shmuelie.Interop.Windows;
+using Windows.Win32.Foundation;
+using Windows.Win32.System.Com;
+using Windows.Win32.System.WinRT;
+using static Windows.Win32.PInvoke;
+using unsafe DllActivationCallback = delegate* unmanaged[Stdcall]<Windows.Win32.System.WinRT.HSTRING, Windows.Win32.System.WinRT.IActivationFactory**, Windows.Win32.Foundation.HRESULT>;
 
 namespace Shmuelie.WinRTServer;
 
@@ -24,9 +24,9 @@ public sealed class WinRtServer : IAsyncDisposable
 {
     private readonly Dictionary<string, BaseActivationFactory> factories = [];
 
-    private readonly unsafe Delegate activationFactoryCallbackWrapper;
+    private readonly unsafe DllGetActivationFactory activationFactoryCallbackWrapper;
 
-    private unsafe readonly delegate* unmanaged[Stdcall]<HSTRING, IActivationFactory**, HRESULT> activationFactoryCallbackPointer;
+    private unsafe readonly DllActivationCallback activationFactoryCallbackPointer;
 
     /// <summary>
     /// Collection of created instances.
@@ -51,7 +51,7 @@ public sealed class WinRtServer : IAsyncDisposable
     public unsafe WinRtServer()
     {
         activationFactoryCallbackWrapper = ActivationFactoryCallback;
-        activationFactoryCallbackPointer = (delegate* unmanaged[Stdcall]<HSTRING, IActivationFactory**, HRESULT>)Marshal.GetFunctionPointerForDelegate(activationFactoryCallbackWrapper);
+        activationFactoryCallbackPointer = (DllActivationCallback)Marshal.GetFunctionPointerForDelegate(activationFactoryCallbackWrapper);
 
         HRESULT result = RoInitialize(RO_INIT_TYPE.RO_INIT_MULTITHREADED);
         if (result != HRESULT.S_OK && result != HRESULT.S_FALSE)
@@ -223,7 +223,7 @@ public sealed class WinRtServer : IAsyncDisposable
 
         string[] managedActivatableClassIds = [.. factories.Keys];
         HSTRING* activatableClassIds = null;
-        delegate* unmanaged[Stdcall]<HSTRING, IActivationFactory**, HRESULT>* activationFactoryCallbacks = null;
+        DllActivationCallback* activationFactoryCallbacks = null;
         try
         {
             activatableClassIds = (HSTRING*)Marshal.AllocHGlobal(sizeof(HSTRING) * managedActivatableClassIds.Length);
@@ -236,7 +236,7 @@ public sealed class WinRtServer : IAsyncDisposable
                 }
             }
 
-            activationFactoryCallbacks = (delegate* unmanaged[Stdcall]<HSTRING, IActivationFactory**, HRESULT>*)Marshal.AllocHGlobal(sizeof(delegate* unmanaged[Stdcall]<HSTRING, IActivationFactory**, HRESULT>*) * managedActivatableClassIds.Length);
+            activationFactoryCallbacks = (DllActivationCallback*)Marshal.AllocHGlobal(sizeof(DllActivationCallback*) * managedActivatableClassIds.Length);
             for (int activationFactoryCallbackIndex = 0; activationFactoryCallbackIndex < managedActivatableClassIds.Length; activationFactoryCallbackIndex++)
             {
                 activationFactoryCallbacks[activationFactoryCallbackIndex] = activationFactoryCallbackPointer;
