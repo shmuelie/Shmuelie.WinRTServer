@@ -22,3 +22,4 @@ RoRegisterActivationFactories
 RoRevokeActivationFactories
 S_FALSE
 GLOBALOPT_RO_FLAGS
+WindowsGetStringRawBuffer
