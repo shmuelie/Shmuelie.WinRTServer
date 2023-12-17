@@ -14,7 +14,7 @@
     <DebugType>full</DebugType>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.0.1" />
+    <PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.0.4" />
     <ProjectReference Include="..\..\src\Shmuelie.WinRTServer\Shmuelie.WinRTServer.csproj" />
     <CsWinRTInputs Include="..\Shmuelie.WinRTServer.Sample.Interfaces\bin\$(Platform)\$(Configuration)\net462\*.winmd">
       <Name>%(Filename)</Name>
