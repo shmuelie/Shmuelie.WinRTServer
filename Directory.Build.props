@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn);MSB3270</NoWarn>
+    <CsWinRTIIDOptimizerOptOut>false</CsWinRTIIDOptimizerOptOut>
   </PropertyGroup>
 
   <!-- Centralized location for all generated artifacts -->
