@@ -41,7 +41,10 @@
         Square150x150Logo="Images\Square150x150Logo.png"
         VisualGroup="Shmuelie.WinRTServer Sample"
         Square44x44Logo="Images\Square44x44Logo.png">
-        <uap:DefaultTile Wide310x150Logo="Images\Wide310x150Logo.png" />
+        <uap:DefaultTile
+          Wide310x150Logo="Images\Wide310x150Logo.png"
+          Square71x71Logo="Images\SmallTile.png"
+          Square310x310Logo="Images\LargeTile.png"/>
         <uap:SplashScreen Image="Images\SplashScreen.png" />
       </uap3:VisualElements>
     </Application>
@@ -55,6 +58,10 @@
         Square150x150Logo="Images\Square150x150Logo.png"
         VisualGroup="Shmuelie.WinRTServer Sample"
         Square44x44Logo="Images\Square44x44Logo.png">
+        <uap:DefaultTile
+          Wide310x150Logo="Images\Wide310x150Logo.png"
+          Square71x71Logo="Images\SmallTile.png"
+          Square310x310Logo="Images\LargeTile.png"/>
       </uap3:VisualElements>
     </Application>
     <Application Id="Shmuelie.WinRTServer.Sample.WpfNet6Client"
@@ -67,6 +74,10 @@
         Square150x150Logo="Images\Square150x150Logo.png"
         VisualGroup="Shmuelie.WinRTServer Sample"
         Square44x44Logo="Images\Square44x44Logo.png">
+        <uap:DefaultTile
+          Wide310x150Logo="Images\Wide310x150Logo.png"
+          Square71x71Logo="Images\SmallTile.png"
+          Square310x310Logo="Images\LargeTile.png"/>
       </uap3:VisualElements>
     </Application>
     <Application Id="Shmuelie.WinRTServer.Sample.CppConsoleClient"
@@ -79,6 +90,10 @@
         Square150x150Logo="Images\Square150x150Logo.png"
         VisualGroup="Shmuelie.WinRTServer Sample"
         Square44x44Logo="Images\Square44x44Logo.png">
+        <uap:DefaultTile
+          Wide310x150Logo="Images\Wide310x150Logo.png"
+          Square71x71Logo="Images\SmallTile.png"
+          Square310x310Logo="Images\LargeTile.png"/>
       </uap3:VisualElements>
     </Application>
     <Application Id="Shmuelie.WinRTServer.Sample.Server"
@@ -91,6 +106,10 @@
         Square150x150Logo="Images\Square150x150Logo.png"
         Square44x44Logo="Images\Square44x44Logo.png"
         AppListEntry="none">
+        <uap:DefaultTile
+          Wide310x150Logo="Images\Wide310x150Logo.png"
+          Square71x71Logo="Images\SmallTile.png"
+          Square310x310Logo="Images\LargeTile.png"/>
       </uap:VisualElements>
       <Extensions>
         <!-- Only needed for COM activation -->
@@ -118,6 +137,10 @@
         Square150x150Logo="Images\Square150x150Logo.png"
         Square44x44Logo="Images\Square44x44Logo.png"
         AppListEntry="none">
+        <uap:DefaultTile
+          Wide310x150Logo="Images\Wide310x150Logo.png"
+          Square71x71Logo="Images\SmallTile.png"
+          Square310x310Logo="Images\LargeTile.png"/>
       </uap:VisualElements>
       <Extensions>
         <!-- Only needed for COM activation -->
