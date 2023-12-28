@@ -7,11 +7,8 @@ namespace Shmuelie.WinRTServer;
 /// </summary>
 /// <typeparam name="T">Type the factory creates.</typeparam>
 /// <typeparam name="TInterface">Interface that <typeparamref name="T"/> implements.</typeparam>
-/// <seealso cref="BaseClassFactory"/>
-/// <remarks>
-/// Initializes a new instance of the <see cref="DelegateClassFactory{T, TInterface}"/> class.
-/// </remarks>
 /// <param name="factory">Delegate to create instances.</param>
+/// <seealso cref="BaseClassFactory"/>
 public sealed class DelegateClassFactory<T, TInterface>(Func<T> factory) : BaseClassFactory where T : class, TInterface
 {
     private readonly Func<T> factory = factory;
