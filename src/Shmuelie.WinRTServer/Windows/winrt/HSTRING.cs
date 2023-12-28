@@ -1,6 +1,6 @@
-﻿using Windows.Win32.Foundation;
+﻿using System.Runtime.Versioning;
+using Windows.Win32.Foundation;
 using Windows.Win32.System.WinRT;
-using System.Runtime.Versioning;
 using static Windows.Win32.PInvoke;
 
 namespace Shmuelie.Interop.Windows;
