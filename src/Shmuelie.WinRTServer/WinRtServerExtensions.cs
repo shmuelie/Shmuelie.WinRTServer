@@ -1,13 +1,12 @@
 ﻿using System;
+using System.Runtime.Versioning;
 
 namespace Shmuelie.WinRTServer;
 
 /// <summary>
 /// Extensions for <see cref="WinRtServer"/>.
 /// </summary>
-#if !NETSTANDARD
-[System.Runtime.Versioning.SupportedOSPlatform("windows8.0")]
-#endif
+[SupportedOSPlatform("windows8.0")]
 public static class WinRtServerExtensions
 {
     /// <summary>

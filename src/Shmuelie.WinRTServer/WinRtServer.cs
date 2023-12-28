@@ -7,6 +7,7 @@ using Shmuelie.Interop.Windows;
 using Windows.Win32.Foundation;
 using Windows.Win32.System.Com;
 using Windows.Win32.System.WinRT;
+using System.Runtime.Versioning;
 using static Windows.Win32.PInvoke;
 using unsafe DllActivationCallback = delegate* unmanaged[Stdcall]<Windows.Win32.System.WinRT.HSTRING, Windows.Win32.System.WinRT.IActivationFactory**, Windows.Win32.Foundation.HRESULT>;
 
@@ -17,9 +18,7 @@ namespace Shmuelie.WinRTServer;
 /// </summary>
 /// <see cref="IAsyncDisposable"/>
 /// <threadsafety static="true" instance="false"/>
-#if !NETSTANDARD
-[System.Runtime.Versioning.SupportedOSPlatform("windows8.0")]
-#endif
+[SupportedOSPlatform("windows8.0")]
 public sealed class WinRtServer : IAsyncDisposable
 {
     private readonly Dictionary<string, BaseActivationFactory> factories = [];
