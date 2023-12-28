@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Versioning;
 
 namespace Shmuelie.WinRTServer;
 
@@ -8,6 +9,7 @@ namespace Shmuelie.WinRTServer;
 /// <typeparam name="T">Type the factory creates.</typeparam>
 /// <typeparam name="TInterface">Interface that <typeparamref name="T"/> implements.</typeparam>
 /// <seealso cref="BaseClassFactory"/>
+[SupportedOSPlatform("windows6.0.6000")]
 public sealed class GeneralClassFactory<T, TInterface> : BaseClassFactory where T : class, TInterface, new()
 {
     /// <inheritdoc/>

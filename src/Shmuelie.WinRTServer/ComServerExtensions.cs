@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Runtime.Versioning;
 
 namespace Shmuelie.WinRTServer;
 
 /// <summary>
 /// Extensions for <see cref="ComServer"/>.
 /// </summary>
+[SupportedOSPlatform("windows6.0.6000")]
 public static class ComServerExtensions
 {
     /// <summary>

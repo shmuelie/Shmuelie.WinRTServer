@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Versioning;
 
 namespace Shmuelie.WinRTServer;
 
@@ -8,6 +9,7 @@ namespace Shmuelie.WinRTServer;
 /// <typeparam name="T">The type the factory creates.</typeparam>
 /// <param name="factory">Delegate to create instances.</param>
 /// <seealso cref="BaseActivationFactory"/>
+[SupportedOSPlatform("windows8.0")]
 public sealed class DelegateActivationFactory<T>(Func<T> factory) : BaseActivationFactory where T : class
 {
     private readonly Func<T> factory = factory;

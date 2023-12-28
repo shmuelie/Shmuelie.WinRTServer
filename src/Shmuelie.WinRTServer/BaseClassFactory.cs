@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Versioning;
 
 namespace Shmuelie.WinRTServer;
 
@@ -6,6 +7,7 @@ namespace Shmuelie.WinRTServer;
 /// Base for a COM class factory for a .NET type.
 /// </summary>
 /// <remarks>Does not support aggregation. Will always return <c>CLASS_E_NOAGGREGATION</c> if requested.</remarks>
+[SupportedOSPlatform("windows6.0.6000")]
 public abstract class BaseClassFactory
 {
     /// <summary>
