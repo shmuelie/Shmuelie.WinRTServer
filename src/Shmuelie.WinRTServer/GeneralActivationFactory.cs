@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Versioning;
 
 namespace Shmuelie.WinRTServer;
 
@@ -7,6 +8,7 @@ namespace Shmuelie.WinRTServer;
 /// </summary>
 /// <typeparam name="T">The type the factory creates.</typeparam>
 /// <seealso cref="BaseActivationFactory"/>
+[SupportedOSPlatform("windows8.0")]
 public sealed class GeneralActivationFactory<T> : BaseActivationFactory where T : class, new()
 {
     /// <inheritdoc/>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Versioning;
 
 namespace Shmuelie.WinRTServer;
 
@@ -9,6 +10,7 @@ namespace Shmuelie.WinRTServer;
 /// <typeparam name="TInterface">Interface that <typeparamref name="T"/> implements.</typeparam>
 /// <param name="factory">Delegate to create instances.</param>
 /// <seealso cref="BaseClassFactory"/>
+[SupportedOSPlatform("windows6.0.6000")]
 public sealed class DelegateClassFactory<T, TInterface>(Func<T> factory) : BaseClassFactory where T : class, TInterface
 {
     private readonly Func<T> factory = factory;

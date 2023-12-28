@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using System.Timers;
 using Shmuelie.Interop.Windows;
@@ -14,6 +15,7 @@ namespace Shmuelie.WinRTServer;
 /// </summary>
 /// <see cref="IAsyncDisposable"/>
 /// <threadsafety static="true" instance="false"/>
+[SupportedOSPlatform("windows6.0.6000")]
 public sealed class ComServer : IAsyncDisposable
 {
     /// <summary>
