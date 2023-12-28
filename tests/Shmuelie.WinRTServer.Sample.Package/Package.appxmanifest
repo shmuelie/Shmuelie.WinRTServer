@@ -6,18 +6,19 @@
   xmlns:com2="http://schemas.microsoft.com/appx/manifest/com/windows10/2"
   xmlns:com3="http://schemas.microsoft.com/appx/manifest/com/windows10/3"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3"
   xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5"
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
   IgnorableNamespaces="uap rescap">
 
   <Identity
-    Name="80472c8f-76e2-4c6b-bfb6-2aca3970b68d"
-    Publisher="CN=sengl"
-    Version="1.0.0.0" />
+    Name="Shmuelie.WinRTServer.Sample"
+    Publisher="CN=Shmuelie, O=Shmuelie, L=Seattle, S=Washington, C=US"
+    Version="1.2.0.0" />
 
   <Properties>
-    <DisplayName>Shmuelie.WinRTServer.Sample.Package</DisplayName>
-    <PublisherDisplayName>sengl</PublisherDisplayName>
+    <DisplayName>Shmuelie.WinRTServer Sample</DisplayName>
+    <PublisherDisplayName>Shmuelie</PublisherDisplayName>
     <Logo>Images\StoreLogo.png</Logo>
   </Properties>
 
@@ -30,73 +31,78 @@
   </Resources>
 
   <Applications>
-    <Application Id="App"
-      Executable="$targetnametoken$.exe"
-      EntryPoint="$targetentrypoint$">
-      <uap:VisualElements
-        DisplayName="Shmuelie.WinRTServer.Sample.Package"
-        Description="Shmuelie.WinRTServer.Sample.Package"
+    <Application Id="Shmuelie.WinRTServer.Sample.UwpClient"
+      Executable="Shmuelie.WinRTServer.Sample.UwpClient.exe"
+      EntryPoint="Shmuelie.WinRTServer.Sample.UwpClient.App">
+      <uap3:VisualElements
+        DisplayName="UWP .NET Client"
+        Description="UWP .NET Client"
         BackgroundColor="transparent"
         Square150x150Logo="Images\Square150x150Logo.png"
+        VisualGroup="Shmuelie.WinRTServer Sample"
         Square44x44Logo="Images\Square44x44Logo.png">
         <uap:DefaultTile Wide310x150Logo="Images\Wide310x150Logo.png" />
         <uap:SplashScreen Image="Images\SplashScreen.png" />
-      </uap:VisualElements>
+      </uap3:VisualElements>
     </Application>
     <Application Id="Shmuelie.WinRTServer.Sample.WpfNetFxClient"
       Executable="Shmuelie.WinRTServer.Sample.WpfNetFxClient\Shmuelie.WinRTServer.Sample.WpfNetFxClient.exe"
       EntryPoint="Windows.FullTrustApplication">
-      <uap:VisualElements
+      <uap3:VisualElements
         DisplayName="WPF .NET Framework Client"
         Description="WPF .NET Framework Client"
         BackgroundColor="transparent"
         Square150x150Logo="Images\Square150x150Logo.png"
+        VisualGroup="Shmuelie.WinRTServer Sample"
         Square44x44Logo="Images\Square44x44Logo.png">
-      </uap:VisualElements>
+      </uap3:VisualElements>
     </Application>
     <Application Id="Shmuelie.WinRTServer.Sample.WpfNet6Client"
       Executable="Shmuelie.WinRTServer.Sample.WpfNet6Client\Shmuelie.WinRTServer.Sample.WpfNet6Client.exe"
       EntryPoint="Windows.FullTrustApplication">
-      <uap:VisualElements
-        DisplayName="WPF .NET 6 Client"
-        Description="WPF .NET 6 Client"
+      <uap3:VisualElements
+        DisplayName="WPF Modern .NET Client"
+        Description="WPF Modern .NET Client"
         BackgroundColor="transparent"
         Square150x150Logo="Images\Square150x150Logo.png"
+        VisualGroup="Shmuelie.WinRTServer Sample"
         Square44x44Logo="Images\Square44x44Logo.png">
-      </uap:VisualElements>
+      </uap3:VisualElements>
     </Application>
     <Application Id="Shmuelie.WinRTServer.Sample.CppConsoleClient"
       Executable="Shmuelie.WinRTServer.Sample.CppConsoleClient\Shmuelie.WinRTServer.Sample.CppConsoleClient.exe"
       EntryPoint="Windows.FullTrustApplication">
-      <uap:VisualElements
+      <uap3:VisualElements
         DisplayName="C++/WinRT Console Client"
         Description="C++/WinRT Console Client"
         BackgroundColor="transparent"
         Square150x150Logo="Images\Square150x150Logo.png"
+        VisualGroup="Shmuelie.WinRTServer Sample"
         Square44x44Logo="Images\Square44x44Logo.png">
-      </uap:VisualElements>
+      </uap3:VisualElements>
     </Application>
     <Application Id="Shmuelie.WinRTServer.Sample.Server"
       Executable="Shmuelie.WinRTServer.Sample.Server\Shmuelie.WinRTServer.Sample.Server.exe"
       EntryPoint="Windows.FullTrustApplication">
       <uap:VisualElements
-        DisplayName="Local Server"
-        Description="Local Server"
+        DisplayName="Local .NET Framework Server"
+        Description="Local .NET Framework Server"
         BackgroundColor="transparent"
         Square150x150Logo="Images\Square150x150Logo.png"
-        Square44x44Logo="Images\Square44x44Logo.png" AppListEntry="none">
+        Square44x44Logo="Images\Square44x44Logo.png"
+        AppListEntry="none">
       </uap:VisualElements>
       <Extensions>
         <!-- Only needed for COM activation -->
         <com2:Extension Category="windows.comServer">
           <com2:ComServer>
             <com3:ExeServer Executable="Shmuelie.WinRTServer.Sample.Server\Shmuelie.WinRTServer.Sample.Server.exe"
-                            DisplayName="Local Server"
+                            DisplayName="Local .NET Framework Server"
                             LaunchAndActivationPermission="O:SYG:SYD:(A;;11;;;WD)(A;;11;;;RC)(A;;11;;;AC)(A;;11;;;AN)S:P(ML;;NX;;;S-1-16-0)"
                             Arguments="-COM">
-              <com:Class Id="4F59AF92-A98D-4A20-8C8D-1C076647A6AE" DisplayName="RemoteThing Class" />
-              <com:Class Id="4F59AF92-A98D-4A20-8C8D-1C076647A6AF" DisplayName="Times Class" />
-              <com:Class Id="4F59AF92-A98D-4A20-8C8D-1C076647A6B0" DisplayName="Input Class" />
+              <com:Class Id="4F59AF92-A98D-4A20-8C8D-1C076647A6AE" DisplayName=".NET Framework RemoteThing Class" />
+              <com:Class Id="4F59AF92-A98D-4A20-8C8D-1C076647A6AF" DisplayName=".NET Framework Times Class" />
+              <com:Class Id="4F59AF92-A98D-4A20-8C8D-1C076647A6B0" DisplayName=".NET Framework Input Class" />
             </com3:ExeServer>
           </com2:ComServer>
         </com2:Extension>
@@ -106,23 +112,24 @@
       Executable="Shmuelie.WinRTServer.Sample.ServerNet6\Shmuelie.WinRTServer.Sample.ServerNet6.exe"
       EntryPoint="Windows.FullTrustApplication">
       <uap:VisualElements
-        DisplayName="Local Server6"
-        Description="Local Server6"
+        DisplayName="Local Modern .NET Server"
+        Description="Local Modern .NET Server"
         BackgroundColor="transparent"
         Square150x150Logo="Images\Square150x150Logo.png"
-        Square44x44Logo="Images\Square44x44Logo.png" AppListEntry="none">
+        Square44x44Logo="Images\Square44x44Logo.png"
+        AppListEntry="none">
       </uap:VisualElements>
       <Extensions>
         <!-- Only needed for COM activation -->
         <com2:Extension Category="windows.comServer">
           <com2:ComServer>
             <com3:ExeServer Executable="Shmuelie.WinRTServer.Sample.ServerNet6\Shmuelie.WinRTServer.Sample.ServerNet6.exe"
-                            DisplayName="Local Server Net6"
+                            DisplayName="Local Modern .NET Server"
                             LaunchAndActivationPermission="O:SYG:SYD:(A;;11;;;WD)(A;;11;;;RC)(A;;11;;;AC)(A;;11;;;AN)S:P(ML;;NX;;;S-1-16-0)"
                             Arguments="-COM">
-              <com:Class Id="474527DE-81CD-466E-ADCF-6E3809CD5033" DisplayName="RemoteThing Class6" />
-              <com:Class Id="EC6A0FF9-BBF4-48EA-9BFA-DFAF84D4FAF8" DisplayName="Times Class6" />
-              <com:Class Id="2F8EDC40-C145-4128-B451-559D45CD9074" DisplayName="Input Class6" />
+              <com:Class Id="474527DE-81CD-466E-ADCF-6E3809CD5033" DisplayName="Modern .NET RemoteThing Class" />
+              <com:Class Id="EC6A0FF9-BBF4-48EA-9BFA-DFAF84D4FAF8" DisplayName="Modern .NET Times Class" />
+              <com:Class Id="2F8EDC40-C145-4128-B451-559D45CD9074" DisplayName="Modern .NET Input Class" />
             </com3:ExeServer>
           </com2:ComServer>
         </com2:Extension>
