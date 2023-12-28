@@ -7,7 +7,7 @@
     <IsPackable>true</IsPackable>
     <Description>Out-of-Process WinRT/COM Server</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageReleaseNotes>Added support for .NET5+ server support.</PackageReleaseNotes>
+    <PackageReleaseNotes>Added support for modern .NET servers.</PackageReleaseNotes>
     <LangVersion>12</LangVersion>
     <PolySharpIncludeRuntimeSupportedAttributes>true</PolySharpIncludeRuntimeSupportedAttributes>
     <IsAotCompatible Condition="'$(TargetFramework)' != 'netstandard2.0'">true</IsAotCompatible>
