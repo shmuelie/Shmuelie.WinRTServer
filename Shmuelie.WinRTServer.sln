@@ -22,9 +22,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shmuelie.WinRTServer", "src\Shmuelie.WinRTServer\Shmuelie.WinRTServer.csproj", "{F09FEFE0-ED5E-4A17-9C54-DB6C1CD559E9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{E1670C4F-46C0-45BE-A351-E504DCB17A45}"
-	ProjectSection(SolutionItems) = preProject
-		src\Directory.Build.props = src\Directory.Build.props
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shmuelie.WinRTServer.Sample.Interfaces", "tests\Shmuelie.WinRTServer.Sample.Interfaces\Shmuelie.WinRTServer.Sample.Interfaces.csproj", "{7E420EEB-3D6C-49FB-9E60-AE448BAC8B1F}"
 EndProject
