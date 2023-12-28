@@ -37,6 +37,11 @@ Many of the types you are used to using are supported out of the box like
 collection types, map types, streams, etc. This allows you to not have to worry
 about how the IPC works.
 
+## Security
+
+COM provides various ways to secure usage and creation of objects. For more
+details, see [Security in COM][7].
+
 # Usage
 
 Currently to create an Out-of-Process server requires the C++/WinRT tooling
@@ -111,12 +116,30 @@ similar).
 
 # Sample
 
-To help understand usage, a sample using a UWP client app, and WPF app, and a C++ console app is included under the
-test directory. Simply run the `Shmuelie.WinRTServer.Sample.Package` project to
-see it in action.
+To help understand usage and show what can be done samples can be found under
+the tests folder. The sample has:
+
+- .NET Framework Server
+- .NET 7 Server
+- UWP .NET Client App
+- C++/WinRT Console Client App
+- WPF .NET Framework Client App
+- WPF .NET 7 Client App
 
 > **Note**: If Visual Studio fails to build the Metadata project restarting
 > Visual Studio should fix the problem.
+
+# Troubleshooting
+
+If you are having issues, check on these things:
+
+- Make sure the client app includes the WinMDs (Interface and Metadata)
+- Make sure that the interface project uses the
+   `Windows.Foundation.Metadata.GuidAttribute` attribute, not the
+   `System.Runtime.InteropServices.GuidAttribute` attribute.
+- Make sure that the server project uses the
+  `System.Runtime.InteropServices.GuidAttribute` attribute, not the
+  `Windows.Foundation.Metadata.GuidAttribute` attribute.
 
 [1]: https://github.com/Shmuelie/Shmuelie.WinRTServer/actions
 [2]: https://www.nuget.org/stats/packages/Shmuelie.WinRTServer?groupby=Version
@@ -124,3 +147,4 @@ see it in action.
 [4]: https://learn.microsoft.com/en-us/windows/apps/develop/platform/csharp-winrt/net-mappings-of-winrt-types
 [5]: https://learn.microsoft.com/en-us/uwp/midl-3/
 [6]: https://devblogs.microsoft.com/ifdef-windows/the-journey-of-moving-from-cpp-winrt-to-csharp-in-the-microsoft-store/
+[7]: https://learn.microsoft.com/en-us/windows/win32/com/security-in-com
