@@ -5,6 +5,7 @@ using System.Threading;
 using Windows.Win32.System.WinRT;
 using Windows.Win32.System.Com;
 using Windows.Win32.Foundation;
+using System.Runtime.Versioning;
 using static Windows.Win32.PInvoke;
 using Shmuelie.Interop.Windows;
 
@@ -13,9 +14,7 @@ namespace Shmuelie.WinRTServer;
 /// <summary>
 /// CCW for <see cref="BaseActivationFactory" />.
 /// </summary>
-#if !NETSTANDARD
-[System.Runtime.Versioning.SupportedOSPlatform("windows8.0")]
-#endif
+[SupportedOSPlatform("windows8.0")]
 internal unsafe struct BaseActivationFactoryProxy
 {
     private static readonly void** Vtbl = InitVtbl();
