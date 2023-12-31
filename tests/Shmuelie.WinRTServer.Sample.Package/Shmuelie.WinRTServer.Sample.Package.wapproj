@@ -139,4 +139,5 @@
     <ProjectReference Include="..\Shmuelie.WinRTServer.Sample.WpfNetFxClient\Shmuelie.WinRTServer.Sample.WpfNetFxClient.csproj" />
     <ProjectReference Include="..\Shmuelie.WinRTServer.Sample.CppConsoleClient\Shmuelie.WinRTServer.Sample.CppConsoleClient.vcxproj" />
   </ItemGroup>
+  <Target Name="Pack" />
 </Project>
