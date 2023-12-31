@@ -65,6 +65,8 @@
     <PackageIconUrl>https://github.com/shmuelie/Shmuelie.WinRTServer/blob/main/Shmuelie.WinRTServer-64.png?raw=true</PackageIconUrl>
     <PackageTags>dotnet net netcore netstandard csharp library windows com winrt oop outofprocess rpc</PackageTags>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Description>Out-of-Process WinRT/COM Server</Description>
   </PropertyGroup>
 
   <ItemGroup>
