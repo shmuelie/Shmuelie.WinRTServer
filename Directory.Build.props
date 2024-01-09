@@ -61,7 +61,7 @@
     <Copyright>Copyright (c) 2022 Shmueli Englard</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageIcon>icon.png</PackageIcon>
+    <PackageIcon>$(MSBuildProjectName)-128.png</PackageIcon>
     <PackageIconUrl>https://github.com/shmuelie/Shmuelie.WinRTServer/blob/main/Shmuelie.WinRTServer-64.png?raw=true</PackageIconUrl>
     <PackageTags>dotnet net netcore netstandard csharp library windows com winrt oop outofprocess rpc</PackageTags>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>

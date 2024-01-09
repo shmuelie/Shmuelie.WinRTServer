@@ -3,7 +3,6 @@
     <TargetPlatformVersion>10.0.22000.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
     <TargetFrameworks>netstandard2.0;net8.0-windows$(TargetPlatformVersion)</TargetFrameworks>
-    <ApplicationIcon>..\..\$(MSBuildProjectName).ico</ApplicationIcon>
     <IsPackable>true</IsPackable>
     <PackageReleaseNotes>Added support for modern .NET servers.</PackageReleaseNotes>
     <PolySharpIncludeRuntimeSupportedAttributes>true</PolySharpIncludeRuntimeSupportedAttributes>
@@ -21,16 +20,13 @@
     <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.49-beta" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="$(ApplicationIcon)" Pack="false">
-      <Link>$(MSBuildProjectName).ico</Link>
-    </Content>
-    <Content Include="..\..\$(MSBuildProjectName)-128.png" PackFolder="\">
+    <None Include="..\..\$(MSBuildProjectName)-128.png" PackagePath="\" Pack="true">
       <Link>icon.png</Link>
-    </Content>
-    <None Include="../../README.md" PackFolder="\">
+    </None>
+    <None Include="../../README.md" PackagePath="\" Pack="true">
       <Visible>false</Visible>
     </None>
-    <None Include="../../LICENSE" PackFolder="\">
+    <None Include="../../LICENSE" PackagePath="\" Pack="true">
       <Visible>false</Visible>
     </None>
     <None Include="..\..\.editorconfig" Pack="false">
