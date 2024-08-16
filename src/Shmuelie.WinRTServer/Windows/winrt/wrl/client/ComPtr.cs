@@ -121,17 +121,10 @@ internal unsafe struct ComPtr<T> : IDisposable
     /// <param name="ptr">The target raw pointer to copy the address of the current COM object to.</param>
     /// <returns>The result of <see cref="IUnknown.QueryInterface(Guid*, void**)"/> for the target type <typeparamref name="U"/>.</returns>
     public readonly HRESULT CopyTo<U>(U** ptr)
-        where U : unmanaged
-#if !NETSTANDARD
-        , IComIID
-#endif
+        where U : unmanaged, IComIID
     {
-#if NETSTANDARD
-        return ((IUnknown*)ptr_)->QueryInterface(Windows.__uuidof<U>(), (void**)ptr);
-#else
         Guid iid = U.Guid;
         return ((IUnknown*)ptr_)->QueryInterface(&iid, (void**)ptr);
-#endif
     }
 
     /// <summary>
@@ -140,19 +133,12 @@ internal unsafe struct ComPtr<T> : IDisposable
     /// <param name="ptr">The target raw pointer to copy the address of the current COM object to.</param>
     /// <returns>The result of <see cref="IUnknown.QueryInterface(Guid*, void**)"/> for the target type <typeparamref name="U"/>.</returns>
     public readonly HRESULT CopyTo<U>(ref U* ptr)
-        where U : unmanaged
-#if !NETSTANDARD
-        , IComIID
-#endif
+        where U : unmanaged, IComIID
     {
         void** tmp = null;
 
-#if NETSTANDARD
-        HRESULT @ref = ((IUnknown*)ptr_)->QueryInterface(Windows.__uuidof<U>(), tmp);
-#else
         Guid iid = U.Guid;
         HRESULT @ref = ((IUnknown*)ptr_)->QueryInterface(&iid, tmp);
-#endif
 
         ptr = (U*)tmp;
 

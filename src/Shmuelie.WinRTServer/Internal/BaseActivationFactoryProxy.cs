@@ -234,13 +234,7 @@ internal unsafe struct BaseActivationFactoryProxy
                 object managedInstance = factory.ActivateInstance();
 
                 using ComPtr<IUnknown> unkwnPtr = default;
-                unkwnPtr.Attach((IUnknown*)
-#if NETSTANDARD
-                    Marshal.GetIUnknownForObject(managedInstance)
-#else
-                    WinRT.ComWrappersSupport.CreateCCWForObject(managedInstance).GetRef()
-#endif
-                );
+                unkwnPtr.Attach((IUnknown*)WinRT.ComWrappersSupport.CreateCCWForObject(managedInstance).GetRef());
                 HRESULT result = unkwnPtr.CopyTo(instance);
                 if (result != HRESULT.S_OK)
                 {
