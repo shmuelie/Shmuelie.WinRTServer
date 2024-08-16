@@ -96,37 +96,6 @@
           Square310x310Logo="Images\LargeTile.png"/>
       </uap3:VisualElements>
     </Application>
-    <Application Id="Shmuelie.WinRTServer.Sample.Server"
-      Executable="Shmuelie.WinRTServer.Sample.Server\Shmuelie.WinRTServer.Sample.Server.exe"
-      EntryPoint="Windows.FullTrustApplication">
-      <uap:VisualElements
-        DisplayName="Local .NET Framework Server"
-        Description="Local .NET Framework Server"
-        BackgroundColor="transparent"
-        Square150x150Logo="Images\Square150x150Logo.png"
-        Square44x44Logo="Images\Square44x44Logo.png"
-        AppListEntry="none">
-        <uap:DefaultTile
-          Wide310x150Logo="Images\Wide310x150Logo.png"
-          Square71x71Logo="Images\SmallTile.png"
-          Square310x310Logo="Images\LargeTile.png"/>
-      </uap:VisualElements>
-      <Extensions>
-        <!-- Only needed for COM activation -->
-        <com2:Extension Category="windows.comServer">
-          <com2:ComServer>
-            <com3:ExeServer Executable="Shmuelie.WinRTServer.Sample.Server\Shmuelie.WinRTServer.Sample.Server.exe"
-                            DisplayName="Local .NET Framework Server"
-                            LaunchAndActivationPermission="O:SYG:SYD:(A;;11;;;WD)(A;;11;;;RC)(A;;11;;;AC)(A;;11;;;AN)S:P(ML;;NX;;;S-1-16-0)"
-                            Arguments="-COM">
-              <com:Class Id="4F59AF92-A98D-4A20-8C8D-1C076647A6AE" DisplayName=".NET Framework RemoteThing Class" />
-              <com:Class Id="4F59AF92-A98D-4A20-8C8D-1C076647A6AF" DisplayName=".NET Framework Times Class" />
-              <com:Class Id="4F59AF92-A98D-4A20-8C8D-1C076647A6B0" DisplayName=".NET Framework Input Class" />
-            </com3:ExeServer>
-          </com2:ComServer>
-        </com2:Extension>
-      </Extensions>
-    </Application>
     <Application Id="Shmuelie.WinRTServer.Sample.ServerNet6"
       Executable="Shmuelie.WinRTServer.Sample.ServerNet6\Shmuelie.WinRTServer.Sample.ServerNet6.exe"
       EntryPoint="Windows.FullTrustApplication">

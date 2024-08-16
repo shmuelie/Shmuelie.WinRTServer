@@ -124,11 +124,6 @@
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.2428" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Shmuelie.WinRTServer.Sample.Server\Shmuelie.WinRTServer.Sample.Server.csproj">
-      <OutputItemType>exe</OutputItemType>
-      <Targets>DispatchToInnerBuilds</Targets>
-      <TargetFramework>net462</TargetFramework>
-    </ProjectReference>
     <ProjectReference Include="..\Shmuelie.WinRTServer.Sample.ServerNet6\Shmuelie.WinRTServer.Sample.ServerNet6.csproj">
       <OutputItemType>exe</OutputItemType>
       <Targets>DispatchToInnerBuilds</Targets>

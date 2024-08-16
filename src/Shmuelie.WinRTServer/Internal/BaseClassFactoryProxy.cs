@@ -164,11 +164,7 @@ internal unsafe struct BaseClassFactoryProxy
 
                 if (riid->Equals(IUnknown.IID_Guid))
                 {
-#if NETSTANDARD
-                    *ppvObject = (void*)Marshal.GetIUnknownForObject(instance);
-#else
                     *ppvObject = (void*)WinRT.ComWrappersSupport.CreateCCWForObject(instance).GetRef();
-#endif
                 }
                 else
                 {
@@ -178,11 +174,7 @@ internal unsafe struct BaseClassFactoryProxy
                     {
                         return HRESULT.E_UNEXPECTED;
                     }
-#if NETSTANDARD
-                    *ppvObject = (void*)Marshal.GetComInterfaceForObject(instance, t);
-#else
-                    * ppvObject = (void*)(nint)typeof(WinRT.MarshalInterface<>).MakeGenericType(t).GetMethod("FromManaged")!.Invoke(null, [instance])!;
-#endif
+                    *ppvObject = (void*)(nint)typeof(WinRT.MarshalInterface<>).MakeGenericType(t).GetMethod("FromManaged")!.Invoke(null, [instance])!;
                 }
 
                 factory.OnInstanceCreated(instance);
