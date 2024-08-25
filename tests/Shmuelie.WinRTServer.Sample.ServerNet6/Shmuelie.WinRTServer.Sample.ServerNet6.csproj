@@ -12,9 +12,13 @@
     <CsWinRTIncludesPrivate>Shmuelie.WinRTServer.Sample</CsWinRTIncludesPrivate>
     <DefineConstants>$(DefineConstants);NET</DefineConstants>
     <DebugType>full</DebugType>
+    <IsAotCompatible>True</IsAotCompatible>
+    <DisableRuntimeMarshalling>True</DisableRuntimeMarshalling>
+    <EnableAotAnalyzer>True</EnableAotAnalyzer>
+    <RootNamespace>Shmuelie.WinRTServer.Sample.Server</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.0.4" />
+    <PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.1.1" />
     <ProjectReference Include="..\..\src\Shmuelie.WinRTServer\Shmuelie.WinRTServer.csproj" />
     <CsWinRTInputs Include="..\Shmuelie.WinRTServer.Sample.Interfaces\bin\$(Platform)\$(Configuration)\net462\*.winmd">
       <Name>%(Filename)</Name>

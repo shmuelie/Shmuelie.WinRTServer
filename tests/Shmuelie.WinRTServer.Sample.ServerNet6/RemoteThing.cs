@@ -10,10 +10,12 @@ using Shmuelie.WinRTServer.Sample.Interfaces;
 using Windows.Foundation;
 using Windows.Storage.Streams;
 
-namespace Shmuelie.WinRTServer.Sample;
+namespace Shmuelie.WinRTServer.Sample.Server;
+
+#pragma warning disable CA1822 // Mark members as static
 
 [Guid("474527DE-81CD-466E-ADCF-6E3809CD5033")]
-public sealed class RemoteThing : IRemoteThing
+public sealed partial class RemoteThing : IRemoteThing
 {
     public int Rem(int a, int b)
     {
@@ -40,7 +42,7 @@ public sealed class RemoteThing : IRemoteThing
             await Task.Delay(options.DelayTicks, cancellationToken).ConfigureAwait(false);
             cancellationToken.ThrowIfCancellationRequested();
             list.Add(i * 2);
-            progress?.Report(new ListProgress() { Count = i, Total = options.Count, Last = i * 2});
+            progress?.Report(new ListProgress() { Count = i, Total = options.Count, Last = i * 2 });
         }
         return list;
     }
