@@ -4,7 +4,7 @@ using Windows.Win32;
 using Windows.Win32.Foundation;
 using Windows.Win32.System.Com;
 
-namespace Shmuelie.Interop.Windows;
+namespace Shmuelie.WinRTServer.Windows;
 
 /// <summary>
 /// A type that allows working with pointers to COM objects more securely.

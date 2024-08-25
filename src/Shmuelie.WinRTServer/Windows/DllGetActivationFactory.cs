@@ -2,7 +2,7 @@
 using Windows.Win32.Foundation;
 using Windows.Win32.System.WinRT;
 
-namespace Shmuelie.Interop.Windows;
+namespace Shmuelie.WinRTServer.Windows;
 
 /// <summary>
 /// Retrieves the activation factory from a DLL that contains activatable Windows Runtime classes.

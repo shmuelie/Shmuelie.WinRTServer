@@ -4,5 +4,8 @@
   "comInterop": {
     "preserveSigMethods": [ "*" ]
   },
-  "useSafeHandles": false
+  "useSafeHandles": false,
+  "friendlyOverloads": {
+    "enabled": false
+  }
 }

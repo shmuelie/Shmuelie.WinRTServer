@@ -3,7 +3,7 @@ using Windows.Win32.Foundation;
 using Windows.Win32.System.WinRT;
 using static Windows.Win32.PInvoke;
 
-namespace Shmuelie.Interop.Windows;
+namespace Shmuelie.WinRTServer.Windows;
 
 internal static class HSTRING_
 {

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.Marshalling;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using System.Timers;
-using Shmuelie.Interop.Windows;
+using Shmuelie.WinRTServer.Internal;
+using Shmuelie.WinRTServer.Windows;
 using Windows.Win32.Foundation;
 using Windows.Win32.System.Com;
 using Windows.Win32.System.WinRT;
@@ -26,6 +28,7 @@ public sealed class WinRtServer : IAsyncDisposable
     private readonly unsafe DllGetActivationFactory activationFactoryCallbackWrapper;
 
     private unsafe readonly DllActivationCallback activationFactoryCallbackPointer;
+    private readonly StrategyBasedComWrappers comWrappers = new();
 
     /// <summary>
     /// Collection of created instances.
@@ -188,7 +191,7 @@ public sealed class WinRtServer : IAsyncDisposable
             return HRESULT.E_NOINTERFACE;
         }
 
-        *factory = (IActivationFactory*)BaseActivationFactoryProxy.Create(managedFactory);
+        *factory = (IActivationFactory*)comWrappers.GetOrCreateComInterfaceForObject(new BaseActivationFactoryWrapper(managedFactory), CreateComInterfaceFlags.None);
         return HRESULT.S_OK;
     }
 
