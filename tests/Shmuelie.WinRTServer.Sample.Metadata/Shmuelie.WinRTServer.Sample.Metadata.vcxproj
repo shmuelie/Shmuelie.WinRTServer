@@ -45,11 +45,6 @@
     <IntDir>$(ProjectDir)obj\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Shmuelie.WinRTServer.Sample.Interfaces\Shmuelie.WinRTServer.Sample.Interfaces.csproj">
-      <Project>{7e420eeb-3d6c-49fb-9e60-ae448bac8b1f}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Midl Include="Types.idl" />
   </ItemGroup>
   <ItemGroup>

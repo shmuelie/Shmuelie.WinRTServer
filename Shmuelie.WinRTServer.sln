@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# 17
+# Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_SolutionItems", "_SolutionItems", "{50DD472E-AD00-45C5-A2F7-4CB77CB8CD67}"
@@ -23,12 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shmuelie.WinRTServer", "src
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{E1670C4F-46C0-45BE-A351-E504DCB17A45}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shmuelie.WinRTServer.Sample.Interfaces", "tests\Shmuelie.WinRTServer.Sample.Interfaces\Shmuelie.WinRTServer.Sample.Interfaces.csproj", "{7E420EEB-3D6C-49FB-9E60-AE448BAC8B1F}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shmuelie.WinRTServer.Sample.Metadata", "tests\Shmuelie.WinRTServer.Sample.Metadata\Shmuelie.WinRTServer.Sample.Metadata.vcxproj", "{AEAC1534-6CA9-4A7E-9F24-E1F72D261AE4}"
-	ProjectSection(ProjectDependencies) = postProject
-		{7E420EEB-3D6C-49FB-9E60-AE448BAC8B1F} = {7E420EEB-3D6C-49FB-9E60-AE448BAC8B1F}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shmuelie.WinRTServer.Sample.UwpClient", "tests\Shmuelie.WinRTServer.Sample.UwpClient\Shmuelie.WinRTServer.Sample.UwpClient.csproj", "{1C27B092-88C3-4631-848B-F7165F8CF5E9}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -61,14 +56,6 @@ Global
 		{F09FEFE0-ED5E-4A17-9C54-DB6C1CD559E9}.Release|x64.Build.0 = Release|Any CPU
 		{F09FEFE0-ED5E-4A17-9C54-DB6C1CD559E9}.Release|x86.ActiveCfg = Release|Any CPU
 		{F09FEFE0-ED5E-4A17-9C54-DB6C1CD559E9}.Release|x86.Build.0 = Release|Any CPU
-		{7E420EEB-3D6C-49FB-9E60-AE448BAC8B1F}.Debug|x64.ActiveCfg = Debug|x64
-		{7E420EEB-3D6C-49FB-9E60-AE448BAC8B1F}.Debug|x64.Build.0 = Debug|x64
-		{7E420EEB-3D6C-49FB-9E60-AE448BAC8B1F}.Debug|x86.ActiveCfg = Debug|x86
-		{7E420EEB-3D6C-49FB-9E60-AE448BAC8B1F}.Debug|x86.Build.0 = Debug|x86
-		{7E420EEB-3D6C-49FB-9E60-AE448BAC8B1F}.Release|x64.ActiveCfg = Release|x64
-		{7E420EEB-3D6C-49FB-9E60-AE448BAC8B1F}.Release|x64.Build.0 = Release|x64
-		{7E420EEB-3D6C-49FB-9E60-AE448BAC8B1F}.Release|x86.ActiveCfg = Release|x86
-		{7E420EEB-3D6C-49FB-9E60-AE448BAC8B1F}.Release|x86.Build.0 = Release|x86
 		{AEAC1534-6CA9-4A7E-9F24-E1F72D261AE4}.Debug|x64.ActiveCfg = Debug|x64
 		{AEAC1534-6CA9-4A7E-9F24-E1F72D261AE4}.Debug|x64.Build.0 = Debug|x64
 		{AEAC1534-6CA9-4A7E-9F24-E1F72D261AE4}.Debug|x86.ActiveCfg = Debug|Win32
@@ -139,7 +126,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F09FEFE0-ED5E-4A17-9C54-DB6C1CD559E9} = {E1670C4F-46C0-45BE-A351-E504DCB17A45}
-		{7E420EEB-3D6C-49FB-9E60-AE448BAC8B1F} = {CB701FA8-9663-444D-9610-1A8CDFF30E61}
 		{AEAC1534-6CA9-4A7E-9F24-E1F72D261AE4} = {CB701FA8-9663-444D-9610-1A8CDFF30E61}
 		{1C27B092-88C3-4631-848B-F7165F8CF5E9} = {CB701FA8-9663-444D-9610-1A8CDFF30E61}
 		{080D9051-AF78-4B2A-B5CC-9F5BA79A0A9B} = {CB701FA8-9663-444D-9610-1A8CDFF30E61}

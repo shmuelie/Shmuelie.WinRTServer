@@ -6,7 +6,6 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
-using Shmuelie.WinRTServer.Sample.Interfaces;
 using Windows.Foundation;
 using Windows.Storage.Streams;
 

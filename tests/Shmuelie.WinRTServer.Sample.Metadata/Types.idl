@@ -1,17 +1,64 @@
 ﻿namespace Shmuelie.WinRTServer.Sample
 {
-    runtimeclass RemoteThing : [default] Shmuelie.WinRTServer.Sample.Interfaces.IRemoteThing
+    struct LoopProgress
     {
-        RemoteThing();
-    }
+        Int32 Count;
+        Int32 Total;
+    };
 
-    runtimeclass Input : [default] Shmuelie.WinRTServer.Sample.Interfaces.IInput
+    struct ListProgress
+    {
+        Int32 Count;
+        Int32 Total;
+        Int32 Last;
+    };
+
+    struct ListOptions
+    {
+        Int32 Count;
+        Int32 DelayTicks;
+    };
+
+    [uuid(2474f7c0-9db1-4f4f-b614-dc5a89050b65)]
+    interface IInput
+    {
+        String Name { get; set; };
+        String Description { get; set; };
+    };
+
+    [uuid(2474f7c0-9db1-4f4f-b614-dc5a89050b66)]
+    interface ITimes
+    {
+        String NameAndDescription { get; };
+        Windows.Foundation.DateTime UtcNow { get; };
+        Windows.Foundation.DateTime LocalNow { get; };
+    };
+
+    [uuid(2474f7c0-9db1-4f4f-b614-dc5a89050b64)]
+    interface IRemoteThing
+    {
+        Int32 Rem(Int32 a, Int32 b);
+        Windows.Foundation.IAsyncAction DelayAsync(Int32 ticks);
+        Windows.Foundation.IAsyncActionWithProgress<LoopProgress> LoopAsync(Int32 total);
+        Windows.Foundation.IAsyncOperationWithProgress<Windows.Foundation.Collections.IVectorView<Int32>, ListProgress> GenerateListAsync(ListOptions options);
+        event Windows.Foundation.TypedEventHandler<IRemoteThing, Object> LoopCompleted;
+        Windows.Foundation.DateTime NowUtc { get; };
+        Windows.Storage.Streams.IInputStream OpenFile(String path);
+        ITimes GetTimes(IInput input);
+    };
+
+    runtimeclass Input : [default]IInput
     {
         Input();
-    }
+    };
 
-    runtimeclass Times : [default] Shmuelie.WinRTServer.Sample.Interfaces.ITimes
+    runtimeclass Times : [default]ITimes
     {
         Times();
-    }
+    };
+
+    runtimeclass RemoteThing : [default]IRemoteThing
+    {
+        RemoteThing();
+    };
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Shmuelie.WinRTServer.Sample.Interfaces;
 
 namespace Shmuelie.WinRTServer.Sample.Server;
 
