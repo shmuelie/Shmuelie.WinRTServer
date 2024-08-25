@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.Marshalling;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using System.Timers;
-using Shmuelie.Interop.Windows;
+using Shmuelie.WinRTServer.Internal;
+using Shmuelie.WinRTServer.Windows;
 using Windows.Win32.Foundation;
 using Windows.Win32.System.Com;
 using static Windows.Win32.PInvoke;
@@ -32,6 +35,8 @@ public sealed class ComServer : IAsyncDisposable
     /// Timer that checks if all created instances have been collected.
     /// </summary>
     private readonly Timer lifetimeCheckTimer;
+
+    private readonly StrategyBasedComWrappers comWrappers = new();
 
     /// <summary>
     /// Tracks the creation of the first instance after server is started.
@@ -127,11 +132,10 @@ public sealed class ComServer : IAsyncDisposable
 
         factory.InstanceCreated += Factory_InstanceCreated;
 
-        using ComPtr<BaseClassFactoryProxy> proxy = default;
-        proxy.Attach(BaseClassFactoryProxy.Create(factory));
+        nint wrapper = comWrappers.GetOrCreateComInterfaceForObject(new BaseClassFactoryWrapper(factory), CreateComInterfaceFlags.None);
 
         uint cookie;
-        CoRegisterClassObject(&clsid, (IUnknown*)proxy.Get(), CLSCTX.CLSCTX_LOCAL_SERVER, (REGCLS.REGCLS_MULTIPLEUSE | REGCLS.REGCLS_SUSPENDED), &cookie).ThrowOnFailure();
+        CoRegisterClassObject(&clsid, (IUnknown*)wrapper, CLSCTX.CLSCTX_LOCAL_SERVER, (REGCLS.REGCLS_MULTIPLEUSE | REGCLS.REGCLS_SUSPENDED), &cookie).ThrowOnFailure();
 
         factories.Add(clsid, (factory, cookie));
         return true;
