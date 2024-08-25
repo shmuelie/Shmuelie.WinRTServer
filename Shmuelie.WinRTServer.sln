@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# 17
+# Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_SolutionItems", "_SolutionItems", "{50DD472E-AD00-45C5-A2F7-4CB77CB8CD67}"
@@ -38,12 +38,24 @@ EndProject
 Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "Shmuelie.WinRTServer.Sample.Package", "tests\Shmuelie.WinRTServer.Sample.Package\Shmuelie.WinRTServer.Sample.Package.wapproj", "{080D9051-AF78-4B2A-B5CC-9F5BA79A0A9B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shmuelie.WinRTServer.Sample.WpfNetFxClient", "tests\Shmuelie.WinRTServer.Sample.WpfNetFxClient\Shmuelie.WinRTServer.Sample.WpfNetFxClient.csproj", "{6B799403-7548-4FD8-9AF8-76BD13473029}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AEAC1534-6CA9-4A7E-9F24-E1F72D261AE4} = {AEAC1534-6CA9-4A7E-9F24-E1F72D261AE4}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shmuelie.WinRTServer.Sample.CppConsoleClient", "tests\Shmuelie.WinRTServer.Sample.CppConsoleClient\Shmuelie.WinRTServer.Sample.CppConsoleClient.vcxproj", "{A78E8601-3191-4987-B61A-E48256869A39}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AEAC1534-6CA9-4A7E-9F24-E1F72D261AE4} = {AEAC1534-6CA9-4A7E-9F24-E1F72D261AE4}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shmuelie.WinRTServer.Sample.WpfNet6Client", "tests\Shmuelie.WinRTServer.Sample.WpfNet6Client\Shmuelie.WinRTServer.Sample.WpfNet6Client.csproj", "{8FFAA094-2D9C-49B5-BB36-4B2BB7512444}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AEAC1534-6CA9-4A7E-9F24-E1F72D261AE4} = {AEAC1534-6CA9-4A7E-9F24-E1F72D261AE4}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shmuelie.WinRTServer.Sample.ServerNet6", "tests\Shmuelie.WinRTServer.Sample.ServerNet6\Shmuelie.WinRTServer.Sample.ServerNet6.csproj", "{F37FE3DF-B23B-44C7-A3C1-1E4F20885DB3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AEAC1534-6CA9-4A7E-9F24-E1F72D261AE4} = {AEAC1534-6CA9-4A7E-9F24-E1F72D261AE4}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
