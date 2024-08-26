@@ -16,6 +16,7 @@
     <DisableRuntimeMarshalling>True</DisableRuntimeMarshalling>
     <EnableAotAnalyzer>True</EnableAotAnalyzer>
     <RootNamespace>Shmuelie.WinRTServer.Sample.Server</RootNamespace>
+    <WindowsSdkPackageVersion>10.0.22000.41</WindowsSdkPackageVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.1.1" />
