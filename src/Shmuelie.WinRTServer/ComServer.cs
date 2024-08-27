@@ -102,13 +102,14 @@ public sealed class ComServer : IAsyncDisposable
     /// Register a class factory with the server.
     /// </summary>
     /// <param name="factory">The class factory to register.</param>
+    /// <param name="comWrappers">The implementation of <see cref="ComWrappers"/> to use for wrapping.</param>
     /// <returns><see langword="true"/> if <paramref name="factory"/> was registered; otherwise, <see langword="false"/>.</returns>
     /// <remarks>Only one factory can be registered for a CLSID.</remarks>
     /// <exception cref="ObjectDisposedException">The instance is disposed.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="factory"/> is <see langword="null"/>.</exception>
     /// <exception cref="InvalidOperationException">The server is running.</exception>
     /// <seealso cref="UnregisterClassFactory(Guid)"/>
-    public unsafe bool RegisterClassFactory(BaseClassFactory factory)
+    public unsafe bool RegisterClassFactory(BaseClassFactory factory, ComWrappers comWrappers)
     {
         if (IsDisposed)
         {
@@ -132,7 +133,7 @@ public sealed class ComServer : IAsyncDisposable
 
         factory.InstanceCreated += Factory_InstanceCreated;
 
-        nint wrapper = comWrappers.GetOrCreateComInterfaceForObject(new BaseClassFactoryWrapper(factory), CreateComInterfaceFlags.None);
+        nint wrapper = comWrappers.GetOrCreateComInterfaceForObject(new BaseClassFactoryWrapper(factory, comWrappers), CreateComInterfaceFlags.None);
 
         uint cookie;
         CoRegisterClassObject(&clsid, (IUnknown*)wrapper, CLSCTX.CLSCTX_LOCAL_SERVER, (REGCLS.REGCLS_MULTIPLEUSE | REGCLS.REGCLS_SUSPENDED), &cookie).ThrowOnFailure();
@@ -148,7 +149,7 @@ public sealed class ComServer : IAsyncDisposable
     /// <returns><see langword="true"/> if the server was removed; otherwise, <see langword="false"/>.</returns>
     /// <exception cref="ObjectDisposedException">The instance is disposed.</exception>
     /// <exception cref="InvalidOperationException">The server is running.</exception>
-    /// <seealso cref="RegisterClassFactory(BaseClassFactory)"/>
+    /// <seealso cref="RegisterClassFactory(BaseClassFactory, ComWrappers)"/>
     public unsafe bool UnregisterClassFactory(Guid clsid)
     {
         if (IsDisposed)
