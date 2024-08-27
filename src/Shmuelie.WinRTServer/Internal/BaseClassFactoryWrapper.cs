@@ -38,7 +38,7 @@ internal partial class BaseClassFactoryWrapper(BaseClassFactory factory) : IClas
             }
             else
             {
-                var hr = (global::Windows.Win32.Foundation.HRESULT)StrategyBasedComWrappers.DefaultIUnknownStrategy.QueryInterface((void*)unknown, factory.Clsid, out *ppvObject);
+                var hr = (global::Windows.Win32.Foundation.HRESULT)StrategyBasedComWrappers.DefaultIUnknownStrategy.QueryInterface((void*)unknown, *riid, out *ppvObject);
                 if (hr.Failed)
                 {
                     return hr;
