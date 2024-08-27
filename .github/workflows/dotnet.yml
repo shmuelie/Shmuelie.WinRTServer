@@ -24,7 +24,7 @@ jobs:
     - name: NuGet Restore
       run: nuget restore
     - name: Build
-      run: msbuild -t:restore,build /p:Configuration=${{matrix.configuration}} /p:Platform=x64 /bl
+      run: msbuild /t:restore;build /p:Configuration=${{matrix.configuration}} /p:Platform=x64 /bl
     - name: Upload MSBuild binary log
       uses: actions/upload-artifact@v3
       with:
@@ -47,9 +47,9 @@ jobs:
     - name: NuGet Restore
       run: nuget restore
     - name: Build
-      run: msbuild .\src\Shmuelie.WinRTServer\Shmuelie.WinRTServer.csproj -t:restore,build -p:Configuration=Release
+      run: msbuild .\src\Shmuelie.WinRTServer\Shmuelie.WinRTServer.csproj /t:restore;build -p:Configuration=Release
     - name: Pack
-      run: msbuild .\src\Shmuelie.WinRTServer\Shmuelie.WinRTServer.csproj -t:pack -p:Configuration=Release
+      run: msbuild .\src\Shmuelie.WinRTServer\Shmuelie.WinRTServer.csproj /t:pack -p:Configuration=Release
     - name: Upload package artifacts
       uses: actions/upload-artifact@v3
       with:
