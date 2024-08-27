@@ -2,18 +2,15 @@
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.Marshalling;
 using Shmuelie.WinRTServer.Windows.Com;
-using IUnknown = Windows.Win32.System.Com.IUnknown;
-
-using static Windows.Win32.PInvoke;
 using Shmuelie.WinRTServer.Windows.Com.Marshalling;
+using IUnknown = Windows.Win32.System.Com.IUnknown;
+using static Windows.Win32.PInvoke;
 
 namespace Shmuelie.WinRTServer.Internal;
 
 [GeneratedComClass]
-internal partial class BaseClassFactoryWrapper(BaseClassFactory factory) : IClassFactory
+internal partial class BaseClassFactoryWrapper(BaseClassFactory factory, ComWrappers comWrappers) : IClassFactory
 {
-    private readonly StrategyBasedComWrappers comWrappers = new();
-
     [return: MarshalUsing(typeof(HResultMarshaller))]
     public unsafe global::Windows.Win32.Foundation.HRESULT CreateInstance(void* pUnkOuter, Guid* riid, void** ppvObject)
     {
@@ -38,11 +35,12 @@ internal partial class BaseClassFactoryWrapper(BaseClassFactory factory) : IClas
             }
             else
             {
-                var hr = (global::Windows.Win32.Foundation.HRESULT)StrategyBasedComWrappers.DefaultIUnknownStrategy.QueryInterface((void*)unknown, *riid, out *ppvObject);
+                global::Windows.Win32.Foundation.HRESULT hr = (global::Windows.Win32.Foundation.HRESULT)Marshal.QueryInterface(unknown, ref *riid, out nint ppv);
                 if (hr.Failed)
                 {
                     return hr;
                 }
+                *ppvObject = (void*)ppv;
             }
 
             factory.OnInstanceCreated(instance);
