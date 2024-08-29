@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.Marshalling;
-using Shmuelie.WinRTServer.Windows;
+using Shmuelie.WinRTServer.Internal.Windows;
 using Shmuelie.WinRTServer.Windows.Com;
 using Windows.Win32.Foundation;
 using static Windows.Win32.PInvoke;
