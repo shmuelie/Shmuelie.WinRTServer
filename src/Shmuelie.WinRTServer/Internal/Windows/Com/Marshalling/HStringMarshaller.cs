@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices.Marshalling;
 using Windows.Win32.System.WinRT;
 
-namespace Shmuelie.WinRTServer.Windows.Com.Marshalling;
+namespace Shmuelie.WinRTServer.Internal.Windows.Com.Marshalling;
 
 [CustomMarshaller(typeof(HSTRING), MarshalMode.UnmanagedToManagedOut, typeof(HStringMarshaller))]
 [CustomMarshaller(typeof(HSTRING), MarshalMode.UnmanagedToManagedIn, typeof(HStringMarshaller))]
@@ -10,7 +10,7 @@ namespace Shmuelie.WinRTServer.Windows.Com.Marshalling;
 [CustomMarshaller(typeof(HSTRING), MarshalMode.ManagedToUnmanagedIn, typeof(HStringMarshaller))]
 internal static class HStringMarshaller
 {
-    public static HSTRING ConvertToManaged(IntPtr nativeValue) => new HSTRING(nativeValue);
+    public static HSTRING ConvertToManaged(nint nativeValue) => new HSTRING(nativeValue);
 
-    public static IntPtr ConvertToUnmanaged(HSTRING value) => value.Value;
+    public static nint ConvertToUnmanaged(HSTRING value) => value.Value;
 }

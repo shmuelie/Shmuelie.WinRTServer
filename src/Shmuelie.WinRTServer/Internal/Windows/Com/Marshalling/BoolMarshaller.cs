@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices.Marshalling;
 using Windows.Win32.Foundation;
 
-namespace Shmuelie.WinRTServer.Windows.Com.Marshalling;
+namespace Shmuelie.WinRTServer.Internal.Windows.Com.Marshalling;
 
 [CustomMarshaller(typeof(BOOL), MarshalMode.UnmanagedToManagedOut, typeof(BoolMarshaller))]
 [CustomMarshaller(typeof(BOOL), MarshalMode.UnmanagedToManagedIn, typeof(BoolMarshaller))]

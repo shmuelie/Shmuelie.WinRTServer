@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices.Marshalling;
 using Windows.Win32.System.WinRT;
 
-namespace Shmuelie.WinRTServer.Windows.Com.Marshalling;
+namespace Shmuelie.WinRTServer.Internal.Windows.Com.Marshalling;
 
 [CustomMarshaller(typeof(TrustLevel), MarshalMode.UnmanagedToManagedOut, typeof(TrustLevelMarshaller))]
 [CustomMarshaller(typeof(TrustLevel), MarshalMode.UnmanagedToManagedIn, typeof(TrustLevelMarshaller))]

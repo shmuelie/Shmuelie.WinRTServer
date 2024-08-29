@@ -6,7 +6,7 @@ using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using System.Timers;
 using Shmuelie.WinRTServer.Internal;
-using Shmuelie.WinRTServer.Windows;
+using Shmuelie.WinRTServer.Internal.Windows;
 using Windows.Win32.Foundation;
 using Windows.Win32.System.Com;
 using static Windows.Win32.PInvoke;
