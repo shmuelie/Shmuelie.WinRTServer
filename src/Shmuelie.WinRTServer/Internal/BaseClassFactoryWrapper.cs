@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.Marshalling;
-using Shmuelie.WinRTServer.Internal.Windows;
 using Shmuelie.WinRTServer.Windows.Com;
 using Windows.Win32.Foundation;
 using static Windows.Win32.PInvoke;
@@ -24,23 +23,26 @@ internal partial class BaseClassFactoryWrapper(BaseClassFactory factory, ComWrap
             return HRESULT.E_NOINTERFACE;
         }
 
+        bool shouldReleaseUnknown = false;
+        nint unknown = 0;
         try
         {
             var instance = factory.CreateInstance();
-            using ComPtr<IUnknown> unknown = default;
-            unknown.Attach((IUnknown*)comWrappers.GetOrCreateComInterfaceForObject(instance, CreateComInterfaceFlags.None));
+            unknown = comWrappers.GetOrCreateComInterfaceForObject(instance, CreateComInterfaceFlags.None);
 
             if (riid->Equals(IUnknown.IID_Guid))
             {
-                unknown.CopyTo((IUnknown**)ppvObject);
+                *ppvObject = (void*)unknown;
             }
             else
             {
-                var hr = (HRESULT)unknown.CopyTo(riid, ppvObject);
+                var hr = (HRESULT)Marshal.QueryInterface(unknown, ref *riid, out nint ppv);
+                shouldReleaseUnknown = true;
                 if (hr.Failed)
                 {
                     return hr;
                 }
+                *ppvObject = (void*)ppv;
             }
 
             factory.OnInstanceCreated(instance);
@@ -48,6 +50,13 @@ internal partial class BaseClassFactoryWrapper(BaseClassFactory factory, ComWrap
         catch (Exception e)
         {
             return (HRESULT)Marshal.GetHRForException(e);
+        }
+        finally
+        {
+            if (shouldReleaseUnknown)
+            {
+                Marshal.Release(unknown);
+            }
         }
         return HRESULT.S_OK;
     }
