@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.Marshalling;
-using Shmuelie.WinRTServer.Windows.Com.Marshalling;
 
 namespace Shmuelie.WinRTServer.Windows.Com;
 
@@ -10,14 +9,11 @@ namespace Shmuelie.WinRTServer.Windows.Com;
 internal unsafe partial interface IInspectable
 {
     [PreserveSig]
-    [return: MarshalUsing(typeof(HResultMarshaller))]
     global::Windows.Win32.Foundation.HRESULT GetIids(uint* iidCount, Guid** iids);
 
     [PreserveSig]
-    [return: MarshalUsing(typeof(HResultMarshaller))]
-    global::Windows.Win32.Foundation.HRESULT GetRuntimeClassName([MarshalUsing(typeof(HStringMarshaller))] global::Windows.Win32.System.WinRT.HSTRING* className);
+    global::Windows.Win32.Foundation.HRESULT GetRuntimeClassName(global::Windows.Win32.System.WinRT.HSTRING* className);
 
     [PreserveSig]
-    [return: MarshalUsing(typeof(HResultMarshaller))]
-    global::Windows.Win32.Foundation.HRESULT GetTrustLevel([MarshalUsing(typeof(TrustLevelMarshaller))] global::Windows.Win32.System.WinRT.TrustLevel* trustLevel);
+    global::Windows.Win32.Foundation.HRESULT GetTrustLevel(global::Windows.Win32.System.WinRT.TrustLevel* trustLevel);
 }
