@@ -3,8 +3,8 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.Marshalling;
 using Shmuelie.WinRTServer.Windows.Com;
 using Windows.Win32.Foundation;
-using IInspectable = Windows.Win32.System.WinRT.IInspectable;
 using static Windows.Win32.PInvoke;
+using IInspectable = Windows.Win32.System.WinRT.IInspectable;
 
 namespace Shmuelie.WinRTServer.Internal;
 
