@@ -4,7 +4,6 @@ using System.Runtime.InteropServices.Marshalling;
 using Shmuelie.WinRTServer.Windows.Com;
 using Windows.Win32.Foundation;
 using static Windows.Win32.PInvoke;
-using IInspectable = Windows.Win32.System.WinRT.IInspectable;
 
 namespace Shmuelie.WinRTServer.Internal;
 
@@ -24,7 +23,7 @@ internal partial class BaseActivationFactoryWrapper(BaseActivationFactory factor
         {
             object managedInstance = factory.ActivateInstance();
             unknown = comWrappers.GetOrCreateComInterfaceForObject(managedInstance, CreateComInterfaceFlags.None);
-            var riid = IInspectable.IID_Guid;
+            var riid = global::Windows.Win32.System.WinRT.IActivationFactory.IID_Guid;
             var hr = (HRESULT)Marshal.QueryInterface(unknown, ref riid, out nint ppv);
             shouldReleaseUnknown = true;
             if (hr.Failed)

@@ -15,7 +15,6 @@ GLOBALOPT_RO_FLAGS
 HRESULT
 HSTRING
 IGlobalOptions
-IInspectable
 IUnknown
 RoInitialize
 RoRegisterActivationFactories
