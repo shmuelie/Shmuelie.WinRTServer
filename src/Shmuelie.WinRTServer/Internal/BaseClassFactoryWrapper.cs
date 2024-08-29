@@ -35,6 +35,7 @@ internal partial class BaseClassFactoryWrapper(BaseClassFactory factory, ComWrap
             else
             {
                 HRESULT hr = (HRESULT)Marshal.QueryInterface(unknown, ref *riid, out nint ppv);
+                Marshal.Release(unknown);
                 if (hr.Failed)
                 {
                     return hr;
