@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.Marshalling;
+using Shmuelie.WinRTServer.Windows;
 using Shmuelie.WinRTServer.Windows.Com;
 using Windows.Win32.Foundation;
 using static Windows.Win32.PInvoke;
@@ -26,21 +27,20 @@ internal partial class BaseClassFactoryWrapper(BaseClassFactory factory, ComWrap
         try
         {
             var instance = factory.CreateInstance();
-            var unknown = comWrappers.GetOrCreateComInterfaceForObject(instance, CreateComInterfaceFlags.None);
+            using ComPtr<IUnknown> unknown = default;
+            unknown.Attach((IUnknown*)comWrappers.GetOrCreateComInterfaceForObject(instance, CreateComInterfaceFlags.None));
 
             if (riid->Equals(IUnknown.IID_Guid))
             {
-                *ppvObject = (void*)unknown;
+                unknown.CopyTo((IUnknown**)ppvObject);
             }
             else
             {
-                HRESULT hr = (HRESULT)Marshal.QueryInterface(unknown, ref *riid, out nint ppv);
-                Marshal.Release(unknown);
+                var hr = (HRESULT)unknown.CopyTo(riid, ppvObject);
                 if (hr.Failed)
                 {
                     return hr;
                 }
-                *ppvObject = (void*)ppv;
             }
 
             factory.OnInstanceCreated(instance);
