@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 
 namespace Shmuelie.WinRTServer;
@@ -14,18 +15,19 @@ public static class WinRtServerExtensions
     /// </summary>
     /// <typeparam name="T">The type register.</typeparam>
     /// <param name="server">The instance.</param>
+    /// <param name="comWrappers">The implementation of <see cref="ComWrappers"/> to use for wrapping.</param>
     /// <returns><see langword="true"/> if type was registered; otherwise, <see langword="false"/>.</returns>
     /// <remarks>Type can only be registered once.</remarks>
     /// <exception cref="ArgumentNullException"><paramref name="server"/> is <see langword="null"/>.</exception>
     /// <exception cref="InvalidOperationException">The server is running.</exception>
-    public static bool RegisterClass<T>(this WinRtServer server) where T : class, new()
+    public static bool RegisterClass<T>(this WinRtServer server, ComWrappers comWrappers) where T : class, new()
     {
         if (server is null)
         {
             throw new ArgumentNullException(nameof(server));
         }
 
-        return server.RegisterActivationFactory(new GeneralActivationFactory<T>());
+        return server.RegisterActivationFactory(new GeneralActivationFactory<T>(), comWrappers);
     }
 
     /// <summary>
@@ -34,18 +36,19 @@ public static class WinRtServerExtensions
     /// <typeparam name="T">The type register.</typeparam>
     /// <param name="server">The instance.</param>
     /// <param name="factory">Method to create instance of <typeparamref name="T"/>.</param>
+    /// <param name="comWrappers">The implementation of <see cref="ComWrappers"/> to use for wrapping.</param>
     /// <returns><see langword="true"/> if type was registered; otherwise, <see langword="false"/>.</returns>
     /// <remarks>Type can only be registered once.</remarks>
     /// <exception cref="ArgumentNullException"><paramref name="server"/> is <see langword="null"/>.</exception>
     /// <exception cref="InvalidOperationException">The server is running.</exception>
-    public static bool RegisterClass<T>(this WinRtServer server, Func<T> factory) where T : class
+    public static bool RegisterClass<T>(this WinRtServer server, Func<T> factory, ComWrappers comWrappers) where T : class
     {
         if (server is null)
         {
             throw new ArgumentNullException(nameof(server));
         }
 
-        return server.RegisterActivationFactory(new DelegateActivationFactory<T>(factory));
+        return server.RegisterActivationFactory(new DelegateActivationFactory<T>(factory), comWrappers);
     }
 
     /// <summary>
@@ -53,17 +56,18 @@ public static class WinRtServerExtensions
     /// </summary>
     /// <typeparam name="T">The type of the factory to register.</typeparam>
     /// <param name="server">The instance.</param>
+    /// <param name="comWrappers">The implementation of <see cref="ComWrappers"/> to use for wrapping.</param>
     /// <returns><see langword="true"/> if an instance of <typeparamref name="T"/> was registered; otherwise, <see langword="false"/>.</returns>
     /// <remarks>Only one factory can be registered for a Activatable Class ID.</remarks>
     /// <exception cref="ArgumentNullException"><paramref name="server"/> is <see langword="null"/>.</exception>
     /// <exception cref="InvalidOperationException">The server is running.</exception>
-    public static bool RegisterActivationFactory<T>(this WinRtServer server) where T : BaseActivationFactory, new()
+    public static bool RegisterActivationFactory<T>(this WinRtServer server, ComWrappers comWrappers) where T : BaseActivationFactory, new()
     {
         if (server is null)
         {
             throw new ArgumentNullException(nameof(server));
         }
 
-        return server.RegisterActivationFactory(new T());
+        return server.RegisterActivationFactory(new T(), comWrappers);
     }
 }

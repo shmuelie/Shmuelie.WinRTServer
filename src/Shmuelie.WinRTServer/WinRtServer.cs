@@ -23,7 +23,7 @@ namespace Shmuelie.WinRTServer;
 [SupportedOSPlatform("windows8.0")]
 public sealed class WinRtServer : IAsyncDisposable
 {
-    private readonly Dictionary<string, BaseActivationFactory> factories = [];
+    private readonly Dictionary<string, (BaseActivationFactory Factory, ComWrappers Wrapper)> factories = [];
 
     private readonly unsafe DllGetActivationFactory activationFactoryCallbackWrapper;
 
@@ -125,11 +125,12 @@ public sealed class WinRtServer : IAsyncDisposable
     /// Register an activation factory with the server.
     /// </summary>
     /// <param name="factory">The activation factory to register.</param>
+    /// <param name="comWrappers">The implementation of <see cref="ComWrappers"/> to use for wrapping.</param>
     /// <returns><see langword="true"/> if <paramref name="factory"/> was registered; otherwise, <see langword="false"/>.</returns>
     /// <remarks>Only one factory can be registered for a Activatable Class ID.</remarks>
     /// <exception cref="ArgumentNullException"><paramref name="factory"/> is <see langword="null"/>.</exception>
     /// <exception cref="InvalidOperationException">The server is running.</exception>
-    public bool RegisterActivationFactory(BaseActivationFactory factory)
+    public bool RegisterActivationFactory(BaseActivationFactory factory, ComWrappers comWrappers)
     {
         if (IsDisposed)
         {
@@ -149,7 +150,7 @@ public sealed class WinRtServer : IAsyncDisposable
             return false;
         }
 
-        factories.Add(factory.ActivatableClassId, factory);
+        factories.Add(factory.ActivatableClassId, (factory, comWrappers));
         return true;
     }
 
@@ -185,13 +186,13 @@ public sealed class WinRtServer : IAsyncDisposable
             return HRESULT.E_INVALIDARG;
         }
 
-        if (!factories.TryGetValue(activatableClassId.AsString(), out BaseActivationFactory? managedFactory))
+        if (!factories.TryGetValue(activatableClassId.AsString(), out var managedFactory))
         {
             factory = null;
             return HRESULT.E_NOINTERFACE;
         }
 
-        *factory = (IActivationFactory*)comWrappers.GetOrCreateComInterfaceForObject(new BaseActivationFactoryWrapper(managedFactory), CreateComInterfaceFlags.None);
+        *factory = (IActivationFactory*)comWrappers.GetOrCreateComInterfaceForObject(new BaseActivationFactoryWrapper(managedFactory.Factory, managedFactory.Wrapper), CreateComInterfaceFlags.None);
         return HRESULT.S_OK;
     }
 

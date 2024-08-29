@@ -9,10 +9,8 @@ using IInspectable = Windows.Win32.System.WinRT.IInspectable;
 namespace Shmuelie.WinRTServer.Internal;
 
 [GeneratedComClass]
-internal partial class BaseActivationFactoryWrapper(BaseActivationFactory factory) : IActivationFactory
+internal partial class BaseActivationFactoryWrapper(BaseActivationFactory factory, ComWrappers comWrappers) : IActivationFactory
 {
-    private readonly StrategyBasedComWrappers comWrappers = new();
-
     public unsafe HRESULT ActivateInstance(void** instance)
     {
         if (instance is null)
@@ -20,21 +18,33 @@ internal partial class BaseActivationFactoryWrapper(BaseActivationFactory factor
             return HRESULT.E_INVALIDARG;
         }
 
+        bool shouldReleaseUnknown = false;
+        nint unknown = 0;
         try
         {
             object managedInstance = factory.ActivateInstance();
-            var unknown = comWrappers.GetOrCreateComInterfaceForObject(managedInstance, CreateComInterfaceFlags.None);
-            var hr = (HRESULT)StrategyBasedComWrappers.DefaultIUnknownStrategy.QueryInterface((void*)unknown, IInspectable.IID_Guid, out *instance);
+            unknown = comWrappers.GetOrCreateComInterfaceForObject(managedInstance, CreateComInterfaceFlags.None);
+            var riid = IInspectable.IID_Guid;
+            var hr = (HRESULT)Marshal.QueryInterface(unknown, ref riid, out nint ppv);
+            shouldReleaseUnknown = true;
             if (hr.Failed)
             {
                 return hr;
             }
+            *instance = (void*)ppv;
 
             factory.OnInstanceCreated(managedInstance);
         }
         catch (Exception e)
         {
             return (HRESULT)Marshal.GetHRForException(e);
+        }
+        finally
+        {
+            if (shouldReleaseUnknown)
+            {
+                Marshal.Release(unknown);
+            }
         }
         return HRESULT.S_OK;
     }
