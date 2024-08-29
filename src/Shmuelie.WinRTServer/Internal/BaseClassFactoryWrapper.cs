@@ -2,9 +2,9 @@
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.Marshalling;
 using Shmuelie.WinRTServer.Windows.Com;
-using IUnknown = Windows.Win32.System.Com.IUnknown;
-using static Windows.Win32.PInvoke;
 using Windows.Win32.Foundation;
+using static Windows.Win32.PInvoke;
+using IUnknown = Windows.Win32.System.Com.IUnknown;
 
 namespace Shmuelie.WinRTServer.Internal;
 
