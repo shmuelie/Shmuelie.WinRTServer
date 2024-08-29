@@ -19,11 +19,11 @@ public sealed partial class MainPage : Page
     {
         this.InitializeComponent();
         remoteThing = CreateRemoteThing();
-        remoteThing.LoopCompleted += _remoteThing_LoopCompleted;
+        remoteThing.LoopCompleted += RemoteThing_LoopCompleted;
         DateTimeUtcBtn.Content = remoteThing.NowUtc.ToString();
     }
 
-    private void _remoteThing_LoopCompleted(IRemoteThing sender, object args)
+    private void RemoteThing_LoopCompleted(IRemoteThing sender, object args)
     {
         _ = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => LoopProg.Value = 0);
     }

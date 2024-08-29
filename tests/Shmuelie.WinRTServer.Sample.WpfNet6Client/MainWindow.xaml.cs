@@ -70,7 +70,7 @@ namespace Shmuelie.WinRTServer.Sample.WpfNet6Client
         {
             var data = remoteThing.OpenFile("C:\\Windows\\explorer.exe").AsStreamForRead();
             byte[] buffer = new byte[10];
-            await data.ReadAsync(buffer, 0, buffer.Length);
+            await data.ReadAsync(buffer);
             OpenFileTxt.Text = string.Join("", buffer.Select(b => b.ToString("X2")));
         }
 
