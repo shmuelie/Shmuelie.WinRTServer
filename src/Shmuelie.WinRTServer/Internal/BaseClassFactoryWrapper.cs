@@ -2,7 +2,6 @@
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.Marshalling;
 using Shmuelie.WinRTServer.Windows.Com;
-using Shmuelie.WinRTServer.Windows.Com.Marshalling;
 using IUnknown = Windows.Win32.System.Com.IUnknown;
 using static Windows.Win32.PInvoke;
 
@@ -11,7 +10,6 @@ namespace Shmuelie.WinRTServer.Internal;
 [GeneratedComClass]
 internal partial class BaseClassFactoryWrapper(BaseClassFactory factory, ComWrappers comWrappers) : IClassFactory
 {
-    [return: MarshalUsing(typeof(HResultMarshaller))]
     public unsafe global::Windows.Win32.Foundation.HRESULT CreateInstance(void* pUnkOuter, Guid* riid, void** ppvObject)
     {
         if (pUnkOuter is not null)
@@ -52,8 +50,7 @@ internal partial class BaseClassFactoryWrapper(BaseClassFactory factory, ComWrap
         return global::Windows.Win32.Foundation.HRESULT.S_OK;
     }
 
-    [return: MarshalUsing(typeof(HResultMarshaller))]
-    public global::Windows.Win32.Foundation.HRESULT LockServer([MarshalUsing(typeof(BoolMarshaller))] global::Windows.Win32.Foundation.BOOL fLock)
+    public global::Windows.Win32.Foundation.HRESULT LockServer(global::Windows.Win32.Foundation.BOOL fLock)
     {
         try
         {

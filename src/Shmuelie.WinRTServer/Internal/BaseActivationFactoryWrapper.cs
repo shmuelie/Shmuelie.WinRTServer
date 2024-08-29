@@ -2,7 +2,6 @@
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.Marshalling;
 using Shmuelie.WinRTServer.Windows.Com;
-using Shmuelie.WinRTServer.Windows.Com.Marshalling;
 using Windows.Win32.Foundation;
 using IInspectable = Windows.Win32.System.WinRT.IInspectable;
 using static Windows.Win32.PInvoke;
@@ -14,7 +13,6 @@ internal partial class BaseActivationFactoryWrapper(BaseActivationFactory factor
 {
     private readonly StrategyBasedComWrappers comWrappers = new();
 
-    [return: MarshalUsing(typeof(HResultMarshaller))]
     public unsafe HRESULT ActivateInstance(void** instance)
     {
         if (instance is null)
@@ -41,7 +39,6 @@ internal partial class BaseActivationFactoryWrapper(BaseActivationFactory factor
         return HRESULT.S_OK;
     }
 
-    [return: MarshalUsing(typeof(HResultMarshaller))]
     public unsafe HRESULT GetIids(uint* iidCount, Guid** iids)
     {
         if (iidCount is null || iids is null)
@@ -55,8 +52,7 @@ internal partial class BaseActivationFactoryWrapper(BaseActivationFactory factor
         return HRESULT.S_OK;
     }
 
-    [return: MarshalUsing(typeof(HResultMarshaller))]
-    public unsafe HRESULT GetRuntimeClassName([MarshalUsing(typeof(HStringMarshaller))] global::Windows.Win32.System.WinRT.HSTRING* className)
+    public unsafe HRESULT GetRuntimeClassName(global::Windows.Win32.System.WinRT.HSTRING* className)
     {
         if (className is null)
         {
@@ -83,8 +79,7 @@ internal partial class BaseActivationFactoryWrapper(BaseActivationFactory factor
         }
     }
 
-    [return: MarshalUsing(typeof(HResultMarshaller))]
-    public unsafe HRESULT GetTrustLevel([MarshalUsing(typeof(TrustLevelMarshaller))] global::Windows.Win32.System.WinRT.TrustLevel* trustLevel)
+    public unsafe HRESULT GetTrustLevel(global::Windows.Win32.System.WinRT.TrustLevel* trustLevel)
     {
         if (trustLevel is null)
         {
