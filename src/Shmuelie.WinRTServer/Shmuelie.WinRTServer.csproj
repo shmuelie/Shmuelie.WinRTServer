@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net8.0-windows10.0.22000.0</TargetFramework>
     <IsPackable>true</IsPackable>
-    <PackageReleaseNotes>Added support for modern .NET servers.</PackageReleaseNotes>
+    <PackageReleaseNotes>Remove support for .NET Standard 2.0 and made package AOT compatible.</PackageReleaseNotes>
     <IsAotCompatible>True</IsAotCompatible>
     <DisableRuntimeMarshalling>True</DisableRuntimeMarshalling>
     <RuntimeIdentifiers>win-x64;win-x86;win-arm64;$(RuntimeIdentifiers)</RuntimeIdentifiers>
