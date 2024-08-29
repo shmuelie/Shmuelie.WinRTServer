@@ -10,7 +10,7 @@ using Shmuelie.WinRTServer.Sample.Interfaces;
 using Windows.Foundation;
 using Windows.Storage.Streams;
 
-namespace Shmuelie.WinRTServer.Sample.Server;
+namespace Shmuelie.WinRTServer.Sample;
 
 #pragma warning disable CA1822 // Mark members as static
 
