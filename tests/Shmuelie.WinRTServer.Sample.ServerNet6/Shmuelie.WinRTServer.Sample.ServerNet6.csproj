@@ -12,7 +12,7 @@
     <DebugType>full</DebugType>
     <DisableRuntimeMarshalling>True</DisableRuntimeMarshalling>
     <PublishAot>True</PublishAot>
-    <RootNamespace>Shmuelie.WinRTServer.Sample.Server</RootNamespace>
+    <RootNamespace>Shmuelie.WinRTServer.Sample</RootNamespace>
     <WindowsSdkPackageVersion>10.0.22000.41</WindowsSdkPackageVersion>
   </PropertyGroup>
   <ItemGroup>

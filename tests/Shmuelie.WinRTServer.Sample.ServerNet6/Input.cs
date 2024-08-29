@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using Shmuelie.WinRTServer.Sample.Interfaces;
 
-namespace Shmuelie.WinRTServer.Sample.Server;
+namespace Shmuelie.WinRTServer.Sample;
 
 [Guid("2F8EDC40-C145-4128-B451-559D45CD9074")]
 public sealed partial class Input : IInput
