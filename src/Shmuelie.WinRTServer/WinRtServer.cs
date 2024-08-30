@@ -128,7 +128,7 @@ public sealed class WinRtServer : IAsyncDisposable
     /// <param name="comWrappers">The implementation of <see cref="ComWrappers"/> to use for wrapping.</param>
     /// <returns><see langword="true"/> if <paramref name="factory"/> was registered; otherwise, <see langword="false"/>.</returns>
     /// <remarks>Only one factory can be registered for a Activatable Class ID.</remarks>
-    /// <exception cref="ArgumentNullException"><paramref name="factory"/> is <see langword="null"/>.</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="factory"/> or <paramref name="comWrappers"/> is <see langword="null"/>.</exception>
     /// <exception cref="InvalidOperationException">The server is running.</exception>
     public bool RegisterActivationFactory(BaseActivationFactory factory, ComWrappers comWrappers)
     {
@@ -143,6 +143,10 @@ public sealed class WinRtServer : IAsyncDisposable
         if (factory is null)
         {
             throw new ArgumentNullException(nameof(factory));
+        }
+        if (comWrappers is null)
+        {
+            throw new ArgumentNullException(nameof(comWrappers));
         }
 
         if (factories.ContainsKey(factory.ActivatableClassId))

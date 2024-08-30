@@ -106,7 +106,7 @@ public sealed class ComServer : IAsyncDisposable
     /// <returns><see langword="true"/> if <paramref name="factory"/> was registered; otherwise, <see langword="false"/>.</returns>
     /// <remarks>Only one factory can be registered for a CLSID.</remarks>
     /// <exception cref="ObjectDisposedException">The instance is disposed.</exception>
-    /// <exception cref="ArgumentNullException"><paramref name="factory"/> is <see langword="null"/>.</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="factory"/> or <paramref name="comWrappers"/> is <see langword="null"/>.</exception>
     /// <exception cref="InvalidOperationException">The server is running.</exception>
     /// <seealso cref="UnregisterClassFactory(Guid)"/>
     public unsafe bool RegisterClassFactory(BaseClassFactory factory, ComWrappers comWrappers)
@@ -118,6 +118,10 @@ public sealed class ComServer : IAsyncDisposable
         if (factory is null)
         {
             throw new ArgumentNullException(nameof(factory));
+        }
+        if (comWrappers is null)
+        {
+            throw new ArgumentNullException(nameof(comWrappers));
         }
         if (lifetimeCheckTimer.Enabled)
         {

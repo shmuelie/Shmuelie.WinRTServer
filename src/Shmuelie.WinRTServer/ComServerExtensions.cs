@@ -21,7 +21,7 @@ public static class ComServerExtensions
     /// <returns><see langword="true"/> if type was registered; otherwise, <see langword="false"/>.</returns>
     /// <remarks>Type can only be registered once.</remarks>
     /// <exception cref="ObjectDisposedException">The instance is disposed.</exception>
-    /// <exception cref="ArgumentNullException"><paramref name="server"/> is <see langword="null"/>.</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="server"/> or <paramref name="comWrappers"/> is <see langword="null"/>.</exception>
     /// <exception cref="InvalidOperationException">The server is running.</exception>
     public static bool RegisterClass<T, TInterface>(this ComServer server, ComWrappers comWrappers) where T : class, TInterface, new()
     {
@@ -29,6 +29,12 @@ public static class ComServerExtensions
         {
             throw new ArgumentNullException(nameof(server));
         }
+
+        if (comWrappers is null)
+        {
+            throw new ArgumentNullException(nameof(comWrappers));
+        }
+
 
         return server.RegisterClassFactory(new GeneralClassFactory<T, TInterface>(), comWrappers);
     }
@@ -44,13 +50,23 @@ public static class ComServerExtensions
     /// <returns><see langword="true"/> if type was registered; otherwise, <see langword="false"/>.</returns>
     /// <remarks>Type can only be registered once.</remarks>
     /// <exception cref="ObjectDisposedException">The instance is disposed.</exception>
-    /// <exception cref="ArgumentNullException"><paramref name="server"/> is <see langword="null"/>.</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="server"/>, <paramref name="factory"/>, or <paramref name="comWrappers"/> is <see langword="null"/>.</exception>
     /// <exception cref="InvalidOperationException">The server is running.</exception>
     public static bool RegisterClass<T, TInterface>(this ComServer server, Func<T> factory, ComWrappers comWrappers) where T : class, TInterface
     {
         if (server is null)
         {
             throw new ArgumentNullException(nameof(server));
+        }
+
+        if (factory is null)
+        {
+            throw new ArgumentNullException(nameof(factory));
+        }
+
+        if (comWrappers is null)
+        {
+            throw new ArgumentNullException(nameof(comWrappers));
         }
 
         return server.RegisterClassFactory(new DelegateClassFactory<T, TInterface>(factory), comWrappers);
@@ -65,13 +81,18 @@ public static class ComServerExtensions
     /// <returns><see langword="true"/> if an instance of <typeparamref name="T"/> was registered; otherwise, <see langword="false"/>.</returns>
     /// <remarks>Only one factory can be registered for a CLSID.</remarks>
     /// <exception cref="ObjectDisposedException">The instance is disposed.</exception>
-    /// <exception cref="ArgumentNullException"><paramref name="server"/> is <see langword="null"/>.</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="server"/> or <paramref name="comWrappers"/> is <see langword="null"/>.</exception>
     /// <exception cref="InvalidOperationException">The server is running.</exception>
     public static bool RegisterClassFactory<T>(this ComServer server, ComWrappers comWrappers) where T : BaseClassFactory, new()
     {
         if (server is null)
         {
             throw new ArgumentNullException(nameof(server));
+        }
+
+        if (comWrappers is null)
+        {
+            throw new ArgumentNullException(nameof(comWrappers));
         }
 
         return server.RegisterClassFactory(new T(), comWrappers);
