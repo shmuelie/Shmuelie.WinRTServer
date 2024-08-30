@@ -16,6 +16,20 @@ namespace Shmuelie.WinRTServer;
 /// <summary>
 /// An Out of Process COM Server.
 /// </summary>
+/// <remarks>
+/// <para>Allows for types to be created using COM activation instead of WinRT activation like <see cref="WinRtServer"/>.</para>
+/// <para>Typical usage is to call from an <see langword="await"/> <see langword="using"/> block, using <see cref="WaitForFirstObjectAsync"/> to not close until it is safe to do so.</para>
+/// <code language="cs">
+/// <![CDATA[
+/// await using (ComServer server = new ComServer())
+/// {
+///     server.RegisterClass<RemoteThing, IRemoteThing>();
+///     server.Start();
+///     await server.WaitForFirstObjectAsync();
+/// }
+/// ]]>
+/// </code>
+/// </remarks>
 /// <see cref="IAsyncDisposable"/>
 /// <threadsafety static="true" instance="false"/>
 [SupportedOSPlatform("windows6.0.6000")]
@@ -197,6 +211,7 @@ public sealed class ComServer : IAsyncDisposable
     /// <summary>
     /// Starts the server.
     /// </summary>
+    /// <remarks>Calling <see cref="Start"/> is non-blocking.</remarks>
     /// <exception cref="ObjectDisposedException">The instance is disposed.</exception>
     public void Start()
     {

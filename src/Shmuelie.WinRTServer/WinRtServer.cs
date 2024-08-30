@@ -18,11 +18,28 @@ namespace Shmuelie.WinRTServer;
 /// <summary>
 /// An Out of Process Windows Runtime Server.
 /// </summary>
+/// <remarks>
+/// <para>Allows for types to be created using WinRT activation instead of COM activation like <see cref="ComServer"/>.</para>
+/// <para>Typical usage is to call from an <see langword="await"/> <see langword="using"/> block, using <see cref="WaitForFirstObjectAsync"/> to not close until it is safe to do so.</para>
+/// <code language="cs">
+/// <![CDATA[
+/// await using (WinRtServer server = new WinRtServer())
+/// {
+///     server.RegisterClass<RemoteThing>();
+///     server.Start();
+///     await server.WaitForFirstObjectAsync();
+/// }
+/// ]]>
+/// </code>
+/// </remarks>
 /// <see cref="IAsyncDisposable"/>
 /// <threadsafety static="true" instance="false"/>
 [SupportedOSPlatform("windows8.0")]
 public sealed class WinRtServer : IAsyncDisposable
 {
+    /// <summary>
+    /// Mapping of Activatable Class IDs to activation factories and their <see cref="ComWrappers"/> implementation.
+    /// </summary>
     private readonly Dictionary<string, (BaseActivationFactory Factory, ComWrappers Wrapper)> factories = [];
 
     private readonly unsafe DllGetActivationFactory activationFactoryCallbackWrapper;
@@ -217,6 +234,7 @@ public sealed class WinRtServer : IAsyncDisposable
     /// <summary>
     /// Starts the server.
     /// </summary>
+    /// <remarks>Calling <see cref="Start"/> is non-blocking.</remarks>
     public unsafe void Start()
     {
         if (IsDisposed)
