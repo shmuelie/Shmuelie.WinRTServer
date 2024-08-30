@@ -18,13 +18,18 @@ public static class WinRtServerExtensions
     /// <param name="comWrappers">The implementation of <see cref="ComWrappers"/> to use for wrapping.</param>
     /// <returns><see langword="true"/> if type was registered; otherwise, <see langword="false"/>.</returns>
     /// <remarks>Type can only be registered once.</remarks>
-    /// <exception cref="ArgumentNullException"><paramref name="server"/> is <see langword="null"/>.</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="server"/> or <paramref name="comWrappers"/> is <see langword="null"/>.</exception>
     /// <exception cref="InvalidOperationException">The server is running.</exception>
     public static bool RegisterClass<T>(this WinRtServer server, ComWrappers comWrappers) where T : class, new()
     {
         if (server is null)
         {
             throw new ArgumentNullException(nameof(server));
+        }
+
+        if (comWrappers is null)
+        {
+            throw new ArgumentNullException(nameof(comWrappers));
         }
 
         return server.RegisterActivationFactory(new GeneralActivationFactory<T>(), comWrappers);
@@ -39,13 +44,23 @@ public static class WinRtServerExtensions
     /// <param name="comWrappers">The implementation of <see cref="ComWrappers"/> to use for wrapping.</param>
     /// <returns><see langword="true"/> if type was registered; otherwise, <see langword="false"/>.</returns>
     /// <remarks>Type can only be registered once.</remarks>
-    /// <exception cref="ArgumentNullException"><paramref name="server"/> is <see langword="null"/>.</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="server"/>, <paramref name="factory"/>, or <paramref name="comWrappers"/> is <see langword="null"/>.</exception>
     /// <exception cref="InvalidOperationException">The server is running.</exception>
     public static bool RegisterClass<T>(this WinRtServer server, Func<T> factory, ComWrappers comWrappers) where T : class
     {
         if (server is null)
         {
             throw new ArgumentNullException(nameof(server));
+        }
+
+        if (factory is null)
+        {
+            throw new ArgumentNullException(nameof(factory));
+        }
+
+        if (comWrappers is null)
+        {
+            throw new ArgumentNullException(nameof(comWrappers));
         }
 
         return server.RegisterActivationFactory(new DelegateActivationFactory<T>(factory), comWrappers);
@@ -59,13 +74,18 @@ public static class WinRtServerExtensions
     /// <param name="comWrappers">The implementation of <see cref="ComWrappers"/> to use for wrapping.</param>
     /// <returns><see langword="true"/> if an instance of <typeparamref name="T"/> was registered; otherwise, <see langword="false"/>.</returns>
     /// <remarks>Only one factory can be registered for a Activatable Class ID.</remarks>
-    /// <exception cref="ArgumentNullException"><paramref name="server"/> is <see langword="null"/>.</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="server"/> or <paramref name="comWrappers"/> is <see langword="null"/>.</exception>
     /// <exception cref="InvalidOperationException">The server is running.</exception>
     public static bool RegisterActivationFactory<T>(this WinRtServer server, ComWrappers comWrappers) where T : BaseActivationFactory, new()
     {
         if (server is null)
         {
             throw new ArgumentNullException(nameof(server));
+        }
+
+        if (comWrappers is null)
+        {
+            throw new ArgumentNullException(nameof(comWrappers));
         }
 
         return server.RegisterActivationFactory(new T(), comWrappers);
