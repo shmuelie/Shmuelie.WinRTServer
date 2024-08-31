@@ -129,14 +129,8 @@ public sealed class ComServer : IAsyncDisposable
         {
             throw new ObjectDisposedException(nameof(ComServer));
         }
-        if (factory is null)
-        {
-            throw new ArgumentNullException(nameof(factory));
-        }
-        if (comWrappers is null)
-        {
-            throw new ArgumentNullException(nameof(comWrappers));
-        }
+        ArgumentNullException.ThrowIfNull(factory);
+        ArgumentNullException.ThrowIfNull(comWrappers);
         if (lifetimeCheckTimer.Enabled)
         {
             throw new InvalidOperationException("Can only add class factories when server is not running.");
