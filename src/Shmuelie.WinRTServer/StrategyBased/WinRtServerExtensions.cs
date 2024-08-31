@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices.Marshalling;
 using System.Runtime.Versioning;
-using Shmuelie.WinRTServer.CsWinRT;
 
 namespace Shmuelie.WinRTServer.StrategyBased;
 
