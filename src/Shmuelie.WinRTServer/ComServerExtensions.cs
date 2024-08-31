@@ -25,15 +25,8 @@ public static class ComServerExtensions
     /// <exception cref="InvalidOperationException">The server is running.</exception>
     public static bool RegisterClass<T, TInterface>(this ComServer server, ComWrappers comWrappers) where T : class, TInterface, new()
     {
-        if (server is null)
-        {
-            throw new ArgumentNullException(nameof(server));
-        }
-
-        if (comWrappers is null)
-        {
-            throw new ArgumentNullException(nameof(comWrappers));
-        }
+        ArgumentNullException.ThrowIfNull(server);
+        ArgumentNullException.ThrowIfNull(comWrappers);
 
 
         return server.RegisterClassFactory(new GeneralClassFactory<T, TInterface>(), comWrappers);
@@ -54,20 +47,9 @@ public static class ComServerExtensions
     /// <exception cref="InvalidOperationException">The server is running.</exception>
     public static bool RegisterClass<T, TInterface>(this ComServer server, Func<T> factory, ComWrappers comWrappers) where T : class, TInterface
     {
-        if (server is null)
-        {
-            throw new ArgumentNullException(nameof(server));
-        }
-
-        if (factory is null)
-        {
-            throw new ArgumentNullException(nameof(factory));
-        }
-
-        if (comWrappers is null)
-        {
-            throw new ArgumentNullException(nameof(comWrappers));
-        }
+        ArgumentNullException.ThrowIfNull(server);
+        ArgumentNullException.ThrowIfNull(factory);
+        ArgumentNullException.ThrowIfNull(comWrappers);
 
         return server.RegisterClassFactory(new DelegateClassFactory<T, TInterface>(factory), comWrappers);
     }
@@ -85,15 +67,8 @@ public static class ComServerExtensions
     /// <exception cref="InvalidOperationException">The server is running.</exception>
     public static bool RegisterClassFactory<T>(this ComServer server, ComWrappers comWrappers) where T : BaseClassFactory, new()
     {
-        if (server is null)
-        {
-            throw new ArgumentNullException(nameof(server));
-        }
-
-        if (comWrappers is null)
-        {
-            throw new ArgumentNullException(nameof(comWrappers));
-        }
+        ArgumentNullException.ThrowIfNull(server);
+        ArgumentNullException.ThrowIfNull(comWrappers);
 
         return server.RegisterClassFactory(new T(), comWrappers);
     }

@@ -22,15 +22,8 @@ public static class WinRtServerExtensions
     /// <exception cref="InvalidOperationException">The server is running.</exception>
     public static bool RegisterClass<T>(this WinRtServer server, ComWrappers comWrappers) where T : class, new()
     {
-        if (server is null)
-        {
-            throw new ArgumentNullException(nameof(server));
-        }
-
-        if (comWrappers is null)
-        {
-            throw new ArgumentNullException(nameof(comWrappers));
-        }
+        ArgumentNullException.ThrowIfNull(server);
+        ArgumentNullException.ThrowIfNull(comWrappers);
 
         return server.RegisterActivationFactory(new GeneralActivationFactory<T>(), comWrappers);
     }
@@ -48,20 +41,9 @@ public static class WinRtServerExtensions
     /// <exception cref="InvalidOperationException">The server is running.</exception>
     public static bool RegisterClass<T>(this WinRtServer server, Func<T> factory, ComWrappers comWrappers) where T : class
     {
-        if (server is null)
-        {
-            throw new ArgumentNullException(nameof(server));
-        }
-
-        if (factory is null)
-        {
-            throw new ArgumentNullException(nameof(factory));
-        }
-
-        if (comWrappers is null)
-        {
-            throw new ArgumentNullException(nameof(comWrappers));
-        }
+        ArgumentNullException.ThrowIfNull(server);
+        ArgumentNullException.ThrowIfNull(factory);
+        ArgumentNullException.ThrowIfNull(comWrappers);
 
         return server.RegisterActivationFactory(new DelegateActivationFactory<T>(factory), comWrappers);
     }
@@ -78,15 +60,8 @@ public static class WinRtServerExtensions
     /// <exception cref="InvalidOperationException">The server is running.</exception>
     public static bool RegisterActivationFactory<T>(this WinRtServer server, ComWrappers comWrappers) where T : BaseActivationFactory, new()
     {
-        if (server is null)
-        {
-            throw new ArgumentNullException(nameof(server));
-        }
-
-        if (comWrappers is null)
-        {
-            throw new ArgumentNullException(nameof(comWrappers));
-        }
+        ArgumentNullException.ThrowIfNull(server);
+        ArgumentNullException.ThrowIfNull(comWrappers);
 
         return server.RegisterActivationFactory(new T(), comWrappers);
     }

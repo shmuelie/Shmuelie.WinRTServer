@@ -157,14 +157,8 @@ public sealed class WinRtServer : IAsyncDisposable
         {
             throw new InvalidOperationException("Can only add activation factories when server is not running");
         }
-        if (factory is null)
-        {
-            throw new ArgumentNullException(nameof(factory));
-        }
-        if (comWrappers is null)
-        {
-            throw new ArgumentNullException(nameof(comWrappers));
-        }
+        ArgumentNullException.ThrowIfNull(factory);
+        ArgumentNullException.ThrowIfNull(comWrappers);
 
         if (factories.ContainsKey(factory.ActivatableClassId))
         {
@@ -192,10 +186,7 @@ public sealed class WinRtServer : IAsyncDisposable
         {
             throw new InvalidOperationException("Can only remove activation factories when server is not running");
         }
-        if (factory is null)
-        {
-            throw new ArgumentNullException(nameof(factory));
-        }
+        ArgumentNullException.ThrowIfNull(factory);
 
         return factories.Remove(factory.ActivatableClassId);
     }

@@ -24,10 +24,7 @@ public static class WinRtServerExtensions
     /// <exception cref="InvalidOperationException">The server is running.</exception>
     public static bool RegisterClass<T>(this WinRtServer server) where T : class, new()
     {
-        if (server is null)
-        {
-            throw new ArgumentNullException(nameof(server));
-        }
+        ArgumentNullException.ThrowIfNull(server);
 
         return server.RegisterActivationFactory(new GeneralActivationFactory<T>(), comWrappers);
     }
@@ -44,10 +41,7 @@ public static class WinRtServerExtensions
     /// <exception cref="InvalidOperationException">The server is running.</exception>
     public static bool RegisterClass<T>(this WinRtServer server, Func<T> factory) where T : class
     {
-        if (server is null)
-        {
-            throw new ArgumentNullException(nameof(server));
-        }
+        ArgumentNullException.ThrowIfNull(server);
 
         return server.RegisterActivationFactory(new DelegateActivationFactory<T>(factory), comWrappers);
     }
@@ -63,10 +57,7 @@ public static class WinRtServerExtensions
     /// <exception cref="InvalidOperationException">The server is running.</exception>
     public static bool RegisterActivationFactory<T>(this WinRtServer server) where T : BaseActivationFactory, new()
     {
-        if (server is null)
-        {
-            throw new ArgumentNullException(nameof(server));
-        }
+        ArgumentNullException.ThrowIfNull(server);
 
         return server.RegisterActivationFactory(new T(), comWrappers);
     }
