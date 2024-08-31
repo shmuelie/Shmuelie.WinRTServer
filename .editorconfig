@@ -2,9 +2,3 @@
 
 # IDE0046: Convert to conditional expression
 dotnet_style_prefer_conditional_expression_over_return = false
-
-# CA1510: Use ArgumentNullException throw helper
-dotnet_diagnostic.CA1510.severity = none
-
-# CA1513: Use ObjectDisposedException throw helper
-dotnet_diagnostic.CA1513.severity = none
