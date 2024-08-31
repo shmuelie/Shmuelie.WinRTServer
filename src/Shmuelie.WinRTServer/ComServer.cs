@@ -125,10 +125,7 @@ public sealed class ComServer : IAsyncDisposable
     /// <seealso cref="UnregisterClassFactory(Guid)"/>
     public unsafe bool RegisterClassFactory(BaseClassFactory factory, ComWrappers comWrappers)
     {
-        if (IsDisposed)
-        {
-            throw new ObjectDisposedException(nameof(ComServer));
-        }
+        ObjectDisposedException.ThrowIf(IsDisposed, this);
         ArgumentNullException.ThrowIfNull(factory);
         ArgumentNullException.ThrowIfNull(comWrappers);
         if (lifetimeCheckTimer.Enabled)
@@ -164,10 +161,7 @@ public sealed class ComServer : IAsyncDisposable
     /// <seealso cref="RegisterClassFactory(BaseClassFactory, ComWrappers)"/>
     public unsafe bool UnregisterClassFactory(Guid clsid)
     {
-        if (IsDisposed)
-        {
-            throw new ObjectDisposedException(nameof(ComServer));
-        }
+        ObjectDisposedException.ThrowIf(IsDisposed, this);
         if (lifetimeCheckTimer.Enabled)
         {
             throw new InvalidOperationException("Can only remove class factories when server is not running.");
@@ -209,10 +203,7 @@ public sealed class ComServer : IAsyncDisposable
     /// <exception cref="ObjectDisposedException">The instance is disposed.</exception>
     public void Start()
     {
-        if (IsDisposed)
-        {
-            throw new ObjectDisposedException(nameof(ComServer));
-        }
+        ObjectDisposedException.ThrowIf(IsDisposed, this);
         if (lifetimeCheckTimer.Enabled)
         {
             return;
@@ -229,10 +220,7 @@ public sealed class ComServer : IAsyncDisposable
     /// <exception cref="ObjectDisposedException">The instance is disposed.</exception>
     public void Stop()
     {
-        if (IsDisposed)
-        {
-            throw new ObjectDisposedException(nameof(ComServer));
-        }
+        ObjectDisposedException.ThrowIf(IsDisposed, this);
         if (!lifetimeCheckTimer.Enabled)
         {
             return;
@@ -250,10 +238,7 @@ public sealed class ComServer : IAsyncDisposable
     /// <exception cref="ObjectDisposedException">The instance is disposed.</exception>
     public async Task<object?> WaitForFirstObjectAsync()
     {
-        if (IsDisposed)
-        {
-            throw new ObjectDisposedException(nameof(ComServer));
-        }
+        ObjectDisposedException.ThrowIf(IsDisposed, this);
 
         TaskCompletionSource<object>? local = firstInstanceCreated;
         if (local is null)
