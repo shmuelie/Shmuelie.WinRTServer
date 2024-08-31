@@ -35,6 +35,7 @@ namespace Shmuelie.WinRTServer;
 /// <see cref="IAsyncDisposable"/>
 /// <threadsafety static="true" instance="false"/>
 [SupportedOSPlatform("windows8.0")]
+[System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1724", Justification = "No better idea")]
 public sealed class WinRtServer : IAsyncDisposable
 {
     /// <summary>
@@ -321,7 +322,7 @@ public sealed class WinRtServer : IAsyncDisposable
         {
             return null;
         }
-        return await local.Task;
+        return await local.Task.ConfigureAwait(false);
     }
 
     /// <inheritdoc/>
@@ -340,7 +341,7 @@ public sealed class WinRtServer : IAsyncDisposable
                     }
 
                     Empty += Ended;
-                    await tcs.Task;
+                    await tcs.Task.ConfigureAwait(false);
                     Empty -= Ended;
                 }
 

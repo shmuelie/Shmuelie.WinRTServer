@@ -260,7 +260,7 @@ public sealed class ComServer : IAsyncDisposable
         {
             return null;
         }
-        return await local.Task;
+        return await local.Task.ConfigureAwait(false);
     }
 
     /// <summary>
@@ -290,7 +290,7 @@ public sealed class ComServer : IAsyncDisposable
                     }
 
                     Empty += Ended;
-                    await tcs.Task;
+                    await tcs.Task.ConfigureAwait(false);
                     Empty -= Ended;
                 }
 
