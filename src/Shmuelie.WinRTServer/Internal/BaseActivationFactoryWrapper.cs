@@ -8,8 +8,9 @@ using static Windows.Win32.PInvoke;
 namespace Shmuelie.WinRTServer.Internal;
 
 [GeneratedComClass]
-internal partial class BaseActivationFactoryWrapper(BaseActivationFactory factory, ComWrappers comWrappers) : IActivationFactory
+internal sealed partial class BaseActivationFactoryWrapper(BaseActivationFactory factory, ComWrappers comWrappers) : IActivationFactory
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "COM method, must not throw.")]
     public unsafe HRESULT ActivateInstance(void** instance)
     {
         if (instance is null)
@@ -61,6 +62,7 @@ internal partial class BaseActivationFactoryWrapper(BaseActivationFactory factor
         return HRESULT.S_OK;
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "COM method, must not throw.")]
     public unsafe HRESULT GetRuntimeClassName(global::Windows.Win32.System.WinRT.HSTRING* className)
     {
         if (className is null)

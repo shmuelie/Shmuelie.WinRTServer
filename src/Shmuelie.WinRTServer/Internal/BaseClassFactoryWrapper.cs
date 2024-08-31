@@ -9,8 +9,9 @@ using IUnknown = Windows.Win32.System.Com.IUnknown;
 namespace Shmuelie.WinRTServer.Internal;
 
 [GeneratedComClass]
-internal partial class BaseClassFactoryWrapper(BaseClassFactory factory, ComWrappers comWrappers) : IClassFactory
+internal sealed partial class BaseClassFactoryWrapper(BaseClassFactory factory, ComWrappers comWrappers) : IClassFactory
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "COM method, must not throw.")]
     public unsafe HRESULT CreateInstance(void* pUnkOuter, Guid* riid, void** ppvObject)
     {
         if (pUnkOuter is not null)
@@ -61,6 +62,7 @@ internal partial class BaseClassFactoryWrapper(BaseClassFactory factory, ComWrap
         return HRESULT.S_OK;
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "COM method, must not throw.")]
     public HRESULT LockServer(BOOL fLock)
     {
         try
