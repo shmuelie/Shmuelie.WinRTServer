@@ -81,8 +81,12 @@ public static class ComServerExtensions
     /// <returns><see langword="true"/> if the server was removed; otherwise, <see langword="false"/>.</returns>
     /// <exception cref="ObjectDisposedException">The instance is disposed.</exception>
     /// <exception cref="InvalidOperationException">The server is running.</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="server"/> or <paramref name="factory"/> is <see langword="null"/>.</exception>
     public static bool UnregisterClassFactory(this ComServer server, BaseClassFactory factory)
     {
+        ArgumentNullException.ThrowIfNull(server);
+        ArgumentNullException.ThrowIfNull(factory);
+
         return server.UnregisterClassFactory(factory.Clsid);
     }
 }
