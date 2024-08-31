@@ -150,10 +150,7 @@ public sealed class WinRtServer : IAsyncDisposable
     /// <exception cref="InvalidOperationException">The server is running.</exception>
     public bool RegisterActivationFactory(BaseActivationFactory factory, ComWrappers comWrappers)
     {
-        if (IsDisposed)
-        {
-            throw new ObjectDisposedException(nameof(WinRtServer));
-        }
+        ObjectDisposedException.ThrowIf(IsDisposed, this);
         if (IsRunning)
         {
             throw new InvalidOperationException("Can only add activation factories when server is not running");
@@ -179,10 +176,7 @@ public sealed class WinRtServer : IAsyncDisposable
     /// <exception cref="InvalidOperationException">The server is running.</exception>
     public bool UnregisterActivationFactory(BaseActivationFactory factory)
     {
-        if (IsDisposed)
-        {
-            throw new ObjectDisposedException(nameof(WinRtServer));
-        }
+        ObjectDisposedException.ThrowIf(IsDisposed, this);
         if (IsRunning)
         {
             throw new InvalidOperationException("Can only remove activation factories when server is not running");
@@ -229,10 +223,7 @@ public sealed class WinRtServer : IAsyncDisposable
     /// <remarks>Calling <see cref="Start"/> is non-blocking.</remarks>
     public unsafe void Start()
     {
-        if (IsDisposed)
-        {
-            throw new ObjectDisposedException(nameof(WinRtServer));
-        }
+        ObjectDisposedException.ThrowIf(IsDisposed, this);
         if (IsRunning)
         {
             return;
@@ -289,10 +280,7 @@ public sealed class WinRtServer : IAsyncDisposable
     /// </summary>
     public void Stop()
     {
-        if (IsDisposed)
-        {
-            throw new ObjectDisposedException(nameof(WinRtServer));
-        }
+        ObjectDisposedException.ThrowIf(IsDisposed, this);
         if (!IsRunning)
         {
             return;
@@ -312,10 +300,7 @@ public sealed class WinRtServer : IAsyncDisposable
     /// <exception cref="ObjectDisposedException">The instance is disposed.</exception>
     public async Task<object?> WaitForFirstObjectAsync()
     {
-        if (IsDisposed)
-        {
-            throw new ObjectDisposedException(nameof(WinRtServer));
-        }
+        ObjectDisposedException.ThrowIf(IsDisposed, this);
 
         TaskCompletionSource<object>? local = firstInstanceCreated;
         if (local is null)
