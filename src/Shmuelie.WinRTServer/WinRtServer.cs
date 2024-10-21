@@ -310,6 +310,31 @@ public sealed class WinRtServer : IAsyncDisposable
         return await local.Task.ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// Force the server to stop and release all resources.
+    /// </summary>
+    /// <remarks>Unlike <see cref="DisposeAsync"/>, <see cref="UnsafeDispose"/> will ignore if any objects are still alive before unregistering activation factories.</remarks>
+    /// <seealso cref="DisposeAsync"/>
+    public void UnsafeDispose()
+    {
+        if (!IsDisposed)
+        {
+            try
+            {
+                liveServers.Clear();
+                lifetimeCheckTimer.Stop();
+                lifetimeCheckTimer.Dispose();
+
+                RoRevokeActivationFactories(registrationCookie);
+                registrationCookie = (RO_REGISTRATION_COOKIE)0;
+            }
+            finally
+            {
+                IsDisposed = true;
+            }
+        }
+    }
+
     /// <inheritdoc/>
     public async ValueTask DisposeAsync()
     {
