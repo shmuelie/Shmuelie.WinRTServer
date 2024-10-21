@@ -119,12 +119,11 @@ similar).
 To help understand usage and show what can be done samples can be found under
 the tests folder. The sample has:
 
-- .NET Framework Server
-- .NET 7 Server
+- .NET 8 Server
 - UWP .NET Client App
 - C++/WinRT Console Client App
 - WPF .NET Framework Client App
-- WPF .NET 7 Client App
+- WPF .NET 8 Client App
 
 > **Note**: If Visual Studio fails to build the Metadata project restarting
 > Visual Studio should fix the problem.
