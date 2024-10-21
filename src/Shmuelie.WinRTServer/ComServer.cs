@@ -257,6 +257,35 @@ public sealed class ComServer : IAsyncDisposable
         private set;
     }
 
+    /// <summary>
+    /// Force the server to stop and release all resources.
+    /// </summary>
+    /// <remarks>Unlike <see cref="DisposeAsync"/>, <see cref="UnsafeDispose"/> will ignore if any objects are still alive before unregistering class factories.</remarks>
+    /// <seealso cref="DisposeAsync"/>
+    public void UnsafeDispose()
+    {
+        if (!IsDisposed)
+        {
+            try
+            {
+                _ = CoSuspendClassObjects();
+
+                liveServers.Clear();
+                lifetimeCheckTimer.Stop();
+                lifetimeCheckTimer.Dispose();
+
+                foreach (var clsid in factories.Keys)
+                {
+                    _ = UnregisterClassFactory(clsid);
+                }
+            }
+            finally
+            {
+                IsDisposed = true;
+            }
+        }
+    }
+
     /// <inheritdoc/>
     public async ValueTask DisposeAsync()
     {
