@@ -24,15 +24,11 @@ internal sealed partial class BaseActivationFactoryWrapper(BaseActivationFactory
         {
             object managedInstance = factory.ActivateInstance();
             unknown = comWrappers.GetOrCreateComInterfaceForObject(managedInstance, CreateComInterfaceFlags.None);
-            var hr = (HRESULT)Marshal.QueryInterface(unknown, in global::Windows.Win32.System.WinRT.IActivationFactory.IID_Guid, out nint ppv);
-            shouldReleaseUnknown = true;
-            if (hr.Failed)
-            {
-                return hr;
-            }
-            *instance = (void*)ppv;
+            *instance = (void*)unknown;
 
+            shouldReleaseUnknown = true;
             factory.OnInstanceCreated(managedInstance);
+            shouldReleaseUnknown = false;
         }
         catch (Exception e)
         {
