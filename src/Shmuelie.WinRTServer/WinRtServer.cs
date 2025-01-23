@@ -199,7 +199,14 @@ public sealed class WinRtServer : IAsyncDisposable
             return HRESULT.E_NOINTERFACE;
         }
 
-        *factory = (IActivationFactory*)comWrappers.GetOrCreateComInterfaceForObject(new BaseActivationFactoryWrapper(managedFactory.Factory, managedFactory.Wrapper), CreateComInterfaceFlags.None);
+        var unknown = comWrappers.GetOrCreateComInterfaceForObject(new BaseActivationFactoryWrapper(managedFactory.Factory, managedFactory.Wrapper), CreateComInterfaceFlags.None);
+        var hr = (HRESULT)Marshal.QueryInterface(unknown, in global::Windows.Win32.System.WinRT.IActivationFactory.IID_Guid, out nint ppv);
+        *factory = (IActivationFactory*)ppv;
+        if (unknown != 0)
+        {
+            Marshal.Release(unknown);
+        }
+
         return HRESULT.S_OK;
     }
 
