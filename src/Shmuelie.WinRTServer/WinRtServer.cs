@@ -207,7 +207,7 @@ public sealed class WinRtServer : IAsyncDisposable
             Marshal.Release(unknown);
         }
 
-        return HRESULT.S_OK;
+        return hr;
     }
 
     /// <summary>
