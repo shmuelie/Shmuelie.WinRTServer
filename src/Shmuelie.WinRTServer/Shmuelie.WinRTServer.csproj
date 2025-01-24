@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net8.0-windows10.0.22000.0</TargetFramework>
     <IsPackable>true</IsPackable>
-    <PackageReleaseNotes>Add UnsafeDispose methods to ComServer and WinRtServer.</PackageReleaseNotes>
+    <PackageReleaseNotes>Fix issues with using WinRT activation in NativeAOT builds.</PackageReleaseNotes>
     <IsAotCompatible>True</IsAotCompatible>
     <DisableRuntimeMarshalling>True</DisableRuntimeMarshalling>
     <RuntimeIdentifiers>win-x64;win-x86;win-arm64;$(RuntimeIdentifiers)</RuntimeIdentifiers>

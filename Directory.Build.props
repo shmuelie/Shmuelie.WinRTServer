@@ -19,7 +19,7 @@
     As such, this needs to be changed before a new release as well.
   -->
   <PropertyGroup>
-    <ShmuelieWinRTServerPackageVersion>2.1.0</ShmuelieWinRTServerPackageVersion>
+    <ShmuelieWinRTServerPackageVersion>2.1.1</ShmuelieWinRTServerPackageVersion>
     <IsCommitOnReleaseBranch>false</IsCommitOnReleaseBranch>
   </PropertyGroup>
 
@@ -58,7 +58,7 @@
     <Authors>Shmueli Englard</Authors>
     <Owners>Shmueli Englard</Owners>
     <Company>Shmueli Englard</Company>
-    <Copyright>Copyright (c) 2022 Shmueli Englard</Copyright>
+    <Copyright>Copyright (c) 2025 Shmueli Englard</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageIcon>$(MSBuildProjectName)-128.png</PackageIcon>
