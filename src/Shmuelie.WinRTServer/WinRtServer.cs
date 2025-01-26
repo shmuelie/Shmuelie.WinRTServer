@@ -4,7 +4,6 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.Marshalling;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
-using System.Timers;
 using Shmuelie.WinRTServer.Internal;
 using Shmuelie.WinRTServer.Internal.Windows;
 using Windows.Win32.Foundation;
@@ -18,25 +17,11 @@ namespace Shmuelie.WinRTServer;
 /// <summary>
 /// An Out of Process Windows Runtime Server.
 /// </summary>
-/// <remarks>
-/// <para>Allows for types to be created using WinRT activation instead of COM activation like <see cref="ComServer"/>.</para>
-/// <para>Typical usage is to call from an <see langword="await"/> <see langword="using"/> block, using <see cref="WaitForFirstObjectAsync"/> to not close until it is safe to do so.</para>
-/// <code language="cs">
-/// <![CDATA[
-/// await using (WinRtServer server = new WinRtServer())
-/// {
-///     server.RegisterClass<RemoteThing>();
-///     server.Start();
-///     await server.WaitForFirstObjectAsync();
-/// }
-/// ]]>
-/// </code>
-/// </remarks>
-/// <see cref="IAsyncDisposable"/>
+/// <remarks>Allows for types to be created using WinRT activation instead of COM activation like <see cref="ComServer"/>.</remarks>
+/// <see cref="IServer"/>
 /// <threadsafety static="true" instance="false"/>
 [SupportedOSPlatform("windows8.0")]
-[System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1724", Justification = "No better idea")]
-public sealed class WinRtServer : IAsyncDisposable
+public sealed class WinRtServer : IServer
 {
     /// <summary>
     /// Mapping of Activatable Class IDs to activation factories and their <see cref="ComWrappers"/> implementation.
@@ -47,16 +32,6 @@ public sealed class WinRtServer : IAsyncDisposable
 
     private unsafe readonly DllActivationCallback activationFactoryCallbackPointer;
     private readonly StrategyBasedComWrappers comWrappers = new();
-
-    /// <summary>
-    /// Collection of created instances.
-    /// </summary>
-    private readonly LinkedList<WeakReference> liveServers = new();
-
-    /// <summary>
-    /// Timer that checks if all created instances have been collected.
-    /// </summary>
-    private readonly Timer lifetimeCheckTimer;
 
     /// <summary>
     /// Tracks the creation of the first instance after server is started.
@@ -86,45 +61,6 @@ public sealed class WinRtServer : IAsyncDisposable
         {
             options.Get()->Set(GLOBALOPT_PROPERTIES.COMGLB_RO_SETTINGS, (nuint)GLOBALOPT_RO_FLAGS.COMGLB_FAST_RUNDOWN);
         }
-
-        lifetimeCheckTimer = new()
-        {
-            Interval = 60000,
-        };
-        lifetimeCheckTimer.Elapsed += LifetimeCheckTimer_Elapsed;
-    }
-
-    /// <summary>
-    /// Handles <see cref="Timer.Elapsed"/> event from <see cref="lifetimeCheckTimer"/>.
-    /// </summary>
-    /// <param name="sender">The source of the event.</param>
-    /// <param name="e">An <see cref="ElapsedEventArgs"/> object that contains the event data.</param>
-    private void LifetimeCheckTimer_Elapsed(object? sender, ElapsedEventArgs e)
-    {
-        if (IsDisposed)
-        {
-            return;
-        }
-
-        GC.Collect();
-        for (LinkedListNode<WeakReference>? node = liveServers.First; node != null; node = node.Next)
-        {
-            if (!node.Value.IsAlive)
-            {
-                var previous = node.Previous;
-                liveServers.Remove(node);
-                if (previous is null)
-                {
-                    break;
-                }
-                node = previous;
-            }
-        }
-
-        if (liveServers.Count == 0)
-        {
-            Empty?.Invoke(this, EventArgs.Empty);
-        }
     }
 
     private void Factory_InstanceCreated(object? sender, InstanceCreatedEventArgs e)
@@ -134,7 +70,6 @@ public sealed class WinRtServer : IAsyncDisposable
             return;
         }
 
-        liveServers.AddLast(new WeakReference(e.Instance));
         InstanceCreated?.Invoke(this, e);
         firstInstanceCreated?.TrySetResult(e.Instance);
     }
@@ -279,7 +214,6 @@ public sealed class WinRtServer : IAsyncDisposable
         }
 
         firstInstanceCreated = new();
-        lifetimeCheckTimer.Start();
     }
 
     /// <summary>
@@ -297,7 +231,6 @@ public sealed class WinRtServer : IAsyncDisposable
         registrationCookie = (RO_REGISTRATION_COOKIE)0;
 
         firstInstanceCreated = null;
-        lifetimeCheckTimer.Stop();
     }
 
     /// <summary>
@@ -320,18 +253,12 @@ public sealed class WinRtServer : IAsyncDisposable
     /// <summary>
     /// Force the server to stop and release all resources.
     /// </summary>
-    /// <remarks>Unlike <see cref="DisposeAsync"/>, <see cref="UnsafeDispose"/> will ignore if any objects are still alive before unregistering activation factories.</remarks>
-    /// <seealso cref="DisposeAsync"/>
-    public void UnsafeDispose()
+    public void Dispose()
     {
         if (!IsDisposed)
         {
             try
             {
-                liveServers.Clear();
-                lifetimeCheckTimer.Stop();
-                lifetimeCheckTimer.Dispose();
-
                 RoRevokeActivationFactories(registrationCookie);
                 registrationCookie = (RO_REGISTRATION_COOKIE)0;
             }
@@ -341,44 +268,6 @@ public sealed class WinRtServer : IAsyncDisposable
             }
         }
     }
-
-    /// <inheritdoc/>
-    public async ValueTask DisposeAsync()
-    {
-        if (!IsDisposed)
-        {
-            try
-            {
-                if (liveServers.Count != 0)
-                {
-                    TaskCompletionSource<bool> tcs = new();
-                    void Ended(object? sender, EventArgs e)
-                    {
-                        tcs.SetResult(true);
-                    }
-
-                    Empty += Ended;
-                    await tcs.Task.ConfigureAwait(false);
-                    Empty -= Ended;
-                }
-
-                lifetimeCheckTimer.Stop();
-                lifetimeCheckTimer.Dispose();
-
-                RoRevokeActivationFactories(registrationCookie);
-                registrationCookie = (RO_REGISTRATION_COOKIE)0;
-            }
-            finally
-            {
-                IsDisposed = true;
-            }
-        }
-    }
-
-    /// <summary>
-    /// Occurs when the server has no live objects.
-    /// </summary>
-    public event EventHandler? Empty;
 
     /// <summary>
     /// Occurs when the server creates an object.
