@@ -19,7 +19,7 @@ namespace Shmuelie.WinRTServer;
 /// </summary>
 /// <remarks>
 /// <para>Allows for types to be created using WinRT activation instead of COM activation like <see cref="ComServer"/>.</para>
-/// <para>Typical usage is to call from an <see langword="await"/> <see langword="using"/> block, using <see cref="WaitForFirstObjectAsync"/> to not close until it is safe to do so.</para>
+/// <para>Typical usage is to call from a <see langword="using"/> block, using <see cref="WaitForFirstObjectAsync"/> to not close until it is safe to do so.</para>
 /// <code language="cs">
 /// <![CDATA[
 /// using (WinRtServer server = new WinRtServer())
