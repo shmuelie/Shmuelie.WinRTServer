@@ -4,7 +4,6 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.Marshalling;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
-using System.Timers;
 using Shmuelie.WinRTServer.Internal;
 using Shmuelie.WinRTServer.Internal.Windows;
 using Windows.Win32.Foundation;
@@ -18,10 +17,10 @@ namespace Shmuelie.WinRTServer;
 /// </summary>
 /// <remarks>
 /// <para>Allows for types to be created using COM activation instead of WinRT activation like <see cref="WinRtServer"/>.</para>
-/// <para>Typical usage is to call from an <see langword="await"/> <see langword="using"/> block, using <see cref="WaitForFirstObjectAsync"/> to not close until it is safe to do so.</para>
+/// <para>Typical usage is to call from a <see langword="using"/> block, using <see cref="WaitForFirstObjectAsync"/> to not close until it is safe to do so.</para>
 /// <code language="cs">
 /// <![CDATA[
-/// await using (ComServer server = new ComServer())
+/// using (ComServer server = new ComServer())
 /// {
 ///     server.RegisterClass<RemoteThing, IRemoteThing>();
 ///     server.Start();
@@ -30,25 +29,15 @@ namespace Shmuelie.WinRTServer;
 /// ]]>
 /// </code>
 /// </remarks>
-/// <see cref="IAsyncDisposable"/>
+/// <see cref="IDisposable"/>
 /// <threadsafety static="true" instance="false"/>
 [SupportedOSPlatform("windows6.0.6000")]
-public sealed class ComServer : IAsyncDisposable
+public sealed class ComServer : IDisposable
 {
     /// <summary>
     /// Map of class factories and the registration cookie from the CLSID that the factory creates.
     /// </summary>
     private readonly Dictionary<Guid, (BaseClassFactory factory, uint cookie)> factories = [];
-
-    /// <summary>
-    /// Collection of created instances.
-    /// </summary>
-    private readonly LinkedList<WeakReference> liveServers = new();
-
-    /// <summary>
-    /// Timer that checks if all created instances have been collected.
-    /// </summary>
-    private readonly Timer lifetimeCheckTimer;
 
     private readonly StrategyBasedComWrappers comWrappers = new();
 
@@ -69,47 +58,6 @@ public sealed class ComServer : IAsyncDisposable
         {
             options.Get()->Set(GLOBALOPT_PROPERTIES.COMGLB_RO_SETTINGS, (nuint)GLOBALOPT_RO_FLAGS.COMGLB_FAST_RUNDOWN);
         }
-
-        lifetimeCheckTimer = new()
-        {
-            Interval = 60000,
-        };
-        lifetimeCheckTimer.Elapsed += LifetimeCheckTimer_Elapsed;
-    }
-
-    /// <summary>
-    /// Handles <see cref="Timer.Elapsed"/> event from <see cref="lifetimeCheckTimer"/>.
-    /// </summary>
-    /// <param name="sender">The source of the event.</param>
-    /// <param name="e">An <see cref="ElapsedEventArgs"/> object that contains the event data.</param>
-    private void LifetimeCheckTimer_Elapsed(object? sender, ElapsedEventArgs e)
-    {
-        if (IsDisposed)
-        {
-            return;
-        }
-
-        uint? instanceCount = null;
-        GC.Collect();
-        for (LinkedListNode<WeakReference>? node = liveServers.First; node != null; node = node.Next)
-        {
-            if (!node.Value.IsAlive)
-            {
-                instanceCount = CoReleaseServerProcess();
-                var previous = node.Previous;
-                liveServers.Remove(node);
-                if (previous is null)
-                {
-                    break;
-                }
-                node = previous;
-            }
-        }
-
-        if (instanceCount == 0)
-        {
-            Empty?.Invoke(this, EventArgs.Empty);
-        }
     }
 
     /// <summary>
@@ -128,7 +76,7 @@ public sealed class ComServer : IAsyncDisposable
         ObjectDisposedException.ThrowIf(IsDisposed, this);
         ArgumentNullException.ThrowIfNull(factory);
         ArgumentNullException.ThrowIfNull(comWrappers);
-        if (lifetimeCheckTimer.Enabled)
+        if (IsRunning)
         {
             throw new InvalidOperationException("Can only add class factories when server is not running.");
         }
@@ -162,7 +110,7 @@ public sealed class ComServer : IAsyncDisposable
     public unsafe bool UnregisterClassFactory(Guid clsid)
     {
         ObjectDisposedException.ThrowIf(IsDisposed, this);
-        if (lifetimeCheckTimer.Enabled)
+        if (IsRunning)
         {
             throw new InvalidOperationException("Can only remove class factories when server is not running.");
         }
@@ -186,7 +134,6 @@ public sealed class ComServer : IAsyncDisposable
             return;
         }
 
-        liveServers.AddLast(new WeakReference(e.Instance));
         InstanceCreated?.Invoke(this, e);
         firstInstanceCreated?.TrySetResult(e.Instance);
     }
@@ -194,7 +141,7 @@ public sealed class ComServer : IAsyncDisposable
     /// <summary>
     /// Gets a value indicating whether the server is running.
     /// </summary>
-    public bool IsRunning => lifetimeCheckTimer.Enabled;
+    public bool IsRunning { get; private set; }
 
     /// <summary>
     /// Starts the server.
@@ -204,14 +151,14 @@ public sealed class ComServer : IAsyncDisposable
     public void Start()
     {
         ObjectDisposedException.ThrowIf(IsDisposed, this);
-        if (lifetimeCheckTimer.Enabled)
+        if (IsRunning)
         {
             return;
         }
 
         firstInstanceCreated = new();
-        lifetimeCheckTimer.Start();
         CoResumeClassObjects().ThrowOnFailure();
+        IsRunning = true;
     }
 
     /// <summary>
@@ -221,13 +168,13 @@ public sealed class ComServer : IAsyncDisposable
     public void Stop()
     {
         ObjectDisposedException.ThrowIf(IsDisposed, this);
-        if (!lifetimeCheckTimer.Enabled)
+        if (!IsRunning)
         {
             return;
         }
 
         firstInstanceCreated = null;
-        lifetimeCheckTimer.Stop();
+        IsRunning = false;
         CoSuspendClassObjects().ThrowOnFailure();
     }
 
@@ -260,9 +207,7 @@ public sealed class ComServer : IAsyncDisposable
     /// <summary>
     /// Force the server to stop and release all resources.
     /// </summary>
-    /// <remarks>Unlike <see cref="DisposeAsync"/>, <see cref="UnsafeDispose"/> will ignore if any objects are still alive before unregistering class factories.</remarks>
-    /// <seealso cref="DisposeAsync"/>
-    public void UnsafeDispose()
+    public void Dispose()
     {
         if (!IsDisposed)
         {
@@ -270,13 +215,11 @@ public sealed class ComServer : IAsyncDisposable
             {
                 _ = CoSuspendClassObjects();
 
-                liveServers.Clear();
-                lifetimeCheckTimer.Stop();
-                lifetimeCheckTimer.Dispose();
+                IsRunning = false;
 
                 foreach (var clsid in factories.Keys)
                 {
-                    _ = UnregisterClassFactory(clsid);
+                  _ = UnregisterClassFactory(clsid);
                 }
             }
             finally
@@ -285,48 +228,6 @@ public sealed class ComServer : IAsyncDisposable
             }
         }
     }
-
-    /// <inheritdoc/>
-    public async ValueTask DisposeAsync()
-    {
-        if (!IsDisposed)
-        {
-            try
-            {
-                _ = CoSuspendClassObjects();
-
-                if (liveServers.Count != 0)
-                {
-                    TaskCompletionSource<bool> tcs = new();
-                    void Ended(object? sender, EventArgs e)
-                    {
-                        tcs.SetResult(true);
-                    }
-
-                    Empty += Ended;
-                    await tcs.Task.ConfigureAwait(false);
-                    Empty -= Ended;
-                }
-
-                lifetimeCheckTimer.Stop();
-                lifetimeCheckTimer.Dispose();
-
-                foreach (var clsid in factories.Keys)
-                {
-                    _ = UnregisterClassFactory(clsid);
-                }
-            }
-            finally
-            {
-                IsDisposed = true;
-            }
-        }
-    }
-
-    /// <summary>
-    /// Occurs when the server has no live objects.
-    /// </summary>
-    public event EventHandler? Empty;
 
     /// <summary>
     /// Occurs when the server creates an object.
