@@ -12,7 +12,7 @@ public static class Program
     {
         if (args.Contains("-COM"))
         {
-            await using (ComServer server = new ComServer())
+            using (ComServer server = new ComServer())
             {
                 server.RegisterClass<RemoteThing, IRemoteThing>();
                 server.RegisterClass<Times, ITimes>();
@@ -23,7 +23,7 @@ public static class Program
         }
         else if (args.Contains("-WINRT"))
         {
-            await using (WinRtServer server = new WinRtServer())
+            using (WinRtServer server = new WinRtServer())
             {
                 server.RegisterClass<RemoteThing>();
                 server.RegisterClass<Times>();
