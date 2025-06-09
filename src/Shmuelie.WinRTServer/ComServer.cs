@@ -189,6 +189,9 @@ public sealed class ComServer : IAsyncDisposable
         liveServers.AddLast(new WeakReference(e.Instance));
         InstanceCreated?.Invoke(this, e);
         firstInstanceCreated?.TrySetResult(e.Instance);
+
+        // Reset the TaskCompletionSource to avoid keeping a reference to the first instance created indefinitely.
+        firstInstanceCreated = new TaskCompletionSource<object>();
     }
 
     /// <summary>
