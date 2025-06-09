@@ -65,21 +65,6 @@ internal sealed partial class BaseClassFactoryWrapper(BaseClassFactory factory, 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "COM method, must not throw.")]
     public HRESULT LockServer(BOOL fLock)
     {
-        try
-        {
-            if (fLock != 0)
-            {
-                _ = CoAddRefServerProcess();
-            }
-            else
-            {
-                _ = CoReleaseServerProcess();
-            }
-        }
-        catch (Exception e)
-        {
-            return (HRESULT)Marshal.GetHRForException(e);
-        }
         return HRESULT.S_OK;
     }
 }
