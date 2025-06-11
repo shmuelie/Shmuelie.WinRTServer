@@ -26,7 +26,7 @@ jobs:
     - name: Build
       run: msbuild /t:restore`;build /p:Configuration=${{matrix.configuration}} /p:Platform=x64 /bl
     - name: Upload MSBuild binary log
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: msbuild_log_${{matrix.configuration}}
         path: msbuild.binlog
@@ -51,7 +51,7 @@ jobs:
     - name: Pack
       run: msbuild .\src\Shmuelie.WinRTServer\Shmuelie.WinRTServer.csproj /t:pack /p:Configuration=Release
     - name: Upload package artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: nuget_packages
         path: artifacts\*.nupkg
@@ -63,7 +63,7 @@ jobs:
     runs-on: windows-2022
     if: ${{github.event_name == 'push'}}
     steps:
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: nuget_packages
         path: artifacts
