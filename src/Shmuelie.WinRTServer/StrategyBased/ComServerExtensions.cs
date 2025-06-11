@@ -83,4 +83,16 @@ public static class ComServerExtensions
 
         return server.UnregisterClassFactory(factory.Clsid);
     }
+
+    /// <summary>
+    /// Get or create a CCW using the default ComWrappers object used by this extension class.
+    /// </summary>
+    /// <param name="managedObject">Managed object to create a CCW for.</param>
+    /// <exception cref="ArgumentNullException">The managed object being passed is null.</exception>
+    public static nint GetOrCreateComInterfaceForObject(object managedObject)
+    {
+        ArgumentNullException.ThrowIfNull(managedObject);
+
+        return comWrappers.GetOrCreateComInterfaceForObject(managedObject, System.Runtime.InteropServices.CreateComInterfaceFlags.None);
+    }
 }
