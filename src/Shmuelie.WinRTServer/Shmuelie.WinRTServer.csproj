@@ -4,7 +4,7 @@
     <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
     <TargetFrameworks>netstandard2.0;net8.0-windows$(TargetPlatformVersion)</TargetFrameworks>
     <IsPackable>true</IsPackable>
-    <PackageReleaseNotes>Added support for modern .NET servers.</PackageReleaseNotes>
+    <PackageReleaseNotes>Fix lifecycle bug, backported from v2</PackageReleaseNotes>
     <PolySharpIncludeRuntimeSupportedAttributes>true</PolySharpIncludeRuntimeSupportedAttributes>
   </PropertyGroup>
   <!-- .NET Standard 2.0 polyfill packages -->
