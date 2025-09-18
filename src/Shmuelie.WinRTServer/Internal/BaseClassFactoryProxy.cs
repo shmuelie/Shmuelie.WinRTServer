@@ -196,21 +196,6 @@ internal unsafe struct BaseClassFactoryProxy
 
         public static HRESULT LockServer(BaseClassFactoryProxy* @this, int fLock)
         {
-            try
-            {
-                if (fLock != 0)
-                {
-                    _ = CoAddRefServerProcess();
-                }
-                else
-                {
-                    _ = CoReleaseServerProcess();
-                }
-            }
-            catch (Exception e)
-            {
-                return (HRESULT)Marshal.GetHRForException(e);
-            }
             return HRESULT.S_OK;
         }
     }
