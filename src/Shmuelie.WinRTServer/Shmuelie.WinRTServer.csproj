@@ -33,4 +33,9 @@
       <Link>.editorconfig</Link>
     </None>
   </ItemGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)..\..\sgKey.snk</AssemblyOriginatorKeyFile>
+    <AssemblySignPublicKey>002400000480000094000000060200000024000052534131000400000100010089ee6d688497ce3febd2748172c9b44e20b97faed74ecb940eb120a5da7185b531c15e81ceaa4b7fb7cfd6a28fe28e6ffca10cc3339554d32e9fd7e1d380db2ea5e2b9df4f9d53bcc95fd6f6de6fb20cc5ab3ebf7713eb9d458c04aac2a5dc66ac9fb0c7cf37891e03fb084f75f54b8798f87f6bd88fe6fc60660a4e026412b3</AssemblySignPublicKey>
+  </PropertyGroup>
 </Project>
