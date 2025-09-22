@@ -169,7 +169,7 @@ public sealed class ComServer : IAsyncDisposable
             return;
         }
 
-        liveServers.AddLast(new WeakReference(e.Instance));
+        liveServers.Add(new WeakReference(e.Instance));
         InstanceCreated?.Invoke(this, e);
         firstInstanceCreated?.TrySetResult(e.Instance);
 
