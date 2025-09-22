@@ -26,7 +26,7 @@ public sealed class ComServer : IAsyncDisposable
     /// <summary>
     /// Collection of created instances.
     /// </summary>
-    private readonly LinkedList<WeakReference> liveServers = new();
+    private readonly List<WeakReference> liveServers = new();
 
     /// <summary>
     /// Timer that checks if all created instances have been collected.
@@ -70,24 +70,18 @@ public sealed class ComServer : IAsyncDisposable
             return;
         }
 
-        uint? instanceCount = null;
         GC.Collect();
-        for (LinkedListNode<WeakReference>? node = liveServers.First; node != null; node = node.Next)
+        GC.WaitForPendingFinalizers();
+        for (int i = liveServers.Count - 1; i >= 0; i--)
         {
-            if (!node.Value.IsAlive)
+            WeakReference weakRef = liveServers[i];
+            if (!weakRef.IsAlive)
             {
-                instanceCount = CoReleaseServerProcess();
-                var previous = node.Previous;
-                liveServers.Remove(node);
-                if (previous is null)
-                {
-                    break;
-                }
-                node = previous;
+                liveServers.RemoveAt(i);
             }
         }
 
-        if (instanceCount == 0)
+        if (liveServers.Count == 0)
         {
             Empty?.Invoke(this, EventArgs.Empty);
         }
