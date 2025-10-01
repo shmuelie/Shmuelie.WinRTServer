@@ -20,14 +20,14 @@ namespace Shmuelie.WinRTServer;
 /// </summary>
 /// <remarks>
 /// <para>Allows for types to be created using WinRT activation instead of COM activation like <see cref="ComServer"/>.</para>
-/// <para>Typical usage is to call from an <see langword="await"/> <see langword="using"/> block, using <see cref="WaitForFirstObjectAsync"/> to not close until it is safe to do so.</para>
+/// <para>Typical usage is to call from an <see langword="await"/> <see langword="using"/> block, using <see cref="WaitForEmptyAsync"/> to not close until it is safe to do so.</para>
 /// <code language="cs">
 /// <![CDATA[
 /// await using (WinRtServer server = new WinRtServer())
 /// {
 ///     server.RegisterClass<RemoteThing>();
 ///     server.Start();
-///     await server.WaitForFirstObjectAsync();
+///     await server.WaitForEmptyAsync();
 /// }
 /// ]]>
 /// </code>
@@ -298,6 +298,33 @@ public sealed class WinRtServer : IAsyncDisposable
 
         firstInstanceCreated = null;
         lifetimeCheckTimer.Stop();
+    }
+
+    /// <summary>
+    /// Wait for all objects created by the server to be deallocated.
+    /// </summary>
+    /// <returns>
+    /// A <see cref="Task"/> to await.
+    /// </returns>
+    /// <exception cref="ObjectDisposedException">The instance is disposed.</exception>
+    /// <exception cref="InvalidOperationException">Thrown if <see cref="Start"/> has not yet been called.</exception>
+    public async Task WaitForEmptyAsync()
+    {
+        ObjectDisposedException.ThrowIf(IsDisposed, this);
+        if (!IsRunning)
+        {
+            throw new InvalidOperationException("WaitForEmptyAsync() cannot be called if the WinRtServer is stopped");
+        }
+
+        TaskCompletionSource taskCompletionSource = new();
+        void OnEmpty(object? sender, EventArgs e)
+        {
+            taskCompletionSource.SetResult();
+        }
+
+        Empty += OnEmpty;
+        await taskCompletionSource.Task.ConfigureAwait(false);
+        Empty -= OnEmpty;
     }
 
     /// <summary>

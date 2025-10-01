@@ -18,14 +18,14 @@ namespace Shmuelie.WinRTServer;
 /// </summary>
 /// <remarks>
 /// <para>Allows for types to be created using COM activation instead of WinRT activation like <see cref="WinRtServer"/>.</para>
-/// <para>Typical usage is to call from an <see langword="await"/> <see langword="using"/> block, using <see cref="WaitForFirstObjectAsync"/> to not close until it is safe to do so.</para>
+/// <para>Typical usage is to call from an <see langword="await"/> <see langword="using"/> block, using <see cref="WaitForEmptyAsync"/> to not close until it is safe to do so.</para>
 /// <code language="cs">
 /// <![CDATA[
 /// await using (ComServer server = new ComServer())
 /// {
 ///     server.RegisterClass<RemoteThing, IRemoteThing>();
 ///     server.Start();
-///     await server.WaitForFirstObjectAsync();
+///     await server.WaitForEmptyAsync();
 /// }
 /// ]]>
 /// </code>
@@ -228,6 +228,33 @@ public sealed class ComServer : IAsyncDisposable
         firstInstanceCreated = null;
         lifetimeCheckTimer.Stop();
         CoSuspendClassObjects().ThrowOnFailure();
+    }
+
+    /// <summary>
+    /// Wait for all objects created by the server to be deallocated.
+    /// </summary>
+    /// <returns>
+    /// A <see cref="Task"/> to await.
+    /// </returns>
+    /// <exception cref="ObjectDisposedException">The instance is disposed.</exception>
+    /// <exception cref="InvalidOperationException">Thrown if <see cref="Start"/> has not yet been called.</exception>
+    public async Task WaitForEmptyAsync()
+    {
+        ObjectDisposedException.ThrowIf(IsDisposed, this);
+        if (!lifetimeCheckTimer.Enabled)
+        {
+            throw new InvalidOperationException("WaitForEmptyAsync() cannot be called if the ComServer is stopped");
+        }
+
+        TaskCompletionSource taskCompletionSource = new();
+        void OnEmpty(object? sender, EventArgs e)
+        {
+            taskCompletionSource.SetResult();
+        }
+
+        Empty += OnEmpty;
+        await taskCompletionSource.Task.ConfigureAwait(false);
+        Empty -= OnEmpty;
     }
 
     /// <summary>
