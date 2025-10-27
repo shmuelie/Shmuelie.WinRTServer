@@ -323,15 +323,7 @@ public sealed class ComServer : IAsyncDisposable
 
                 if (liveServers.Count != 0)
                 {
-                    TaskCompletionSource<bool> tcs = new();
-                    void Ended(object? sender, EventArgs e)
-                    {
-                        tcs.SetResult(true);
-                    }
-
-                    Empty += Ended;
-                    await tcs.Task.ConfigureAwait(false);
-                    Empty -= Ended;
+                    await WaitForEmptyAsync().ConfigureAwait(false);
                 }
 
                 lifetimeCheckTimer.Stop();
