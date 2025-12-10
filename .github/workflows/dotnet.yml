@@ -18,7 +18,7 @@ jobs:
     - name: Git checkout
       uses: actions/checkout@v3
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1
+      uses: microsoft/setup-msbuild@v2
     - name: Setup NuGet
       uses: nuget/setup-nuget@v1
     - name: NuGet Restore
@@ -41,7 +41,7 @@ jobs:
     - name: Git checkout
       uses: actions/checkout@v3
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1
+      uses: microsoft/setup-msbuild@v2
     - name: Setup NuGet
       uses: nuget/setup-nuget@v1
     - name: NuGet Restore
