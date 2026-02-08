@@ -6,4 +6,5 @@
     <File Path="LICENSE" />
     <File Path="README.md" />
   </Folder>
+  <Project Path="Shmuelie.WinRTServer/Shmuelie.WinRTServer.csproj" Id="d9a59955-1f42-4ee4-9611-7e147f700b8d" />
 </Solution>
