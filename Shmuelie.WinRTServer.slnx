@@ -7,6 +7,8 @@
     <File Path="README.md" />
   </Folder>
   <Folder Name="/src/">
+    <Project Path="src/Shmuelie.WinRTServer.Annotations/Shmuelie.WinRTServer.Annotations.csproj" Id="fb30e123-caf6-4b58-9abf-5c340f6c10d5" />
+    <Project Path="src/Shmuelie.WinRTServer.SourceGenerator/Shmuelie.WinRTServer.SourceGenerator.csproj" Id="554ceaa4-9aba-430c-9544-c6df04b3032e" />
     <Project Path="src/Shmuelie.WinRTServer/Shmuelie.WinRTServer.csproj" />
   </Folder>
 </Solution>
