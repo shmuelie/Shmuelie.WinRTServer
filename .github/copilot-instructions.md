@@ -84,8 +84,9 @@ projects WinRT types:
 ## Contract/implementation conventions
 
 The three-project consumer model (contract WinMD → C++/WinRT metadata WinMD →
-server) is documented in `README.md`; the `tests/` samples are the reference
-implementation. Key rules that are easy to get wrong:
+server) is documented in the docs site (`docs/articles/getting-started.md`); the
+`tests/` samples are the reference implementation. Key rules that are easy to get
+wrong:
 
 - **Contract interfaces** use `Windows.Foundation.Metadata.GuidAttribute`;
   **server implementations** use `System.Runtime.InteropServices.GuidAttribute`.
