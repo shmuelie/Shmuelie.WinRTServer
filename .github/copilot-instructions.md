@@ -15,7 +15,13 @@ C++/WinRT projects require a real `nuget restore` first.
 - Restore + build the whole solution (mirrors CI):
   `nuget restore` then
   `msbuild /t:restore;build /p:Configuration=Debug /p:Platform=x64`
-  (bare `nuget restore` / `msbuild` auto-discover the `.slnx`).
+  (bare `nuget restore` / `msbuild` auto-discover the `.slnx`). A clean
+  from-scratch build may need to be run **twice** to converge: the C++/WinRT
+  `samples/Shmuelie.WinRTServer.Sample.Metadata` project emits a WinMD the other
+  samples consume, and it isn't always ready on the first pass (this is the
+  sample-build fragility the README documents — rerun the build, or rebuild in
+  Visual Studio). The `src/` library and `tests/` projects are unaffected and
+  build with plain `dotnet`.
 - Build just the library (SDK-style, so `dotnet` also works):
   `msbuild .\src\Shmuelie.WinRTServer\Shmuelie.WinRTServer.csproj /t:restore;build /p:Configuration=Release`
 - Pack the NuGet: add `/t:pack`; output goes to `artifacts/` (`PackageOutputPath`).

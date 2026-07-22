@@ -76,6 +76,25 @@ Runnable samples live under the `samples` folder:
 - WPF .NET Framework Client App
 - WPF .NET 10 Client App
 
+> **Note**: Because the samples mix SDK-style, C++/WinRT, and packaging
+> (`.wapproj`) projects, a clean build sometimes needs to be run **more than
+> once** to converge — the C++/WinRT `Metadata` project generates a WinMD that
+> the other projects consume, and on a from-scratch build it may not be ready on
+> the first pass. If a sample fails to build with missing-type errors, build the
+> solution again (or, in Visual Studio, rebuild / restart Visual Studio).
+
+# Tests
+
+Automated unit tests live under the `tests` folder and run with `dotnet test`:
+
+- `Shmuelie.WinRTServer.Tests` — exercises the library (lifetime helpers,
+  factories, options, argument guards).
+- `Shmuelie.WinRTServer.SourceGenerator.Tests` — Roslyn-driver tests for the
+  `[ServerClass]` source generator.
+
+These cover the pure-managed surface; full COM/WinRT activation round-trips are
+validated by the sample apps.
+
 [1]: https://github.com/Shmuelie/Shmuelie.WinRTServer/actions
 [2]: https://www.nuget.org/stats/packages/Shmuelie.WinRTServer?groupby=Version
 [3]: https://www.nuget.org/packages/Shmuelie.WinRTServer/
