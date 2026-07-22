@@ -3,8 +3,6 @@
 
   <PropertyGroup>
     <IsPackable>false</IsPackable>
-    <IsPublishable>false</IsPublishable>
-    <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>
 </Project>

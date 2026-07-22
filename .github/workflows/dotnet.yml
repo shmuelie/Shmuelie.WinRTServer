@@ -29,6 +29,10 @@ jobs:
       run: nuget restore
     - name: Build
       run: msbuild /t:restore`;build /p:Configuration=${{matrix.configuration}} /p:Platform=x64 /bl
+    - name: Test
+      run: |
+        dotnet test .\tests\Shmuelie.WinRTServer.Tests\Shmuelie.WinRTServer.Tests.csproj -c ${{matrix.configuration}} -p:Platform=x64
+        dotnet test .\tests\Shmuelie.WinRTServer.SourceGenerator.Tests\Shmuelie.WinRTServer.SourceGenerator.Tests.csproj -c ${{matrix.configuration}}
     - name: Upload MSBuild binary log
       uses: actions/upload-artifact@v4
       with:

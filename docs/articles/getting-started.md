@@ -1,10 +1,11 @@
 # Getting Started
 
 This walkthrough builds a complete out-of-process server and a client that uses
-it. The moving parts mirror the reference sample under `tests/` in the
+it. The moving parts mirror the reference sample under `samples/` in the
 repository.
 
-A working solution has up to four kinds of project:
+A working solution has up to four kinds of project (the reference sample lives
+under `samples/` in the repository):
 
 1. **Contract** — a C# project whose output is a WinMD containing the *interfaces*
    of your remote objects.

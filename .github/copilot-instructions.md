@@ -19,10 +19,14 @@ C++/WinRT projects require a real `nuget restore` first.
 - Build just the library (SDK-style, so `dotnet` also works):
   `msbuild .\src\Shmuelie.WinRTServer\Shmuelie.WinRTServer.csproj /t:restore;build /p:Configuration=Release`
 - Pack the NuGet: add `/t:pack`; output goes to `artifacts/` (`PackageOutputPath`).
-- There is **no unit test suite**. Everything under `tests/` is a set of runnable
-  *sample* projects (server + UWP/WPF/C++ clients) used to validate behavior
-  manually, not an automated test project. `TreatWarningsAsErrors` is on, so a
-  clean build is the primary correctness gate.
+- Unit tests live under `tests/` (xUnit): `Shmuelie.WinRTServer.Tests`
+  (net10.0-windows, exercises the library) and `Shmuelie.WinRTServer.SourceGenerator.Tests`
+  (net10.0, Roslyn-driver tests for the generator). Run with
+  `dotnet test .\tests\Shmuelie.WinRTServer.Tests\Shmuelie.WinRTServer.Tests.csproj`
+  (COM-activation round-trips are intentionally not covered here). The runnable
+  *sample* projects (server + UWP/WPF/C++ clients) moved to `samples/` and
+  validate behavior manually. `TreatWarningsAsErrors` is on, so a clean build is
+  also a correctness gate.
 
 SDK is pinned to 10.0.302 (`global.json`, `rollForward: latestFeature`), and
 `MSBuild.Sdk.Extras` 3.0.44 is used for some sample project types. The library
@@ -85,7 +89,7 @@ projects WinRT types:
 
 The three-project consumer model (contract WinMD → C++/WinRT metadata WinMD →
 server) is documented in the docs site (`docs/articles/getting-started.md`); the
-`tests/` samples are the reference implementation. Key rules that are easy to get
+`samples/` projects are the reference implementation. Key rules that are easy to get
 wrong:
 
 - **Contract interfaces** use `Windows.Foundation.Metadata.GuidAttribute`;
@@ -97,7 +101,7 @@ wrong:
 - Implementations typically expose a normal `Task`-based public method plus an
   explicit-interface member (marked `[DebuggerNonUserCode]`) that adapts it to
   the WinRT type via `System.Runtime.InteropServices.WindowsRuntime.AsyncInfo.Run`.
-  See `tests/Shmuelie.WinRTServer.Sample.ServerNet6/RemoteThing.cs`.
+  See `samples/Shmuelie.WinRTServer.Sample.ServerNet6/RemoteThing.cs`.
 
 ## Versioning / release
 

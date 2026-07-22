@@ -68,7 +68,7 @@ await lifetime.WaitUntilEmptyAsync();
 
 # Samples
 
-Runnable samples live under the `tests` folder:
+Runnable samples live under the `samples` folder:
 
 - .NET 10 Server
 - UWP .NET Client App

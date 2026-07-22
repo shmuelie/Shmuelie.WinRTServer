@@ -25,7 +25,8 @@ public sealed class PollingServerLifetime : IServerLifetime
     private readonly Timer lifetimeCheckTimer;
     private readonly List<WeakReference> liveServers = new();
     private readonly object gate = new();
-    private readonly TaskCompletionSource<object?> firstInstance = new(TaskCreationOptions.RunContinuationsAsynchronously);
+    private readonly TaskCompletionSource firstInstanceSignal = new(TaskCreationOptions.RunContinuationsAsynchronously);
+    private WeakReference? firstInstance;
     private TaskCompletionSource<bool>? emptyTcs;
     private bool everCreated;
     private bool disposed;
@@ -56,9 +57,10 @@ public sealed class PollingServerLifetime : IServerLifetime
         {
             everCreated = true;
             liveServers.Add(new WeakReference(e.Instance));
+            firstInstance ??= new WeakReference(e.Instance);
         }
 
-        firstInstance.TrySetResult(e.Instance);
+        firstInstanceSignal.TrySetResult();
     }
 
     private void LifetimeCheckTimer_Elapsed(object? sender, ElapsedEventArgs e)
@@ -115,7 +117,14 @@ public sealed class PollingServerLifetime : IServerLifetime
     }
 
     /// <inheritdoc/>
-    public Task<object?> WaitForFirstObjectAsync() => firstInstance.Task;
+    public async Task<object?> WaitForFirstObjectAsync()
+    {
+        await firstInstanceSignal.Task.ConfigureAwait(false);
+        lock (gate)
+        {
+            return firstInstance?.Target;
+        }
+    }
 
     /// <inheritdoc/>
     public Task WaitUntilEmptyAsync()
@@ -152,7 +161,7 @@ public sealed class PollingServerLifetime : IServerLifetime
         server.InstanceCreated -= Server_InstanceCreated;
         lifetimeCheckTimer.Stop();
         lifetimeCheckTimer.Dispose();
-        firstInstance.TrySetResult(null);
+        firstInstanceSignal.TrySetResult();
         local?.TrySetResult(true);
     }
 }

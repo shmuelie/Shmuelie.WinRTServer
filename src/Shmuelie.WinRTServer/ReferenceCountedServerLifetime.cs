@@ -32,7 +32,8 @@ public sealed class ReferenceCountedServerLifetime : IServerLifetime
 {
     private readonly IServer server;
     private readonly object gate = new();
-    private readonly TaskCompletionSource<object?> firstInstance = new(TaskCreationOptions.RunContinuationsAsynchronously);
+    private readonly TaskCompletionSource firstInstanceSignal = new(TaskCreationOptions.RunContinuationsAsynchronously);
+    private WeakReference? firstInstance;
     private TaskCompletionSource<bool>? emptyTcs;
     private long referenceCount;
     private bool everReferenced;
@@ -60,7 +61,15 @@ public sealed class ReferenceCountedServerLifetime : IServerLifetime
         get;
     }
 
-    private void Server_InstanceCreated(object? sender, InstanceCreatedEventArgs e) => firstInstance.TrySetResult(e.Instance);
+    private void Server_InstanceCreated(object? sender, InstanceCreatedEventArgs e)
+    {
+        lock (gate)
+        {
+            firstInstance ??= new WeakReference(e.Instance);
+        }
+
+        firstInstanceSignal.TrySetResult();
+    }
 
     internal void OnReferenceAdded()
     {
@@ -115,7 +124,14 @@ public sealed class ReferenceCountedServerLifetime : IServerLifetime
     }
 
     /// <inheritdoc/>
-    public Task<object?> WaitForFirstObjectAsync() => firstInstance.Task;
+    public async Task<object?> WaitForFirstObjectAsync()
+    {
+        await firstInstanceSignal.Task.ConfigureAwait(false);
+        lock (gate)
+        {
+            return firstInstance?.Target;
+        }
+    }
 
     /// <inheritdoc/>
     public Task WaitUntilEmptyAsync()
@@ -150,7 +166,7 @@ public sealed class ReferenceCountedServerLifetime : IServerLifetime
         }
 
         server.InstanceCreated -= Server_InstanceCreated;
-        firstInstance.TrySetResult(null);
+        firstInstanceSignal.TrySetResult();
         local?.TrySetResult(true);
     }
 }
