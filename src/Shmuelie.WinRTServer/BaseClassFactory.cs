@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Versioning;
 
 namespace Shmuelie.WinRTServer;
@@ -30,9 +31,10 @@ public abstract class BaseClassFactory
     }
 
     /// <summary>
-    /// Gets the <c>IID</c>.
+    /// Gets the <c>IID</c>s of the interfaces the created object can be requested as.
     /// </summary>
-    protected internal abstract Guid Iid
+    /// <remarks>A single class can expose more than one interface for COM activation.</remarks>
+    protected internal abstract IReadOnlyList<Guid> Iids
     {
         get;
     }

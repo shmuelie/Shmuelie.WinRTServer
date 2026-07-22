@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <IsPackable>true</IsPackable>
+    <Nullable>enable</Nullable>
+    <PackageReleaseNotes>Declarative registration attributes for Shmuelie.WinRTServer.</PackageReleaseNotes>
+    <Description>Declarative registration attributes for Shmuelie.WinRTServer.</Description>
+    <PackageIcon>Shmuelie.WinRTServer-128.png</PackageIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\Shmuelie.WinRTServer-128.png" PackagePath="\" Pack="true" Visible="false" />
+    <None Include="..\..\README.md" PackagePath="\" Pack="true" Visible="false" />
+  </ItemGroup>
+</Project>

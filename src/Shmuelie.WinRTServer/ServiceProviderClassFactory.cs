@@ -5,16 +5,16 @@ using System.Runtime.Versioning;
 namespace Shmuelie.WinRTServer;
 
 /// <summary>
-/// Delegate based class factory for .NET types.
+/// Class factory that resolves instances from an <see cref="IServiceProvider"/>.
 /// </summary>
 /// <typeparam name="T">Type the factory creates.</typeparam>
 /// <typeparam name="TInterface">Interface that <typeparamref name="T"/> implements.</typeparam>
-/// <param name="factory">Delegate to create instances.</param>
+/// <param name="provider">The service provider used to resolve instances.</param>
 /// <seealso cref="BaseClassFactory"/>
 [SupportedOSPlatform("windows6.0.6000")]
-public sealed class DelegateClassFactory<T, TInterface>(Func<T> factory) : BaseClassFactory where T : class, TInterface
+public sealed class ServiceProviderClassFactory<T, TInterface>(IServiceProvider provider) : BaseClassFactory where T : class, TInterface
 {
-    private readonly Func<T> factory = factory;
+    private readonly IServiceProvider provider = provider ?? throw new ArgumentNullException(nameof(provider));
 
     /// <inheritdoc/>
     protected internal override Guid Clsid => typeof(T).GUID;
@@ -25,22 +25,22 @@ public sealed class DelegateClassFactory<T, TInterface>(Func<T> factory) : BaseC
     /// <inheritdoc/>
     protected internal override object CreateInstance()
     {
-        return factory();
+        return provider.GetService(typeof(T)) ?? throw new InvalidOperationException($"No service for type '{typeof(T)}' has been registered.");
     }
 }
 
 /// <summary>
-/// Delegate based class factory for .NET types that expose two interfaces.
+/// Class factory that resolves instances that expose two interfaces from an <see cref="IServiceProvider"/>.
 /// </summary>
 /// <typeparam name="T">Type the factory creates.</typeparam>
 /// <typeparam name="TInterface1">First interface that <typeparamref name="T"/> implements.</typeparam>
 /// <typeparam name="TInterface2">Second interface that <typeparamref name="T"/> implements.</typeparam>
-/// <param name="factory">Delegate to create instances.</param>
+/// <param name="provider">The service provider used to resolve instances.</param>
 /// <seealso cref="BaseClassFactory"/>
 [SupportedOSPlatform("windows6.0.6000")]
-public sealed class DelegateClassFactory<T, TInterface1, TInterface2>(Func<T> factory) : BaseClassFactory where T : class, TInterface1, TInterface2
+public sealed class ServiceProviderClassFactory<T, TInterface1, TInterface2>(IServiceProvider provider) : BaseClassFactory where T : class, TInterface1, TInterface2
 {
-    private readonly Func<T> factory = factory;
+    private readonly IServiceProvider provider = provider ?? throw new ArgumentNullException(nameof(provider));
 
     /// <inheritdoc/>
     protected internal override Guid Clsid => typeof(T).GUID;
@@ -51,23 +51,23 @@ public sealed class DelegateClassFactory<T, TInterface1, TInterface2>(Func<T> fa
     /// <inheritdoc/>
     protected internal override object CreateInstance()
     {
-        return factory();
+        return provider.GetService(typeof(T)) ?? throw new InvalidOperationException($"No service for type '{typeof(T)}' has been registered.");
     }
 }
 
 /// <summary>
-/// Delegate based class factory for .NET types that expose three interfaces.
+/// Class factory that resolves instances that expose three interfaces from an <see cref="IServiceProvider"/>.
 /// </summary>
 /// <typeparam name="T">Type the factory creates.</typeparam>
 /// <typeparam name="TInterface1">First interface that <typeparamref name="T"/> implements.</typeparam>
 /// <typeparam name="TInterface2">Second interface that <typeparamref name="T"/> implements.</typeparam>
 /// <typeparam name="TInterface3">Third interface that <typeparamref name="T"/> implements.</typeparam>
-/// <param name="factory">Delegate to create instances.</param>
+/// <param name="provider">The service provider used to resolve instances.</param>
 /// <seealso cref="BaseClassFactory"/>
 [SupportedOSPlatform("windows6.0.6000")]
-public sealed class DelegateClassFactory<T, TInterface1, TInterface2, TInterface3>(Func<T> factory) : BaseClassFactory where T : class, TInterface1, TInterface2, TInterface3
+public sealed class ServiceProviderClassFactory<T, TInterface1, TInterface2, TInterface3>(IServiceProvider provider) : BaseClassFactory where T : class, TInterface1, TInterface2, TInterface3
 {
-    private readonly Func<T> factory = factory;
+    private readonly IServiceProvider provider = provider ?? throw new ArgumentNullException(nameof(provider));
 
     /// <inheritdoc/>
     protected internal override Guid Clsid => typeof(T).GUID;
@@ -78,6 +78,6 @@ public sealed class DelegateClassFactory<T, TInterface1, TInterface2, TInterface
     /// <inheritdoc/>
     protected internal override object CreateInstance()
     {
-        return factory();
+        return provider.GetService(typeof(T)) ?? throw new InvalidOperationException($"No service for type '{typeof(T)}' has been registered.");
     }
 }

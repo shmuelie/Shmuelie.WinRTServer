@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net8.0-windows10.0.22000.0</TargetFramework>
     <IsPackable>true</IsPackable>
-    <PackageReleaseNotes>Partial fix for lifetime management</PackageReleaseNotes>
+    <PackageReleaseNotes>v3: servers are now IDisposable with external lifecycle helpers; class factories support multiple interfaces; REGCLS_AGILE registration; configurable IGlobalOptions; security helpers; declarative registration source generator and DI support.</PackageReleaseNotes>
     <IsAotCompatible>True</IsAotCompatible>
     <DisableRuntimeMarshalling>True</DisableRuntimeMarshalling>
     <RuntimeIdentifiers>win-x64;win-x86;win-arm64;$(RuntimeIdentifiers)</RuntimeIdentifiers>
@@ -10,6 +10,14 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.106" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Shmuelie.WinRTServer.Annotations\Shmuelie.WinRTServer.Annotations.csproj" />
+    <ProjectReference Include="..\Shmuelie.WinRTServer.SourceGenerator\Shmuelie.WinRTServer.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Pack the source generator as an analyzer inside this package. -->
+    <None Include="..\Shmuelie.WinRTServer.SourceGenerator\bin\$(Configuration)\netstandard2.0\Shmuelie.WinRTServer.SourceGenerator.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\$(MSBuildProjectName)-128.png" PackagePath="\" Pack="true">

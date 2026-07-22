@@ -2,9 +2,12 @@ BOOL
 CLASS_E_NOAGGREGATION
 CoAddRefServerProcess
 CoCreateInstance
+CoImpersonateClient
+CoInitializeSecurity
 CoRegisterClassObject
 CoReleaseServerProcess
 CoResumeClassObjects
+CoRevertToSelf
 CoRevokeClassObject
 CoSuspendClassObjects
 E_HANDLE

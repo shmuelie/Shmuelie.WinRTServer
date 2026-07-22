@@ -19,7 +19,7 @@ internal sealed partial class BaseClassFactoryWrapper(BaseClassFactory factory, 
             return HRESULT.CLASS_E_NOAGGREGATION;
         }
 
-        if (!riid->Equals(IUnknown.IID_Guid) && !riid->Equals(factory.Iid))
+        if (!riid->Equals(IUnknown.IID_Guid) && !IsSupportedIid(factory.Iids, *riid))
         {
             return HRESULT.E_NOINTERFACE;
         }
@@ -66,5 +66,17 @@ internal sealed partial class BaseClassFactoryWrapper(BaseClassFactory factory, 
     public HRESULT LockServer(BOOL fLock)
     {
         return HRESULT.S_OK;
+    }
+
+    private static bool IsSupportedIid(System.Collections.Generic.IReadOnlyList<Guid> iids, Guid riid)
+    {
+        for (int i = 0; i < iids.Count; i++)
+        {
+            if (iids[i].Equals(riid))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

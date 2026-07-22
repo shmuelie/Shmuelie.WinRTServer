@@ -31,6 +31,45 @@ public static class ComServerExtensions
     }
 
     /// <summary>
+    /// Register a type that exposes two interfaces with the server.
+    /// </summary>
+    /// <typeparam name="T">The type to register.</typeparam>
+    /// <typeparam name="TInterface1">The first interface that <typeparamref name="T"/> implements.</typeparam>
+    /// <typeparam name="TInterface2">The second interface that <typeparamref name="T"/> implements.</typeparam>
+    /// <param name="server">The instance.</param>
+    /// <returns><see langword="true"/> if type was registered; otherwise, <see langword="false"/>.</returns>
+    /// <remarks>Type can only be registered once.</remarks>
+    /// <exception cref="ObjectDisposedException">The instance is disposed.</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="server"/> is <see langword="null"/>.</exception>
+    /// <exception cref="InvalidOperationException">The server is running.</exception>
+    public static bool RegisterClass<T, TInterface1, TInterface2>(this ComServer server) where T : class, TInterface1, TInterface2, new()
+    {
+        ArgumentNullException.ThrowIfNull(server);
+
+        return server.RegisterClassFactory(new GeneralClassFactory<T, TInterface1, TInterface2>(), comWrappers);
+    }
+
+    /// <summary>
+    /// Register a type that exposes three interfaces with the server.
+    /// </summary>
+    /// <typeparam name="T">The type to register.</typeparam>
+    /// <typeparam name="TInterface1">The first interface that <typeparamref name="T"/> implements.</typeparam>
+    /// <typeparam name="TInterface2">The second interface that <typeparamref name="T"/> implements.</typeparam>
+    /// <typeparam name="TInterface3">The third interface that <typeparamref name="T"/> implements.</typeparam>
+    /// <param name="server">The instance.</param>
+    /// <returns><see langword="true"/> if type was registered; otherwise, <see langword="false"/>.</returns>
+    /// <remarks>Type can only be registered once.</remarks>
+    /// <exception cref="ObjectDisposedException">The instance is disposed.</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="server"/> is <see langword="null"/>.</exception>
+    /// <exception cref="InvalidOperationException">The server is running.</exception>
+    public static bool RegisterClass<T, TInterface1, TInterface2, TInterface3>(this ComServer server) where T : class, TInterface1, TInterface2, TInterface3, new()
+    {
+        ArgumentNullException.ThrowIfNull(server);
+
+        return server.RegisterClassFactory(new GeneralClassFactory<T, TInterface1, TInterface2, TInterface3>(), comWrappers);
+    }
+
+    /// <summary>
     /// Register a type with the server.
     /// </summary>
     /// <typeparam name="T">The type to register.</typeparam>

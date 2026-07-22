@@ -12,25 +12,25 @@ public static class Program
     {
         if (args.Contains("-COM"))
         {
-            await using (ComServer server = new ComServer())
-            {
-                server.RegisterClass<RemoteThing, IRemoteThing>();
-                server.RegisterClass<Times, ITimes>();
-                server.RegisterClass<Input, IInput>();
-                server.Start();
-                await server.WaitForFirstObjectAsync();
-            }
+            using ComServer server = new ComServer();
+            using PollingServerLifetime lifetime = new PollingServerLifetime(server);
+            server.RegisterClass<RemoteThing, IRemoteThing>();
+            server.RegisterClass<Times, ITimes>();
+            server.RegisterClass<Input, IInput>();
+            server.Start();
+            await lifetime.WaitForFirstObjectAsync();
+            await lifetime.WaitUntilEmptyAsync();
         }
         else if (args.Contains("-WINRT"))
         {
-            await using (WinRtServer server = new WinRtServer())
-            {
-                server.RegisterClass<RemoteThing>();
-                server.RegisterClass<Times>();
-                server.RegisterClass<Input>();
-                server.Start();
-                await server.WaitForFirstObjectAsync();
-            }
+            using WinRtServer server = new WinRtServer();
+            using PollingServerLifetime lifetime = new PollingServerLifetime(server);
+            server.RegisterClass<RemoteThing>();
+            server.RegisterClass<Times>();
+            server.RegisterClass<Input>();
+            server.Start();
+            await lifetime.WaitForFirstObjectAsync();
+            await lifetime.WaitUntilEmptyAsync();
         }
     }
 }
