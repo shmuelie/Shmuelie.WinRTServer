@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net462</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <Platforms>x64;x86</Platforms>
     <RuntimeIdentifiers>win-x64;$(RuntimeIdentifiers)</RuntimeIdentifiers>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Windows.SDK.Contracts" Version="10.0.26100.1" />
+    <PackageReference Include="Microsoft.Windows.SDK.Contracts" Version="10.0.28000.2270" />
     <Reference Include="..\Shmuelie.WinRTServer.Sample.Metadata\bin\$(Platform)\$(Configuration)\*.winmd">
       <Name>%(Filename)</Name>
       <IsWinMDFile>true</IsWinMDFile>

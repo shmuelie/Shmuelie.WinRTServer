@@ -70,8 +70,8 @@ namespace Shmuelie.WinRTServer.Sample.WpfNetFxClient
         {
             var data = remoteThing.OpenFile("C:\\Windows\\explorer.exe").AsStreamForRead();
             byte[] buffer = new byte[10];
-            await data.ReadAsync(buffer, 0, buffer.Length);
-            OpenFileTxt.Text = string.Join("", buffer.Select(b => b.ToString("X2")));
+            int read = await data.ReadAsync(buffer, 0, buffer.Length);
+            OpenFileTxt.Text = string.Join("", buffer.Take(read).Select(b => b.ToString("X2")));
         }
 
         private void GetTimesBtn_Click(object sender, RoutedEventArgs e)

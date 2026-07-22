@@ -51,7 +51,7 @@
   <Import Project="$(WapProjPath)\Microsoft.DesktopBridge.props" />
   <PropertyGroup>
     <ProjectGuid>080d9051-af78-4b2a-b5cc-9f5ba79a0a9b</ProjectGuid>
-    <TargetPlatformVersion>10.0.22000.0</TargetPlatformVersion>
+    <TargetPlatformVersion>10.0.26100.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
     <DefaultLanguage>en-US</DefaultLanguage>
     <AppxPackageSigningEnabled>false</AppxPackageSigningEnabled>
@@ -118,16 +118,16 @@
   </ItemGroup>
   <Import Project="$(WapProjPath)\Microsoft.DesktopBridge.targets" />
   <PropertyGroup>
-    <AssetTargetFallback>native;net462;net481;net6.0-windows$(TargetPlatformVersion);net8.0-windows10.0.22000.0;$(AssetTargetFallback)</AssetTargetFallback>
+    <AssetTargetFallback>native;net472;net481;net6.0-windows$(TargetPlatformVersion);net10.0-windows10.0.26100.0;$(AssetTargetFallback)</AssetTargetFallback>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2270" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shmuelie.WinRTServer.Sample.ServerNet6\Shmuelie.WinRTServer.Sample.ServerNet6.csproj">
       <OutputItemType>exe</OutputItemType>
       <Targets>DispatchToInnerBuilds</Targets>
-      <TargetFramework>net8.0-windows10.0.22000.0</TargetFramework>
+      <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
     </ProjectReference>
     <ProjectReference Include="..\Shmuelie.WinRTServer.Sample.UwpClient\Shmuelie.WinRTServer.Sample.UwpClient.csproj" />
     <ProjectReference Include="..\Shmuelie.WinRTServer.Sample.WpfNet6Client\Shmuelie.WinRTServer.Sample.WpfNet6Client.csproj" />

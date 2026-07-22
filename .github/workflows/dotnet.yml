@@ -13,14 +13,18 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
-    runs-on: windows-2022
+    runs-on: windows-2025
     steps:
     - name: Git checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1
+      uses: microsoft/setup-msbuild@v2
     - name: Setup NuGet
-      uses: nuget/setup-nuget@v1
+      uses: nuget/setup-nuget@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 10.0.x
     - name: NuGet Restore
       run: nuget restore
     - name: Build
@@ -36,14 +40,18 @@ jobs:
   # Build the only in Release to generate all the NuGet packages.
   # This workflow also uploads the resulting packages as artifacts.
   build-packages:
-    runs-on: windows-2022
+    runs-on: windows-2025
     steps:
     - name: Git checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1
+      uses: microsoft/setup-msbuild@v2
     - name: Setup NuGet
-      uses: nuget/setup-nuget@v1
+      uses: nuget/setup-nuget@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 10.0.x
     - name: NuGet Restore
       run: nuget restore
     - name: Build
@@ -62,7 +70,7 @@ jobs:
   # Publish the packages to GitHub packages
   publish-nightlies-github:
     needs: [build-solution, build-packages]
-    runs-on: windows-2022
+    runs-on: windows-2025
     if: ${{github.event_name == 'push'}}
     steps:
     - uses: actions/download-artifact@v4
@@ -74,7 +82,7 @@ jobs:
   # Publish release builds (pushes to rel/<x.y.z> branches) to NuGet.org
   publish-release-nuget:
     needs: [build-solution, build-packages]
-    runs-on: windows-2022
+    runs-on: windows-2025
     if: ${{github.event_name == 'push' && startsWith(github.ref_name, 'rel/')}}
     steps:
     - uses: actions/download-artifact@v4

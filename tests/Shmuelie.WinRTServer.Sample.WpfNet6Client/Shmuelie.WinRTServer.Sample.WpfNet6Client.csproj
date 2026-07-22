@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows10.0.22000.0</TargetFramework>
+    <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <Platforms>x64;x86</Platforms>
@@ -11,10 +11,9 @@
     <DebugType>full</DebugType>
     <AssetTargetFallback>native;net481;$(AssetTargetFallback)</AssetTargetFallback>
     <RuntimeIdentifiers>win-x64;$(RuntimeIdentifiers)</RuntimeIdentifiers>
-    <WindowsSdkPackageVersion>10.0.22000.41</WindowsSdkPackageVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.2.0" />
     <CsWinRTInputs Include="..\Shmuelie.WinRTServer.Sample.Metadata\bin\$(Platform)\$(Configuration)\*.winmd">
       <Name>%(Filename)</Name>
       <IsWinMDFile>true</IsWinMDFile>

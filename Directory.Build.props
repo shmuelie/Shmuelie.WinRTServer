@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <LangVersion>12</LangVersion>
+    <LangVersion>13</LangVersion>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn);MSB3270</NoWarn>
@@ -70,7 +70,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.2.4" PrivateAssets="all" />
+    <PackageReference Include="DotNet.ReproducibleBuilds" Version="2.0.5" PrivateAssets="all" />
   </ItemGroup>
 
   <!-- Needed for deterministic builds -->

@@ -10,7 +10,7 @@ namespace Shmuelie.WinRTServer.Internal.Windows.Com.Marshalling;
 [CustomMarshaller(typeof(HSTRING), MarshalMode.ManagedToUnmanagedIn, typeof(HStringMarshaller))]
 internal static class HStringMarshaller
 {
-    public static HSTRING ConvertToManaged(nint nativeValue) => new HSTRING(nativeValue);
+    public unsafe static HSTRING ConvertToManaged(nint nativeValue) => new HSTRING((void*)nativeValue);
 
-    public static nint ConvertToUnmanaged(HSTRING value) => value.Value;
+    public unsafe static nint ConvertToUnmanaged(HSTRING value) => (nint)value.Value;
 }

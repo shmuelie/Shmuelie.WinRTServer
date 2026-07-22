@@ -37,7 +37,7 @@ internal sealed partial class BaseClassFactoryWrapper(BaseClassFactory factory, 
             }
             else
             {
-                var hr = (HRESULT)Marshal.QueryInterface(unknown, ref *riid, out nint ppv);
+                var hr = (HRESULT)Marshal.QueryInterface(unknown, in *riid, out nint ppv);
                 shouldReleaseUnknown = true;
                 if (hr.Failed)
                 {
