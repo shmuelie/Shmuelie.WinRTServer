@@ -92,7 +92,7 @@ otherwise the proxy type cannot be created.
 
 The server project is the only project that references `Shmuelie.WinRTServer`.
 It will contain implementations of the interfaces from the contract and when run
-should register them with an instance of `COMServer` for COM activation and
+should register them with an instance of `ComServer` for COM activation and
 `WinRtServer` for WinRT activation. The implementations must have a GUID using
 the `System.Runtime.InteropServices.GuidAttribute` attribute.
 
@@ -119,11 +119,11 @@ similar).
 To help understand usage and show what can be done samples can be found under
 the tests folder. The sample has:
 
-- .NET 8 Server
+- .NET 10 Server
 - UWP .NET Client App
 - C++/WinRT Console Client App
 - WPF .NET Framework Client App
-- WPF .NET 8 Client App
+- WPF .NET 10 Client App
 
 > **Note**: If Visual Studio fails to build the Metadata project restarting
 > Visual Studio should fix the problem.
