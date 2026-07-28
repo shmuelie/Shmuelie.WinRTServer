@@ -1,15 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <IsPackable>false</IsPackable>
+    <IsPackable>true</IsPackable>
+    <PackageId>Shmuelie.WinRTServer.SourceGenerator</PackageId>
+    <Description>Declarative registration for Shmuelie.WinRTServer: the [ServerClass] attribute and a Roslyn source generator that emits COM/WinRT registration (and optional DI) helpers. Requires Shmuelie.WinRTServer.Core (use the Shmuelie.WinRTServer meta-package to get everything).</Description>
+    <PackageReleaseNotes>Source generator + [ServerClass] annotations packaged together.</PackageReleaseNotes>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
     <IncludeBuildOutput>false</IncludeBuildOutput>
-    <NoWarn>$(NoWarn);RS2008</NoWarn>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    <NoWarn>$(NoWarn);RS2008;NU5128</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.6.0" PrivateAssets="all" />
+    <ProjectReference Include="..\Shmuelie.WinRTServer.Annotations\Shmuelie.WinRTServer.Annotations.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Ship the analyzer + the [ServerClass] annotations lib inside this package. -->
+    <None Include="$(OutputPath)\Shmuelie.WinRTServer.SourceGenerator.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    <None Include="..\Shmuelie.WinRTServer.Annotations\bin\$(Configuration)\netstandard2.0\Shmuelie.WinRTServer.Annotations.dll" Pack="true" PackagePath="lib/netstandard2.0" Visible="false" />
+    <None Include="README.md" Pack="true" PackagePath="\" Visible="false" />
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="\" Visible="false" />
   </ItemGroup>
 </Project>

@@ -59,11 +59,16 @@ jobs:
     - name: NuGet Restore
       run: nuget restore
     - name: Build
-      run: msbuild .\src\Shmuelie.WinRTServer\Shmuelie.WinRTServer.csproj /t:restore`;build /p:Configuration=Release
+      run: dotnet build .\src\Shmuelie.WinRTServer.Meta\Shmuelie.WinRTServer.Meta.csproj -c Release
     - name: Pack
       run: |
-        msbuild .\src\Shmuelie.WinRTServer.Annotations\Shmuelie.WinRTServer.Annotations.csproj /t:restore`;pack /p:Configuration=Release
-        msbuild .\src\Shmuelie.WinRTServer\Shmuelie.WinRTServer.csproj /t:pack /p:Configuration=Release
+        dotnet pack .\src\Shmuelie.WinRTServer.Core\Shmuelie.WinRTServer.Core.csproj -c Release
+        dotnet pack .\src\Shmuelie.WinRTServer.Lifecycle\Shmuelie.WinRTServer.Lifecycle.csproj -c Release
+        dotnet pack .\src\Shmuelie.WinRTServer.StrategyBased\Shmuelie.WinRTServer.StrategyBased.csproj -c Release
+        dotnet pack .\src\Shmuelie.WinRTServer.CsWinRT\Shmuelie.WinRTServer.CsWinRT.csproj -c Release
+        dotnet pack .\src\Shmuelie.WinRTServer.DependencyInjection\Shmuelie.WinRTServer.DependencyInjection.csproj -c Release
+        dotnet pack .\src\Shmuelie.WinRTServer.SourceGenerator\Shmuelie.WinRTServer.SourceGenerator.csproj -c Release
+        dotnet pack .\src\Shmuelie.WinRTServer.Meta\Shmuelie.WinRTServer.Meta.csproj -c Release
     - name: Upload package artifacts
       uses: actions/upload-artifact@v4
       with:

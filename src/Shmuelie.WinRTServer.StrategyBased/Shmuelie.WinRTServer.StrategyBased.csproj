@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
+    <IsPackable>true</IsPackable>
+    <Description>StrategyBased registration extensions for Shmuelie.WinRTServer: RegisterClass&lt;…&gt; helpers that use the runtime StrategyBasedComWrappers (source-generated COM interop).</Description>
+    <PackageReleaseNotes>StrategyBased RegisterClass extensions extracted into their own package.</PackageReleaseNotes>
+    <IsAotCompatible>True</IsAotCompatible>
+    <DisableRuntimeMarshalling>True</DisableRuntimeMarshalling>
+    <RuntimeIdentifiers>win-x64;win-x86;win-arm64;$(RuntimeIdentifiers)</RuntimeIdentifiers>
+    <AnalysisLevel>latest-all</AnalysisLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Shmuelie.WinRTServer.Core\Shmuelie.WinRTServer.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" PackagePath="\" Pack="true" Visible="false" />
+    <None Include="..\..\LICENSE" PackagePath="\" Pack="true" Visible="false" />
+  </ItemGroup>
+</Project>

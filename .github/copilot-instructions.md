@@ -22,9 +22,11 @@ C++/WinRT projects require a real `nuget restore` first.
   sample-build fragility the README documents — rerun the build, or rebuild in
   Visual Studio). The `src/` library and `tests/` projects are unaffected and
   build with plain `dotnet`.
-- Build just the library (SDK-style, so `dotnet` also works):
-  `msbuild .\src\Shmuelie.WinRTServer\Shmuelie.WinRTServer.csproj /t:restore;build /p:Configuration=Release`
-- Pack the NuGet: add `/t:pack`; output goes to `artifacts/` (`PackageOutputPath`).
+- Build just the core library (SDK-style, so `dotnet` also works):
+  `dotnet build .\src\Shmuelie.WinRTServer.Core\Shmuelie.WinRTServer.Core.csproj -c Release`
+- Pack the NuGets: `dotnet pack` each `src/` package project (Core, Lifecycle,
+  StrategyBased, CsWinRT, DependencyInjection, SourceGenerator, Meta); output
+  goes to `artifacts/` (`PackageOutputPath`).
 - Unit tests live under `tests/` (xUnit): `Shmuelie.WinRTServer.Tests`
   (net10.0-windows, exercises the library) and `Shmuelie.WinRTServer.SourceGenerator.Tests`
   (net10.0, Roslyn-driver tests for the generator). Run with
@@ -40,9 +42,25 @@ targets `net10.0-windows10.0.26100.0`; the C++ projects use the v145 toolset.
 
 ## Architecture
 
-Two server classes in `src/Shmuelie.WinRTServer/`, both `IDisposable`,
-both non-thread-safe, both following the same lifecycle
-(`Register... → Start()`, then dispose when done):
+The library is split into one project per NuGet package under `src/`, all with
+assembly/namespace root `Shmuelie.WinRTServer` (the package **ids** differ):
+
+- `Shmuelie.WinRTServer.Core` (assembly `Shmuelie.WinRTServer.dll`, package
+  `Shmuelie.WinRTServer.Core`) — the servers, factories, options, security,
+  interop. No package dependencies.
+- `Shmuelie.WinRTServer.Lifecycle` — `IServerLifetime` helpers.
+- `Shmuelie.WinRTServer.StrategyBased` / `.CsWinRT` — the `RegisterClass<…>`
+  extension namespaces (depend on Core; CsWinRT also on `Microsoft.Windows.CsWinRT`).
+- `Shmuelie.WinRTServer.DependencyInjection` — the `ServiceProvider*` factories.
+- `Shmuelie.WinRTServer.Annotations` (not packed on its own) + `.SourceGenerator`
+  (packable analyzer package that also ships the annotations lib).
+- `Shmuelie.WinRTServer.Meta` — produces the `Shmuelie.WinRTServer` meta-package
+  depending on all six. Core grants `InternalsVisibleTo` to StrategyBased,
+  CsWinRT, and DependencyInjection (their extensions/factories touch
+  `BaseClassFactory`'s `protected internal` members).
+
+The two server classes (`Core`), both `IDisposable`, non-thread-safe, follow the
+same lifecycle (`Register... → Start()`, then dispose when done):
 
 - `ComServer` — classic COM activation (`CoRegisterClassObject`, registered
   with `REGCLS_AGILE`). Register by `(implementation, interface)` pair keyed on
@@ -52,25 +70,28 @@ both non-thread-safe, both following the same lifecycle
   objects with plain `new SomeType()`.
 
 The servers do **not** track object lifetime themselves; they just raise
-`InstanceCreated`. Object-lifetime tracking is opt-in and external, via the
-`IServerLifetime` helpers: `PollingServerLifetime` (GC/`WeakReference` polling)
-or `ReferenceCountedServerLifetime` (deterministic, via an `IIUnknownStrategy`
-composed over `StrategyBasedComWrappers`). Both expose `WaitForFirstObjectAsync`
-and `WaitUntilEmptyAsync`. A server-property surface (`ServerOptions` /
-`ServerRuntimeOptions`) configures `IGlobalOptions`, and `ServerSecurity`
-wraps `CoInitializeSecurity` / caller impersonation.
+`InstanceCreated`. Object-lifetime tracking is opt-in and external (Lifecycle
+package), via the `IServerLifetime` helpers: `PollingServerLifetime`
+(GC/`WeakReference` polling) or `ReferenceCountedServerLifetime` (deterministic,
+via an `IIUnknownStrategy` composed over `StrategyBasedComWrappers`). Both expose
+`WaitForFirstObjectAsync` and `WaitUntilEmptyAsync`. A server-property surface
+(`ServerOptions` / `ServerRuntimeOptions`) configures `IGlobalOptions`, and
+`ServerSecurity` wraps `CoInitializeSecurity` / caller impersonation.
 
 Registration is done through `BaseClassFactory` / `BaseActivationFactory`
 subclasses. `General*` factories create instances reflectively; `Delegate*`
-factories use a supplied `Func<T>`; `ServiceProvider*` factories resolve from an
-`IServiceProvider`. Class factories support multiple interfaces per class
-(`BaseClassFactory.Iids`), with 2-/3-interface `RegisterClass<T,...>` overloads.
+factories use a supplied `Func<T>`; `ServiceProvider*` factories (DI package)
+resolve from an `IServiceProvider`. Class factories support multiple interfaces
+per class (`BaseClassFactory.Iids`), with 2-/3-interface `RegisterClass<T,...>`
+overloads.
 
-Declarative registration is available via two sibling projects:
-`Shmuelie.WinRTServer.Annotations` (the `[ServerClass]` attribute) and
-`Shmuelie.WinRTServer.SourceGenerator` (a Roslyn incremental generator, packed
-as an analyzer inside the main NuGet) which emits COM/WinRT registration and
-optional `Microsoft.Extensions.DependencyInjection` helpers.
+Declarative registration is available via the annotations + source-generator
+projects: `Shmuelie.WinRTServer.Annotations` (the `[ServerClass]` attribute) and
+`Shmuelie.WinRTServer.SourceGenerator` (a Roslyn incremental generator, shipped
+together in the `Shmuelie.WinRTServer.SourceGenerator` package) which emits
+COM/WinRT registration and optional `Microsoft.Extensions.DependencyInjection`
+helpers (the DI output is gated on the DependencyInjection package being
+referenced).
 
 Native interop lives in `Internal/Windows/` and is generated by **CsWin32**
 (`Microsoft.Windows.CsWin32`) from `NativeMethods.txt` (API list) and

@@ -16,7 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Shmuelie.WinRTServer\Shmuelie.WinRTServer.csproj" />
-    <ProjectReference Include="..\..\src\Shmuelie.WinRTServer.Annotations\Shmuelie.WinRTServer.Annotations.csproj" />
+    <ProjectReference Include="..\..\src\Shmuelie.WinRTServer.Core\Shmuelie.WinRTServer.Core.csproj" />
+    <ProjectReference Include="..\..\src\Shmuelie.WinRTServer.Lifecycle\Shmuelie.WinRTServer.Lifecycle.csproj" />
+    <ProjectReference Include="..\..\src\Shmuelie.WinRTServer.StrategyBased\Shmuelie.WinRTServer.StrategyBased.csproj" />
+    <ProjectReference Include="..\..\src\Shmuelie.WinRTServer.DependencyInjection\Shmuelie.WinRTServer.DependencyInjection.csproj" />
   </ItemGroup>
 </Project>

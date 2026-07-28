@@ -49,5 +49,15 @@ different process (or even a different machine) as though they were local.
 dotnet add package Shmuelie.WinRTServer
 ```
 
-The package includes a source generator (shipped as an analyzer) and depends on
-`Shmuelie.WinRTServer.Annotations` for the `[ServerClass]` attribute.
+`Shmuelie.WinRTServer` is a **meta-package** that pulls in the whole stack. To
+take only what you need, reference the individual packages instead:
+
+- **`Shmuelie.WinRTServer.Core`** — the servers, factories, options, and security.
+- **`Shmuelie.WinRTServer.Lifecycle`** — `IServerLifetime` helpers.
+- **`Shmuelie.WinRTServer.StrategyBased`** / **`.CsWinRT`** — `RegisterClass<…>`
+  extensions for your `ComWrappers` flavor.
+- **`Shmuelie.WinRTServer.DependencyInjection`** — `IServiceProvider`-based factories.
+- **`Shmuelie.WinRTServer.SourceGenerator`** — the `[ServerClass]` attribute + generator.
+
+Every add-on depends on Core; the source-generator package ships the
+`[ServerClass]` attribute alongside the analyzer.

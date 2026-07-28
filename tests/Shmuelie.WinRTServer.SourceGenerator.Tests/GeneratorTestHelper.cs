@@ -33,15 +33,22 @@ internal static class GeneratorTestHelper
         references.Add(MetadataReference.CreateFromFile(System.IO.Path.Combine(coreDir, "System.Runtime.dll")));
         references.Add(MetadataReference.CreateFromFile(System.IO.Path.Combine(coreDir, "netstandard.dll")));
 
+        List<SyntaxTree> trees = [CSharpSyntaxTree.ParseText(source)];
+
         if (referenceDependencyInjection)
         {
             references.Add(MetadataReference.CreateFromFile(
                 typeof(Microsoft.Extensions.DependencyInjection.IServiceCollection).Assembly.Location));
+
+            // The generator only emits DI helpers when the DI package's factory type is present.
+            // Provide a stub so the trigger fires without referencing the windows-only DI assembly.
+            trees.Add(CSharpSyntaxTree.ParseText(
+                "namespace Shmuelie.WinRTServer { public class ServiceProviderClassFactory<T, TInterface> { } }"));
         }
 
         CSharpCompilation compilation = CSharpCompilation.Create(
             "GeneratorTestAssembly",
-            [CSharpSyntaxTree.ParseText(source)],
+            trees,
             references,
             new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 

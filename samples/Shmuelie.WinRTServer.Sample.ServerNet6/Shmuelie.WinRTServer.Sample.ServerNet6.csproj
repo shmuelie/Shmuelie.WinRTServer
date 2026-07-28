@@ -16,7 +16,9 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.2.0" />
-    <ProjectReference Include="..\..\src\Shmuelie.WinRTServer\Shmuelie.WinRTServer.csproj" />
+    <ProjectReference Include="..\..\src\Shmuelie.WinRTServer.Core\Shmuelie.WinRTServer.Core.csproj" />
+    <ProjectReference Include="..\..\src\Shmuelie.WinRTServer.CsWinRT\Shmuelie.WinRTServer.CsWinRT.csproj" />
+    <ProjectReference Include="..\..\src\Shmuelie.WinRTServer.Lifecycle\Shmuelie.WinRTServer.Lifecycle.csproj" />
     <CsWinRTInputs Include="..\Shmuelie.WinRTServer.Sample.Interfaces\bin\$(Platform)\$(Configuration)\net462\*.winmd">
       <Name>%(Filename)</Name>
       <IsWinMDFile>true</IsWinMDFile>

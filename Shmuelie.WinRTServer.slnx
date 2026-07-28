@@ -5,8 +5,13 @@
   </Configurations>
   <Folder Name="/Src/">
     <Project Path="src/Shmuelie.WinRTServer.Annotations/Shmuelie.WinRTServer.Annotations.csproj" />
+    <Project Path="src/Shmuelie.WinRTServer.Core/Shmuelie.WinRTServer.Core.csproj" />
+    <Project Path="src/Shmuelie.WinRTServer.CsWinRT/Shmuelie.WinRTServer.CsWinRT.csproj" />
+    <Project Path="src/Shmuelie.WinRTServer.DependencyInjection/Shmuelie.WinRTServer.DependencyInjection.csproj" />
+    <Project Path="src/Shmuelie.WinRTServer.Lifecycle/Shmuelie.WinRTServer.Lifecycle.csproj" />
+    <Project Path="src/Shmuelie.WinRTServer.Meta/Shmuelie.WinRTServer.Meta.csproj" />
     <Project Path="src/Shmuelie.WinRTServer.SourceGenerator/Shmuelie.WinRTServer.SourceGenerator.csproj" />
-    <Project Path="src/Shmuelie.WinRTServer/Shmuelie.WinRTServer.csproj" />
+    <Project Path="src/Shmuelie.WinRTServer.StrategyBased/Shmuelie.WinRTServer.StrategyBased.csproj" />
   </Folder>
   <Folder Name="/Samples/">
     <File Path="samples/Directory.Build.props" />

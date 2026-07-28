@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
+    <AssemblyName>Shmuelie.WinRTServer</AssemblyName>
+    <RootNamespace>Shmuelie.WinRTServer</RootNamespace>
+    <PackageId>Shmuelie.WinRTServer.Core</PackageId>
+    <IsPackable>true</IsPackable>
+    <PackageReleaseNotes>v3: servers are now IDisposable with external lifecycle helpers; class factories support multiple interfaces; REGCLS_AGILE registration; configurable IGlobalOptions; security helpers.</PackageReleaseNotes>
+    <Description>Core of the Out-of-Process WinRT/COM Server: the ComServer/WinRtServer hosts, class/activation factories, server options, and security helpers.</Description>
+    <IsAotCompatible>True</IsAotCompatible>
+    <DisableRuntimeMarshalling>True</DisableRuntimeMarshalling>
+    <RuntimeIdentifiers>win-x64;win-x86;win-arm64;$(RuntimeIdentifiers)</RuntimeIdentifiers>
+    <AnalysisLevel>latest-all</AnalysisLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.298" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="Shmuelie.WinRTServer.Tests" />
+    <InternalsVisibleTo Include="Shmuelie.WinRTServer.StrategyBased" />
+    <InternalsVisibleTo Include="Shmuelie.WinRTServer.CsWinRT" />
+    <InternalsVisibleTo Include="Shmuelie.WinRTServer.DependencyInjection" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" PackagePath="\" Pack="true">
+      <Visible>false</Visible>
+    </None>
+    <None Include="..\..\LICENSE" PackagePath="\" Pack="true">
+      <Visible>false</Visible>
+    </None>
+    <None Include="..\..\.editorconfig" Pack="false">
+      <Link>.editorconfig</Link>
+    </None>
+  </ItemGroup>
+</Project>

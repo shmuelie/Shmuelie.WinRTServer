@@ -6,7 +6,11 @@
         {
           "src": "../src",
           "files": [
-            "Shmuelie.WinRTServer/Shmuelie.WinRTServer.csproj",
+            "Shmuelie.WinRTServer.Core/Shmuelie.WinRTServer.Core.csproj",
+            "Shmuelie.WinRTServer.Lifecycle/Shmuelie.WinRTServer.Lifecycle.csproj",
+            "Shmuelie.WinRTServer.StrategyBased/Shmuelie.WinRTServer.StrategyBased.csproj",
+            "Shmuelie.WinRTServer.CsWinRT/Shmuelie.WinRTServer.CsWinRT.csproj",
+            "Shmuelie.WinRTServer.DependencyInjection/Shmuelie.WinRTServer.DependencyInjection.csproj",
             "Shmuelie.WinRTServer.Annotations/Shmuelie.WinRTServer.Annotations.csproj"
           ]
         }

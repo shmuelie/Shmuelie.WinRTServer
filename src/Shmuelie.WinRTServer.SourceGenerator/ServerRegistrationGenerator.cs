@@ -34,7 +34,9 @@ public sealed class ServerRegistrationGenerator : IIncrementalGenerator
             .Where(static info => info is not null)!;
 
         IncrementalValueProvider<bool> hasDependencyInjection = context.CompilationProvider.Select(
-            static (compilation, _) => compilation.GetTypeByMetadataName("Microsoft.Extensions.DependencyInjection.IServiceCollection") is not null);
+            static (compilation, _) =>
+                compilation.GetTypeByMetadataName("Microsoft.Extensions.DependencyInjection.IServiceCollection") is not null &&
+                compilation.GetTypeByMetadataName("Shmuelie.WinRTServer.ServiceProviderClassFactory`2") is not null);
 
         IncrementalValueProvider<(ImmutableArray<ServerClassInfo> Classes, bool HasDependencyInjection)> combined =
             classes.Collect().Combine(hasDependencyInjection);

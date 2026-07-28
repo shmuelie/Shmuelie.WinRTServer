@@ -31,6 +31,19 @@ process of creating the "server" in .NET much easier.
 dotnet add package Shmuelie.WinRTServer
 ```
 
+`Shmuelie.WinRTServer` is a **meta-package** that pulls in everything. To keep
+dependencies lean you can instead reference only the parts you need:
+
+| Package | What it adds |
+| --- | --- |
+| **Shmuelie.WinRTServer.Core** | The `ComServer` / `WinRtServer` hosts, factories, options, and security. Everything else builds on this. |
+| **Shmuelie.WinRTServer.Lifecycle** | `IServerLifetime` helpers to keep the process alive until objects are released. |
+| **Shmuelie.WinRTServer.StrategyBased** | `RegisterClass<…>` extensions using the runtime `StrategyBasedComWrappers`. |
+| **Shmuelie.WinRTServer.CsWinRT** | `RegisterClass<…>` extensions using CsWinRT's `DefaultComWrappers`. |
+| **Shmuelie.WinRTServer.DependencyInjection** | Factories that resolve server objects from an `IServiceProvider`. |
+| **Shmuelie.WinRTServer.SourceGenerator** | The `[ServerClass]` attribute + generator for declarative registration. |
+| **Shmuelie.WinRTServer** | Meta-package that references all of the above. |
+
 # Documentation
 
 Full documentation, guides, and API reference live on the **[documentation
