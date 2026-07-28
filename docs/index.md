@@ -27,6 +27,7 @@ different process (or even a different machine) as though they were local.
 ## Get started
 
 - New here? Start with the [Getting Started walkthrough](articles/getting-started.md).
+- Choosing what to install? See [Packages](articles/packages.md).
 - Want the big picture? Read [How COM OOP server creation works](articles/how-com-oop-works.md).
 - Looking for a type? Browse the [API Reference](xref:Shmuelie.WinRTServer).
 

@@ -79,16 +79,17 @@ await lifetime.WaitUntilEmptyAsync();
 
 ## Dependency injection
 
-`Shmuelie.WinRTServer` integrates with
-`Microsoft.Extensions.DependencyInjection` without taking a hard dependency on
-it. Two building blocks exist:
+The **`Shmuelie.WinRTServer.DependencyInjection`** package integrates with
+`Microsoft.Extensions.DependencyInjection`. The core library takes no hard
+dependency on a container. Two building blocks exist:
 
 ### ServiceProvider factories
 
 [`ServiceProviderClassFactory<T, …>`](xref:Shmuelie.WinRTServer.ServiceProviderClassFactory`2)
 and
 [`ServiceProviderActivationFactory<T>`](xref:Shmuelie.WinRTServer.ServiceProviderActivationFactory`1)
-resolve each activation from an [`IServiceProvider`](xref:System.IServiceProvider):
+(from the `Shmuelie.WinRTServer.DependencyInjection` package) resolve each
+activation from an [`IServiceProvider`](xref:System.IServiceProvider):
 
 ```csharp
 ServiceProvider provider = new ServiceCollection()
@@ -102,7 +103,9 @@ server.RegisterClassFactory(
 
 ### Generated helpers
 
-If you annotate your classes with `[ServerClass]` and reference the DI package,
-the source generator emits `AddServerObjects` and provider-based
-`RegisterGeneratedClasses` overloads for you. See
+If you annotate your classes with `[ServerClass]` and reference both the
+`Shmuelie.WinRTServer.DependencyInjection` and
+`Microsoft.Extensions.DependencyInjection` packages, the source generator emits
+`AddServerObjects` and provider-based `RegisterGeneratedClasses` overloads for
+you. See
 [Declarative registration & source generators](source-generators.md).

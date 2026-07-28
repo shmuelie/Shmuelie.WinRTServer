@@ -12,7 +12,7 @@ under `samples/` in the repository):
 2. **Metadata** — a C++/WinRT project that emits a WinMD of *proxy* runtime
    classes (no C++ code, only IDL). Clients reference this.
 3. **Server** — the process that implements the interfaces and registers them.
-   This is the only project that references `Shmuelie.WinRTServer`.
+   This is the only project that references the `Shmuelie.WinRTServer` packages.
 4. **Client** — any COM-capable app (Win32/WPF/WinForms, UWP, C++/WinRT, …).
 
 > [!TIP]
@@ -103,9 +103,14 @@ public sealed partial class RemoteThing : IRemoteThing
 }
 ```
 
-Register and run the server. The server itself does **not** keep the process
-alive; attach an [`IServerLifetime`](xref:Shmuelie.WinRTServer.IServerLifetime)
-helper to wait until all created objects have been released:
+Register and run the server. Add the packages you need — for this example the
+server references `Shmuelie.WinRTServer.Core`,
+`Shmuelie.WinRTServer.Lifecycle`, and one registration-extension package
+(`Shmuelie.WinRTServer.CsWinRT` or `.StrategyBased`); or just reference the
+`Shmuelie.WinRTServer` meta-package to get everything. The server itself does
+**not** keep the process alive; attach an
+[`IServerLifetime`](xref:Shmuelie.WinRTServer.IServerLifetime) helper to wait
+until all created objects have been released:
 
 ```csharp
 using Shmuelie.WinRTServer;

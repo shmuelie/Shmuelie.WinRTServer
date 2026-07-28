@@ -6,10 +6,12 @@ for you from a simple attribute.
 
 ## The `[ServerClass]` attribute
 
-The [`ServerClassAttribute`](xref:Shmuelie.WinRTServer.ServerClassAttribute)
-lives in the `Shmuelie.WinRTServer.Annotations` package (pulled in
-automatically). Apply it to an implementation class and list the COM interfaces
-it should be registered for:
+The [`ServerClassAttribute`](xref:Shmuelie.WinRTServer.ServerClassAttribute) and
+the generator ship together in the **`Shmuelie.WinRTServer.SourceGenerator`**
+package. Add that package (or the `Shmuelie.WinRTServer` meta-package) alongside
+`Shmuelie.WinRTServer.Core` — the generated code references Core types. Apply the
+attribute to an implementation class and list the COM interfaces it should be
+registered for:
 
 ```csharp
 using System.Runtime.InteropServices;
@@ -49,7 +51,8 @@ generated at compile time (no reflection), it is trimming- and AOT-friendly.
 
 ## Generated DI helpers
 
-When your project also references
+When your project also references the
+**`Shmuelie.WinRTServer.DependencyInjection`** package and
 `Microsoft.Extensions.DependencyInjection`, the generator emits a
 `GeneratedServerServices` class as well:
 

@@ -1,5 +1,7 @@
 - name: Getting Started
   href: getting-started.md
+- name: Packages
+  href: packages.md
 - name: Concepts
   items:
     - name: How COM OOP server creation works
