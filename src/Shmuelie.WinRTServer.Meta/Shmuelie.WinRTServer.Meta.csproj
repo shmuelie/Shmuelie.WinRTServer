@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
+    <PackageId>Shmuelie.WinRTServer</PackageId>
+    <IsPackable>true</IsPackable>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <IsAotCompatible>True</IsAotCompatible>
+    <Description>Out-of-Process WinRT/COM Server for .NET. Meta-package that pulls in the full Shmuelie.WinRTServer stack: Core, lifecycle helpers, StrategyBased and CsWinRT registration extensions, dependency-injection factories, and the declarative source generator.</Description>
+    <PackageReleaseNotes>Meta-package aggregating the split Shmuelie.WinRTServer packages.</PackageReleaseNotes>
+    <NoWarn>$(NoWarn);NU5128</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Shmuelie.WinRTServer.Core\Shmuelie.WinRTServer.Core.csproj" />
+    <ProjectReference Include="..\Shmuelie.WinRTServer.Lifecycle\Shmuelie.WinRTServer.Lifecycle.csproj" />
+    <ProjectReference Include="..\Shmuelie.WinRTServer.StrategyBased\Shmuelie.WinRTServer.StrategyBased.csproj" />
+    <ProjectReference Include="..\Shmuelie.WinRTServer.CsWinRT\Shmuelie.WinRTServer.CsWinRT.csproj" />
+    <ProjectReference Include="..\Shmuelie.WinRTServer.DependencyInjection\Shmuelie.WinRTServer.DependencyInjection.csproj" />
+    <ProjectReference Include="..\Shmuelie.WinRTServer.SourceGenerator\Shmuelie.WinRTServer.SourceGenerator.csproj" IncludeAssets="all" PrivateAssets="none" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" PackagePath="\" Pack="true" Visible="false" />
+    <None Include="..\..\LICENSE" PackagePath="\" Pack="true" Visible="false" />
+  </ItemGroup>
+</Project>
