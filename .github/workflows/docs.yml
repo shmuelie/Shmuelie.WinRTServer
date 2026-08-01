@@ -31,7 +31,7 @@ jobs:
     - name: Build docs site
       run: docfx docs/docfx.json
     - name: Upload Pages artifact
-      uses: actions/upload-pages-artifact@v5
+      uses: actions/upload-pages-artifact@v3
       with:
         path: docs/_site
 

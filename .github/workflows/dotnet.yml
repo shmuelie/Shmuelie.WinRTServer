@@ -34,7 +34,7 @@ jobs:
         dotnet test .\tests\Shmuelie.WinRTServer.Tests\Shmuelie.WinRTServer.Tests.csproj -c ${{matrix.configuration}} -p:Platform=x64
         dotnet test .\tests\Shmuelie.WinRTServer.SourceGenerator.Tests\Shmuelie.WinRTServer.SourceGenerator.Tests.csproj -c ${{matrix.configuration}}
     - name: Upload MSBuild binary log
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v7
       with:
         name: msbuild_log_${{matrix.configuration}}
         path: msbuild.binlog
@@ -64,7 +64,7 @@ jobs:
         dotnet pack .\src\Shmuelie.WinRTServer.SourceGenerator\Shmuelie.WinRTServer.SourceGenerator.csproj -c Release
         dotnet pack .\src\Shmuelie.WinRTServer.Meta\Shmuelie.WinRTServer.Meta.csproj -c Release
     - name: Upload package artifacts
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v7
       with:
         name: nuget_packages
         path: artifacts\*.nupkg
@@ -76,7 +76,7 @@ jobs:
     runs-on: windows-2025
     if: ${{github.event_name == 'push'}}
     steps:
-    - uses: actions/download-artifact@v5
+    - uses: actions/download-artifact@v8
       with:
         name: nuget_packages
         path: artifacts
@@ -88,7 +88,7 @@ jobs:
     runs-on: windows-2025
     if: ${{github.event_name == 'push' && startsWith(github.ref_name, 'rel/')}}
     steps:
-    - uses: actions/download-artifact@v5
+    - uses: actions/download-artifact@v8
       with:
         name: nuget_packages
         path: artifacts
