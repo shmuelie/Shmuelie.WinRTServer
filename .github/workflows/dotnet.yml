@@ -16,13 +16,13 @@ jobs:
     runs-on: windows-2025
     steps:
     - name: Git checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v2
     - name: Setup NuGet
       uses: nuget/setup-nuget@v2
     - name: Setup .NET
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: 10.0.x
     - name: NuGet Restore
@@ -34,7 +34,7 @@ jobs:
         dotnet test .\tests\Shmuelie.WinRTServer.Tests\Shmuelie.WinRTServer.Tests.csproj -c ${{matrix.configuration}} -p:Platform=x64
         dotnet test .\tests\Shmuelie.WinRTServer.SourceGenerator.Tests\Shmuelie.WinRTServer.SourceGenerator.Tests.csproj -c ${{matrix.configuration}}
     - name: Upload MSBuild binary log
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: msbuild_log_${{matrix.configuration}}
         path: msbuild.binlog
@@ -47,17 +47,11 @@ jobs:
     runs-on: windows-2025
     steps:
     - name: Git checkout
-      uses: actions/checkout@v4
-    - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v2
-    - name: Setup NuGet
-      uses: nuget/setup-nuget@v2
+      uses: actions/checkout@v7
     - name: Setup .NET
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: 10.0.x
-    - name: NuGet Restore
-      run: nuget restore
     - name: Build
       run: dotnet build .\src\Shmuelie.WinRTServer.Meta\Shmuelie.WinRTServer.Meta.csproj -c Release
     - name: Pack
@@ -70,7 +64,7 @@ jobs:
         dotnet pack .\src\Shmuelie.WinRTServer.SourceGenerator\Shmuelie.WinRTServer.SourceGenerator.csproj -c Release
         dotnet pack .\src\Shmuelie.WinRTServer.Meta\Shmuelie.WinRTServer.Meta.csproj -c Release
     - name: Upload package artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: nuget_packages
         path: artifacts\*.nupkg
@@ -82,7 +76,7 @@ jobs:
     runs-on: windows-2025
     if: ${{github.event_name == 'push'}}
     steps:
-    - uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@v5
       with:
         name: nuget_packages
         path: artifacts
@@ -94,9 +88,8 @@ jobs:
     runs-on: windows-2025
     if: ${{github.event_name == 'push' && startsWith(github.ref_name, 'rel/')}}
     steps:
-    - uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@v5
       with:
         name: nuget_packages
         path: artifacts
     - run: dotnet nuget push "artifacts\*.nupkg" --source "https://api.nuget.org/v3/index.json" --api-key ${{secrets.NUGET_API_KEY}} --skip-duplicate
-

@@ -19,6 +19,15 @@
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
     <AppxPackageSigningEnabled>false</AppxPackageSigningEnabled>
     <Nullable>enable</Nullable>
+    <!--
+      APPX1707: the referenced Shmuelie.WinRTServer.Sample.winmd is out-of-process
+      proxy metadata with no in-package implementation DLL (activation happens in
+      the separate server process), so there is intentionally nothing to register
+      in the app manifest. Demote the (benign) warning to a message rather than
+      fabricate bogus Implementation metadata that would inject an incorrect
+      in-process registration.
+    -->
+    <MSBuildWarningsAsMessages>$(MSBuildWarningsAsMessages);APPX1707</MSBuildWarningsAsMessages>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
