@@ -27,7 +27,7 @@ public sealed class ClientImpersonation : IDisposable
             return;
         }
 
+        CoRevertToSelf().ThrowOnFailure();
         reverted = true;
-        _ = CoRevertToSelf();
     }
 }

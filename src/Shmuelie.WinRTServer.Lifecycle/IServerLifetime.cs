@@ -8,8 +8,12 @@ namespace Shmuelie.WinRTServer;
 /// alive until all created objects have been released.
 /// </summary>
 /// <remarks>
-/// <para>Lifetime tracking is deliberately kept out of the servers themselves. Attach a helper to a started
-/// server and await <see cref="WaitUntilEmptyAsync"/> to keep the process running until the last object is gone.</para>
+/// <para>Lifetime tracking is deliberately kept out of the servers themselves. Attach a helper to a server
+/// and await <see cref="WaitUntilEmptyAsync"/> to keep the process running until the last object is gone.</para>
+/// <para>The helper must be constructed <em>before</em> the server is started. Attaching after the server's
+/// <c>Start()</c> call can miss an activation that occurs before the helper subscribes to the server's
+/// events, which would leave <see cref="WaitForFirstObjectAsync"/> and <see cref="WaitUntilEmptyAsync"/>
+/// blocked indefinitely.</para>
 /// </remarks>
 /// <threadsafety static="true" instance="true"/>
 public interface IServerLifetime : IDisposable

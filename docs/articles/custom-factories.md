@@ -28,12 +28,12 @@ public sealed class PooledThingFactory : BaseClassFactory
 
     public PooledThingFactory(ObjectPool<RemoteThing> pool) => this.pool = pool;
 
-    protected internal override Guid Clsid => typeof(RemoteThing).GUID;
+    protected override Guid Clsid => typeof(RemoteThing).GUID;
 
-    protected internal override IReadOnlyList<Guid> Iids { get; } =
+    protected override IReadOnlyList<Guid> Iids { get; } =
         [typeof(IRemoteThing).GUID];
 
-    protected internal override object CreateInstance() => pool.Rent();
+    protected override object CreateInstance() => pool.Rent();
 }
 ```
 
