@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
@@ -78,7 +79,7 @@ public sealed class ServerRegistrationGenerator : IIncrementalGenerator
             type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
             interfaces.ToImmutableArray(),
             lifetime,
-            type.Locations.FirstOrDefault());
+            LocationInfo.From(type.Locations.FirstOrDefault()));
     }
 
     private static void Execute(SourceProductionContext context, ImmutableArray<ServerClassInfo> items, bool hasDependencyInjection)
@@ -121,7 +122,7 @@ public sealed class ServerRegistrationGenerator : IIncrementalGenerator
             {
                 if (item.Location is not null)
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(TooManyInterfaces, item.Location, item.ClassName));
+                    context.ReportDiagnostic(Diagnostic.Create(TooManyInterfaces, item.Location.ToLocation(), item.ClassName));
                 }
                 continue;
             }
@@ -219,9 +220,9 @@ namespace Shmuelie.WinRTServer.Generated
         context.AddSource("GeneratedServerServices.g.cs", SourceText.From(diSource, Encoding.UTF8));
     }
 
-    private sealed class ServerClassInfo
+    private sealed class ServerClassInfo : IEquatable<ServerClassInfo>
     {
-        public ServerClassInfo(string className, ImmutableArray<string> interfaces, string lifetime, Location? location)
+        public ServerClassInfo(string className, ImmutableArray<string> interfaces, string lifetime, LocationInfo? location)
         {
             ClassName = className;
             Interfaces = interfaces;
@@ -235,6 +236,84 @@ namespace Shmuelie.WinRTServer.Generated
 
         public string Lifetime { get; }
 
-        public Location? Location { get; }
+        public LocationInfo? Location { get; }
+
+        public bool Equals(ServerClassInfo? other)
+        {
+            if (other is null)
+            {
+                return false;
+            }
+
+            return ClassName == other.ClassName
+                && Lifetime == other.Lifetime
+                && Equals(Location, other.Location)
+                && Interfaces.AsSpan().SequenceEqual(other.Interfaces.AsSpan());
+        }
+
+        public override bool Equals(object? obj) => Equals(obj as ServerClassInfo);
+
+        public override int GetHashCode()
+        {
+            int hash = 17;
+            hash = (hash * 31) + ClassName.GetHashCode();
+            hash = (hash * 31) + Lifetime.GetHashCode();
+            hash = (hash * 31) + (Location?.GetHashCode() ?? 0);
+            foreach (string @interface in Interfaces)
+            {
+                hash = (hash * 31) + @interface.GetHashCode();
+            }
+
+            return hash;
+        }
+    }
+
+    private sealed class LocationInfo : IEquatable<LocationInfo>
+    {
+        public LocationInfo(string filePath, TextSpan textSpan, LinePositionSpan lineSpan)
+        {
+            FilePath = filePath;
+            TextSpan = textSpan;
+            LineSpan = lineSpan;
+        }
+
+        public string FilePath { get; }
+
+        public TextSpan TextSpan { get; }
+
+        public LinePositionSpan LineSpan { get; }
+
+        public static LocationInfo? From(Location? location)
+        {
+            if (location is null || location.SourceTree is null)
+            {
+                return null;
+            }
+
+            return new LocationInfo(location.SourceTree.FilePath, location.SourceSpan, location.GetLineSpan().Span);
+        }
+
+        public Location ToLocation() => Location.Create(FilePath, TextSpan, LineSpan);
+
+        public bool Equals(LocationInfo? other)
+        {
+            if (other is null)
+            {
+                return false;
+            }
+
+            return FilePath == other.FilePath && TextSpan == other.TextSpan && LineSpan == other.LineSpan;
+        }
+
+        public override bool Equals(object? obj) => Equals(obj as LocationInfo);
+
+        public override int GetHashCode()
+        {
+            int hash = 17;
+            hash = (hash * 31) + FilePath.GetHashCode();
+            hash = (hash * 31) + TextSpan.GetHashCode();
+            hash = (hash * 31) + LineSpan.GetHashCode();
+            return hash;
+        }
     }
 }

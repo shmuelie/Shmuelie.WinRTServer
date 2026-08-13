@@ -32,11 +32,11 @@ public sealed class ReferenceCountedServerLifetime : IServerLifetime
 {
     private readonly IServer server;
     private readonly object gate = new();
-    private readonly TaskCompletionSource firstInstanceSignal = new(TaskCreationOptions.RunContinuationsAsynchronously);
-    private WeakReference? firstInstance;
+    private readonly TaskCompletionSource<object?> firstInstanceSignal = new(TaskCreationOptions.RunContinuationsAsynchronously);
     private TaskCompletionSource<bool>? emptyTcs;
     private long referenceCount;
     private bool everReferenced;
+    private bool wasEmpty;
     private bool disposed;
 
     /// <summary>
@@ -63,12 +63,7 @@ public sealed class ReferenceCountedServerLifetime : IServerLifetime
 
     private void Server_InstanceCreated(object? sender, InstanceCreatedEventArgs e)
     {
-        lock (gate)
-        {
-            firstInstance ??= new WeakReference(e.Instance);
-        }
-
-        firstInstanceSignal.TrySetResult();
+        firstInstanceSignal.TrySetResult(e.Instance);
     }
 
     internal void OnReferenceAdded()
@@ -77,6 +72,7 @@ public sealed class ReferenceCountedServerLifetime : IServerLifetime
         {
             everReferenced = true;
             referenceCount++;
+            wasEmpty = false;
         }
     }
 
@@ -91,6 +87,12 @@ public sealed class ReferenceCountedServerLifetime : IServerLifetime
             }
 
             empty = everReferenced && referenceCount == 0;
+            if (empty && wasEmpty)
+            {
+                return;
+            }
+
+            wasEmpty = empty;
         }
 
         if (empty)
@@ -124,14 +126,7 @@ public sealed class ReferenceCountedServerLifetime : IServerLifetime
     }
 
     /// <inheritdoc/>
-    public async Task<object?> WaitForFirstObjectAsync()
-    {
-        await firstInstanceSignal.Task.ConfigureAwait(false);
-        lock (gate)
-        {
-            return firstInstance?.Target;
-        }
-    }
+    public Task<object?> WaitForFirstObjectAsync() => firstInstanceSignal.Task;
 
     /// <inheritdoc/>
     public Task WaitUntilEmptyAsync()
@@ -166,7 +161,7 @@ public sealed class ReferenceCountedServerLifetime : IServerLifetime
         }
 
         server.InstanceCreated -= Server_InstanceCreated;
-        firstInstanceSignal.TrySetResult();
+        firstInstanceSignal.TrySetResult(null);
         local?.TrySetResult(true);
     }
 }

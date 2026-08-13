@@ -29,6 +29,7 @@ public sealed class PollingServerLifetime : IServerLifetime
     private WeakReference? firstInstance;
     private TaskCompletionSource<bool>? emptyTcs;
     private bool everCreated;
+    private bool wasEmpty;
     private bool disposed;
 
     /// <summary>
@@ -58,6 +59,7 @@ public sealed class PollingServerLifetime : IServerLifetime
             everCreated = true;
             liveServers.Add(new WeakReference(e.Instance));
             firstInstance ??= new WeakReference(e.Instance);
+            wasEmpty = false;
         }
 
         firstInstanceSignal.TrySetResult();
@@ -84,6 +86,12 @@ public sealed class PollingServerLifetime : IServerLifetime
             }
 
             empty = everCreated && liveServers.Count == 0;
+            if (empty && wasEmpty)
+            {
+                return;
+            }
+
+            wasEmpty = empty;
         }
 
         if (empty)

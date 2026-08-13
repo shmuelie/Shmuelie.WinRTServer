@@ -30,7 +30,12 @@ public interface IServerLifetime : IDisposable
     /// <summary>
     /// Wait for the server to have created its first object.
     /// </summary>
-    /// <returns>The first object created, or <see langword="null"/> if the helper is disposed first.</returns>
+    /// <returns>
+    /// The first object created, or <see langword="null"/> if the helper is disposed before any object is
+    /// created. Implementations that track liveness through garbage collection (such as
+    /// <see cref="PollingServerLifetime"/>) may also return <see langword="null"/> if the first object has
+    /// already been collected by the time the caller observes the result.
+    /// </returns>
     Task<object?> WaitForFirstObjectAsync();
 
     /// <summary>

@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.Marshalling;
 using System.Threading.Tasks;
@@ -102,4 +103,45 @@ public sealed class ReferenceCountedServerLifetimeTests
 
         await wait.WaitAsync(TimeSpan.FromSeconds(5));
     }
+
+    [Fact]
+    public void Empty_RaisedOncePerEmptyTransition()
+    {
+        FakeServer server = new();
+        using ReferenceCountedServerLifetime lifetime = new(server);
+        int emptyCount = 0;
+        lifetime.Empty += (_, _) => emptyCount++;
+
+        lifetime.OnReferenceAdded();
+        lifetime.OnReferenceReleased();
+        lifetime.OnReferenceReleased();
+
+        Assert.Equal(1, emptyCount);
+
+        lifetime.OnReferenceAdded();
+        lifetime.OnReferenceReleased();
+
+        Assert.Equal(2, emptyCount);
+    }
+
+    [Fact]
+    public async Task WaitForFirstObjectAsync_ReturnsInstance_EvenAfterCollection()
+    {
+        FakeServer server = new();
+        using ReferenceCountedServerLifetime lifetime = new(server);
+
+        Task<object?> wait = lifetime.WaitForFirstObjectAsync();
+        RaiseInstance(server);
+
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+        GC.Collect();
+
+        object? first = await wait.WaitAsync(TimeSpan.FromSeconds(5));
+        Assert.NotNull(first);
+    }
+
+    // Kept in a non-inlined method so the created instance is not rooted by the caller's frame.
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static void RaiseInstance(FakeServer server) => server.RaiseInstanceCreated(new object());
 }

@@ -153,7 +153,7 @@ public sealed class WinRtServer : IServer, IDisposable
 
         if (!factories.TryGetValue(activatableClassId.AsString(), out var managedFactory))
         {
-            factory = null;
+            *factory = null;
             return HRESULT.E_NOINTERFACE;
         }
 
@@ -197,6 +197,7 @@ public sealed class WinRtServer : IServer, IDisposable
         string[] managedActivatableClassIds = [.. factories.Keys];
         HSTRING* activatableClassIds = null;
         DllActivationCallback* activationFactoryCallbacks = null;
+        int createdStringCount = 0;
         try
         {
             activatableClassIds = (HSTRING*)Marshal.AllocHGlobal(sizeof(HSTRING) * managedActivatableClassIds.Length);
@@ -207,9 +208,11 @@ public sealed class WinRtServer : IServer, IDisposable
                 {
                     WindowsCreateString((PCWSTR)managedActivatableClassIdPtr, (uint)managedActivatableClassId.Length, &activatableClassIds[activatableClassIdIndex]).ThrowOnFailure();
                 }
+
+                createdStringCount++;
             }
 
-            activationFactoryCallbacks = (DllActivationCallback*)Marshal.AllocHGlobal(sizeof(DllActivationCallback*) * managedActivatableClassIds.Length);
+            activationFactoryCallbacks = (DllActivationCallback*)Marshal.AllocHGlobal(sizeof(DllActivationCallback) * managedActivatableClassIds.Length);
             for (int activationFactoryCallbackIndex = 0; activationFactoryCallbackIndex < managedActivatableClassIds.Length; activationFactoryCallbackIndex++)
             {
                 activationFactoryCallbacks[activationFactoryCallbackIndex] = activationFactoryCallbackPointer;
@@ -228,7 +231,7 @@ public sealed class WinRtServer : IServer, IDisposable
             }
             if (activatableClassIds is not null)
             {
-                for (int activatableClassIdIndex = 0; activatableClassIdIndex < managedActivatableClassIds.Length; activatableClassIdIndex++)
+                for (int activatableClassIdIndex = 0; activatableClassIdIndex < createdStringCount; activatableClassIdIndex++)
                 {
                     _ = WindowsDeleteString(activatableClassIds[activatableClassIdIndex]);
                 }
