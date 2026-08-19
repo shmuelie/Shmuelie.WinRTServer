@@ -60,6 +60,10 @@ public sealed class PollingServerLifetime : IServerLifetime
             liveServers.Add(new WeakReference(e.Instance));
             firstInstance ??= new WeakReference(e.Instance);
             wasEmpty = false;
+            if (emptyTcs is not null && emptyTcs.Task.IsCompleted)
+            {
+                emptyTcs = null;
+            }
         }
 
         firstInstanceSignal.TrySetResult();

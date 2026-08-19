@@ -73,6 +73,10 @@ public sealed class ReferenceCountedServerLifetime : IServerLifetime
             everReferenced = true;
             referenceCount++;
             wasEmpty = false;
+            if (emptyTcs is not null && emptyTcs.Task.IsCompleted)
+            {
+                emptyTcs = null;
+            }
         }
     }
 

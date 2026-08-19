@@ -141,6 +141,26 @@ public sealed class ReferenceCountedServerLifetimeTests
         Assert.NotNull(first);
     }
 
+    [Fact]
+    public async Task WaitUntilEmptyAsync_ReArmsAcrossCycles()
+    {
+        FakeServer server = new();
+        using ReferenceCountedServerLifetime lifetime = new(server);
+
+        lifetime.OnReferenceAdded();
+        lifetime.OnReferenceReleased();
+        await lifetime.WaitUntilEmptyAsync().WaitAsync(TimeSpan.FromSeconds(5));
+
+        lifetime.OnReferenceAdded();
+        Assert.False(lifetime.IsEmpty);
+
+        Task wait = lifetime.WaitUntilEmptyAsync();
+        Assert.False(wait.IsCompleted);
+
+        lifetime.OnReferenceReleased();
+        await wait.WaitAsync(TimeSpan.FromSeconds(5));
+    }
+
     // Kept in a non-inlined method so the created instance is not rooted by the caller's frame.
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static void RaiseInstance(FakeServer server) => server.RaiseInstanceCreated(new object());
