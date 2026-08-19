@@ -15,135 +15,112 @@ process of creating the "server" in .NET much easier.
 
 # Why?
 
-## Cross Language
+- **Cross Language** — because communication is over COM/WinRT, any language that
+  can use COM can use this library (the samples include a C++/WinRT console
+  client talking to a C# server).
+- **Complex Types** — return objects with methods, events, and properties, not
+  just serialized data. If you can do it with a local object, you can do it with
+  a remote one — including streaming a file across the boundary.
+- **Built-in Support for Types** — collections, maps, streams, and more work out
+  of the box.
+- **Security** — COM's security model is available. See [Security in COM][7].
 
-Because this uses COM/WinRT for the communication any language that can use COM
-can use this library. As an example of this, the sample includes a simple C++
-console application that talks to the .NET/C# server.
+# Install
 
-## Complex Types
+```
+dotnet add package Shmuelie.WinRTServer
+```
 
-Most RPC/ICP systems are just sending messages between the two processes. At
-most they can serialize an object graph. COM allows for more complicated
-objects, where the returned types can have methods, events, and properties. If
-you could do it with a local object, you can do it with a remote object. The
-samples include using most of these abilities, including having the remote
-process load a file as a stream and having the local process use the stream
-without having to send the whole file across.
+`Shmuelie.WinRTServer` is a **meta-package** that pulls in everything. To keep
+dependencies lean you can instead reference only the parts you need:
 
-## Built in Support for Types
+| Package | What it adds |
+| --- | --- |
+| **Shmuelie.WinRTServer.Core** | The `ComServer` / `WinRtServer` hosts, factories, options, and security. Everything else builds on this. |
+| **Shmuelie.WinRTServer.Lifecycle** | `IServerLifetime` helpers to keep the process alive until objects are released. |
+| **Shmuelie.WinRTServer.StrategyBased** | `RegisterClass<…>` extensions using the runtime `StrategyBasedComWrappers`. |
+| **Shmuelie.WinRTServer.CsWinRT** | `RegisterClass<…>` extensions using CsWinRT's `DefaultComWrappers`. |
+| **Shmuelie.WinRTServer.DependencyInjection** | Factories that resolve server objects from an `IServiceProvider`. |
+| **Shmuelie.WinRTServer.SourceGenerator** | The `[ServerClass]` attribute + generator for declarative registration. |
+| **Shmuelie.WinRTServer** | Meta-package that references all of the above. |
 
-Many of the types you are used to using are supported out of the box like
-collection types, map types, streams, etc. This allows you to not have to worry
-about how the IPC works.
+# Documentation
 
-## Security
+Full documentation, guides, and API reference live on the **[documentation
+site][docs]**:
 
-COM provides various ways to secure usage and creation of objects. For more
-details, see [Security in COM][7].
+- [Getting Started][docs-start] — build a contract, metadata, server, and client
+  end to end.
+- [How COM OOP server creation works][docs-oop] — the concepts behind the API.
+- [Object lifetime & dependency injection][docs-lifetime] — keeping the process
+  alive with `IServerLifetime`, and resolving objects from a container.
+- [Declarative registration & source generators][docs-gen] — `[ServerClass]` and
+  the built-in generator.
+- [Creating custom factories][docs-factories],
+  [using interfaces defined elsewhere][docs-external],
+  [WinRT activation limits][docs-winrt],
+  [packaged COM][docs-packaged],
+  [hosting models][docs-hosting], and
+  [server security][docs-security].
+- [API Reference][docs-api].
 
-# Usage
+# Quick look
 
-Currently to create an Out-of-Process server requires the C++/WinRT tooling
-(though no actual C++ code) and a "contract" project. These two limitations will
-be removed in a future version of the library.
+```csharp
+using Shmuelie.WinRTServer;
+using Shmuelie.WinRTServer.CsWinRT; // or .StrategyBased
 
-## Contract Project
+using ComServer server = new();
+using PollingServerLifetime lifetime = new(server);
 
-The contract project is a C# project that contains the interfaces of the remote
-objects. Output is a WinMD that is referenced by the other projects. The interfaces have some rules:
+server.RegisterClass<RemoteThing, IRemoteThing>();
+server.Start();
 
-1. The interface must have a GUID assigned using the
-   `Windows.Foundation.Metadata.GuidAttribute` attribute, not the
-   `System.Runtime.InteropServices.GuidAttribute` attribute.
-2. Asynchronous methods must use the WinRT types (`IAsyncAction`,
-   `IAsyncActionWithProgress<TProgress>`, `IAsyncOperation<TResult>`,
-   `IAsyncOperationWithProgress<TResult, TProgress>`) instead of `Task` and
-   `Task<T>`.
-3. Event delegates must be either `TypedEventHandler<TSender, TResult>` or
-   `EventHandler<TResult>` instead of `EventHandler` and `EventHandler<T>`.
-4. Types in method parameters, type parameters, and return types must be:
+await lifetime.WaitUntilEmptyAsync();
+```
 
-   - A blittable type.
-   - An interface that has a [.NET/WinRT Mapping][4].
-   - A WinRT type.
-   - Another interface in the project.
+# Samples
 
-5. Methods, properties, and events are all supported.
+Runnable samples live under the `samples` folder:
 
-## Metadata Project
-
-The metadata project is a C++/WinRT project that uses [MIDL 3.0][5] to create
-proxy types in a WinMD that can be referenced by the client of the OOP Server.
-No actual C++ code is needed, only the IDL.
-
-The IDL is very simple, only needing `runtimeclass`es that implement the
-interface from the contract project. Unlike in C#, in MIDL 3.0 the type
-automatically has the members from the interface so they do not need to be
-listed again. Importantly the `runtimeclass` must have an empty constructor,
-otherwise the proxy type cannot be created.
-
-> :exclamation:**Important**: Because of the mix of SDK Style and C++/WinRT,
-> `nuget restore` is needed to restore for C++/WinRT. In addition
-> `<RestoreProjectStyle>Packages.config</RestoreProjectStyle>` is needed in the
-> C++ project file.
-
-## Server Project
-
-The server project is the only project that references `Shmuelie.WinRTServer`.
-It will contain implementations of the interfaces from the contract and when run
-should register them with an instance of `COMServer` for COM activation and
-`WinRtServer` for WinRT activation. The implementations must have a GUID using
-the `System.Runtime.InteropServices.GuidAttribute` attribute.
-
-Because the interfaces must use the WinRT asynchronous types instead of the .NET
-ones, the implementation will likely need to use `AsyncInfo` to help adapt
-between the two systems.
-
-## Client Project
-
-A client can be both full trust applications (Win32, WPF, WinForms, etc) or a
-UWP app.
-
-A UWP client cannot use WinRT activation and must use COM style activation. The
-UWP sample app shows how to do this. To understand the details behind it, see
-[this blog post][6].
-
-A full trust client can use WinRT activation, which allows you to create the
-remote instances simply by `new SomeType()`, like you would for any other type.
-The sample WPF application shows this in action (using with WinForms would be
-similar).
-
-# Sample
-
-To help understand usage and show what can be done samples can be found under
-the tests folder. The sample has:
-
-- .NET 8 Server
+- .NET 10 Server
 - UWP .NET Client App
 - C++/WinRT Console Client App
 - WPF .NET Framework Client App
-- WPF .NET 8 Client App
+- WPF .NET 10 Client App
 
-> **Note**: If Visual Studio fails to build the Metadata project restarting
-> Visual Studio should fix the problem.
+> **Note**: Because the samples mix SDK-style, C++/WinRT, and packaging
+> (`.wapproj`) projects, a clean build sometimes needs to be run **more than
+> once** to converge — the C++/WinRT `Metadata` project generates a WinMD that
+> the other projects consume, and on a from-scratch build it may not be ready on
+> the first pass. If a sample fails to build with missing-type errors, build the
+> solution again (or, in Visual Studio, rebuild / restart Visual Studio).
 
-# Troubleshooting
+# Tests
 
-If you are having issues, check on these things:
+Automated unit tests live under the `tests` folder and run with `dotnet test`:
 
-- Make sure the client app includes the WinMDs (Interface and Metadata)
-- Make sure that the interface project uses the
-   `Windows.Foundation.Metadata.GuidAttribute` attribute, not the
-   `System.Runtime.InteropServices.GuidAttribute` attribute.
-- Make sure that the server project uses the
-  `System.Runtime.InteropServices.GuidAttribute` attribute, not the
-  `Windows.Foundation.Metadata.GuidAttribute` attribute.
+- `Shmuelie.WinRTServer.Tests` — exercises the library (lifetime helpers,
+  factories, options, argument guards).
+- `Shmuelie.WinRTServer.SourceGenerator.Tests` — Roslyn-driver tests for the
+  `[ServerClass]` source generator.
+
+These cover the pure-managed surface; full COM/WinRT activation round-trips are
+validated by the sample apps.
 
 [1]: https://github.com/Shmuelie/Shmuelie.WinRTServer/actions
 [2]: https://www.nuget.org/stats/packages/Shmuelie.WinRTServer?groupby=Version
 [3]: https://www.nuget.org/packages/Shmuelie.WinRTServer/
-[4]: https://learn.microsoft.com/en-us/windows/apps/develop/platform/csharp-winrt/net-mappings-of-winrt-types
-[5]: https://learn.microsoft.com/en-us/uwp/midl-3/
-[6]: https://devblogs.microsoft.com/ifdef-windows/the-journey-of-moving-from-cpp-winrt-to-csharp-in-the-microsoft-store/
 [7]: https://learn.microsoft.com/en-us/windows/win32/com/security-in-com
+[docs]: https://shmuelie.github.io/Shmuelie.WinRTServer/
+[docs-start]: https://shmuelie.github.io/Shmuelie.WinRTServer/articles/getting-started.html
+[docs-oop]: https://shmuelie.github.io/Shmuelie.WinRTServer/articles/how-com-oop-works.html
+[docs-lifetime]: https://shmuelie.github.io/Shmuelie.WinRTServer/articles/lifetime-and-di.html
+[docs-gen]: https://shmuelie.github.io/Shmuelie.WinRTServer/articles/source-generators.html
+[docs-factories]: https://shmuelie.github.io/Shmuelie.WinRTServer/articles/custom-factories.html
+[docs-external]: https://shmuelie.github.io/Shmuelie.WinRTServer/articles/external-interfaces.html
+[docs-winrt]: https://shmuelie.github.io/Shmuelie.WinRTServer/articles/winrt-activation-limits.html
+[docs-packaged]: https://shmuelie.github.io/Shmuelie.WinRTServer/articles/packaged-com.html
+[docs-hosting]: https://shmuelie.github.io/Shmuelie.WinRTServer/articles/hosting-models.html
+[docs-security]: https://shmuelie.github.io/Shmuelie.WinRTServer/articles/security.html
+[docs-api]: https://shmuelie.github.io/Shmuelie.WinRTServer/api/Shmuelie.WinRTServer.html

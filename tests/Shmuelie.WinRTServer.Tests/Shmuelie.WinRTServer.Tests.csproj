@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <Platforms>x64;x86</Platforms>
+    <RuntimeIdentifiers>win-x64;win-x86;win-arm64</RuntimeIdentifiers>
+    <IsTestProject>true</IsTestProject>
+    <DisableRuntimeMarshalling>true</DisableRuntimeMarshalling>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.8.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5" />
+    <PackageReference Include="coverlet.collector" Version="10.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Shmuelie.WinRTServer.Core\Shmuelie.WinRTServer.Core.csproj" />
+    <ProjectReference Include="..\..\src\Shmuelie.WinRTServer.Lifecycle\Shmuelie.WinRTServer.Lifecycle.csproj" />
+    <ProjectReference Include="..\..\src\Shmuelie.WinRTServer.StrategyBased\Shmuelie.WinRTServer.StrategyBased.csproj" />
+    <ProjectReference Include="..\..\src\Shmuelie.WinRTServer.DependencyInjection\Shmuelie.WinRTServer.DependencyInjection.csproj" />
+  </ItemGroup>
+</Project>

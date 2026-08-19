@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <Platforms>x64;x86</Platforms>
+    <AssetTargetFallback>native;net481;$(AssetTargetFallback)</AssetTargetFallback>
+    <RuntimeIdentifiers>win-x64;$(RuntimeIdentifiers)</RuntimeIdentifiers>
+    <CsWinRTIncludes>Shmuelie.WinRTServer.Sample</CsWinRTIncludes>
+    <CsWinRTIncludesPrivate>Shmuelie.WinRTServer.Sample</CsWinRTIncludesPrivate>
+    <DefineConstants>$(DefineConstants);NET</DefineConstants>
+    <DebugType>full</DebugType>
+    <DisableRuntimeMarshalling>True</DisableRuntimeMarshalling>
+    <PublishAot>True</PublishAot>
+    <RootNamespace>Shmuelie.WinRTServer.Sample</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.2.0" />
+    <ProjectReference Include="..\..\src\Shmuelie.WinRTServer.Core\Shmuelie.WinRTServer.Core.csproj" />
+    <ProjectReference Include="..\..\src\Shmuelie.WinRTServer.CsWinRT\Shmuelie.WinRTServer.CsWinRT.csproj" />
+    <ProjectReference Include="..\..\src\Shmuelie.WinRTServer.Lifecycle\Shmuelie.WinRTServer.Lifecycle.csproj" />
+    <CsWinRTInputs Include="..\Shmuelie.WinRTServer.Sample.Interfaces\bin\$(Platform)\$(Configuration)\net462\*.winmd">
+      <Name>%(Filename)</Name>
+      <IsWinMDFile>true</IsWinMDFile>
+    </CsWinRTInputs>
+  </ItemGroup>
+  <Target Name="BuiltProjectOutputGroup" DependsOnTargets="_SetBuildInnerTarget;DispatchToInnerBuilds" Returns="@(OutputItems)">
+    <ItemGroup>
+      <OutputItems Include="$(MSBuildProjectDirectory)\bin\$(Platform)\$(Configuration)\net10.0-windows10.0.26100.0\Shmuelie.WinRTServer.*">
+        <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
+        <TargetFileName>%(Filename).%(Extension)</TargetFileName>
+        <TargetPlatformIdentifier>Windows</TargetPlatformIdentifier>
+        <TargetDir>%(RootDir)%(Directory)</TargetDir>
+        <FinalOutputPath>%(FullPath)</FinalOutputPath>
+      </OutputItems>
+    </ItemGroup>
+  </Target>
+</Project>

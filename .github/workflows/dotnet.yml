@@ -13,20 +13,28 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
-    runs-on: windows-2022
+    runs-on: windows-2025
     steps:
     - name: Git checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v7
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1
+      uses: microsoft/setup-msbuild@v2
     - name: Setup NuGet
-      uses: nuget/setup-nuget@v1
+      uses: nuget/setup-nuget@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v5
+      with:
+        dotnet-version: 10.0.x
     - name: NuGet Restore
       run: nuget restore
     - name: Build
       run: msbuild /t:restore`;build /p:Configuration=${{matrix.configuration}} /p:Platform=x64 /bl
+    - name: Test
+      run: |
+        dotnet test .\tests\Shmuelie.WinRTServer.Tests\Shmuelie.WinRTServer.Tests.csproj -c ${{matrix.configuration}} -p:Platform=x64
+        dotnet test .\tests\Shmuelie.WinRTServer.SourceGenerator.Tests\Shmuelie.WinRTServer.SourceGenerator.Tests.csproj -c ${{matrix.configuration}}
     - name: Upload MSBuild binary log
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: msbuild_log_${{matrix.configuration}}
         path: msbuild.binlog
@@ -36,22 +44,27 @@ jobs:
   # Build the only in Release to generate all the NuGet packages.
   # This workflow also uploads the resulting packages as artifacts.
   build-packages:
-    runs-on: windows-2022
+    runs-on: windows-2025
     steps:
     - name: Git checkout
-      uses: actions/checkout@v3
-    - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1
-    - name: Setup NuGet
-      uses: nuget/setup-nuget@v1
-    - name: NuGet Restore
-      run: nuget restore
+      uses: actions/checkout@v7
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v5
+      with:
+        dotnet-version: 10.0.x
     - name: Build
-      run: msbuild .\src\Shmuelie.WinRTServer\Shmuelie.WinRTServer.csproj /t:restore`;build /p:Configuration=Release
+      run: dotnet build .\src\Shmuelie.WinRTServer.Meta\Shmuelie.WinRTServer.Meta.csproj -c Release
     - name: Pack
-      run: msbuild .\src\Shmuelie.WinRTServer\Shmuelie.WinRTServer.csproj /t:pack /p:Configuration=Release
+      run: |
+        dotnet pack .\src\Shmuelie.WinRTServer.Core\Shmuelie.WinRTServer.Core.csproj -c Release
+        dotnet pack .\src\Shmuelie.WinRTServer.Lifecycle\Shmuelie.WinRTServer.Lifecycle.csproj -c Release
+        dotnet pack .\src\Shmuelie.WinRTServer.StrategyBased\Shmuelie.WinRTServer.StrategyBased.csproj -c Release
+        dotnet pack .\src\Shmuelie.WinRTServer.CsWinRT\Shmuelie.WinRTServer.CsWinRT.csproj -c Release
+        dotnet pack .\src\Shmuelie.WinRTServer.DependencyInjection\Shmuelie.WinRTServer.DependencyInjection.csproj -c Release
+        dotnet pack .\src\Shmuelie.WinRTServer.SourceGenerator\Shmuelie.WinRTServer.SourceGenerator.csproj -c Release
+        dotnet pack .\src\Shmuelie.WinRTServer.Meta\Shmuelie.WinRTServer.Meta.csproj -c Release
     - name: Upload package artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: nuget_packages
         path: artifacts\*.nupkg
@@ -60,11 +73,23 @@ jobs:
   # Publish the packages to GitHub packages
   publish-nightlies-github:
     needs: [build-solution, build-packages]
-    runs-on: windows-2022
+    runs-on: windows-2025
     if: ${{github.event_name == 'push'}}
     steps:
-    - uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@v8
       with:
         name: nuget_packages
         path: artifacts
     - run: dotnet nuget push "artifacts\*.nupkg" --source "https://nuget.pkg.github.com/${{github.repository_owner}}/index.json" --api-key ${{secrets.GITHUB_TOKEN}} --skip-duplicate
+
+  # Publish release builds (pushes to rel/<x.y.z> branches) to NuGet.org
+  publish-release-nuget:
+    needs: [build-solution, build-packages]
+    runs-on: windows-2025
+    if: ${{github.event_name == 'push' && startsWith(github.ref_name, 'rel/')}}
+    steps:
+    - uses: actions/download-artifact@v8
+      with:
+        name: nuget_packages
+        path: artifacts
+    - run: dotnet nuget push "artifacts\*.nupkg" --source "https://api.nuget.org/v3/index.json" --api-key ${{secrets.NUGET_API_KEY}} --skip-duplicate

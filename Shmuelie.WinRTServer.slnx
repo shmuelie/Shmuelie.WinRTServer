@@ -1,0 +1,70 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/Src/">
+    <Project Path="src/Shmuelie.WinRTServer.Annotations/Shmuelie.WinRTServer.Annotations.csproj" />
+    <Project Path="src/Shmuelie.WinRTServer.Core/Shmuelie.WinRTServer.Core.csproj" />
+    <Project Path="src/Shmuelie.WinRTServer.CsWinRT/Shmuelie.WinRTServer.CsWinRT.csproj" />
+    <Project Path="src/Shmuelie.WinRTServer.DependencyInjection/Shmuelie.WinRTServer.DependencyInjection.csproj" />
+    <Project Path="src/Shmuelie.WinRTServer.Lifecycle/Shmuelie.WinRTServer.Lifecycle.csproj" />
+    <Project Path="src/Shmuelie.WinRTServer.Meta/Shmuelie.WinRTServer.Meta.csproj" />
+    <Project Path="src/Shmuelie.WinRTServer.SourceGenerator/Shmuelie.WinRTServer.SourceGenerator.csproj" />
+    <Project Path="src/Shmuelie.WinRTServer.StrategyBased/Shmuelie.WinRTServer.StrategyBased.csproj" />
+  </Folder>
+  <Folder Name="/Samples/">
+    <File Path="samples/Directory.Build.props" />
+    <Project Path="samples/Shmuelie.WinRTServer.Sample.CppConsoleClient/Shmuelie.WinRTServer.Sample.CppConsoleClient.vcxproj">
+      <BuildDependency Project="samples/Shmuelie.WinRTServer.Sample.Metadata/Shmuelie.WinRTServer.Sample.Metadata.vcxproj" />
+    </Project>
+    <Project Path="samples/Shmuelie.WinRTServer.Sample.Interfaces/Shmuelie.WinRTServer.Sample.Interfaces.csproj">
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+    <Project Path="samples/Shmuelie.WinRTServer.Sample.Metadata/Shmuelie.WinRTServer.Sample.Metadata.vcxproj">
+      <BuildDependency Project="samples/Shmuelie.WinRTServer.Sample.Interfaces/Shmuelie.WinRTServer.Sample.Interfaces.csproj" />
+    </Project>
+    <Project Path="samples/Shmuelie.WinRTServer.Sample.Package/Shmuelie.WinRTServer.Sample.Package.wapproj" Type="c7167f0d-bc9f-4e6e-afe1-012c56b48db5">
+      <Deploy />
+    </Project>
+    <Project Path="samples/Shmuelie.WinRTServer.Sample.ServerNet6/Shmuelie.WinRTServer.Sample.ServerNet6.csproj">
+      <BuildDependency Project="samples/Shmuelie.WinRTServer.Sample.Metadata/Shmuelie.WinRTServer.Sample.Metadata.vcxproj" />
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+    <Project Path="samples/Shmuelie.WinRTServer.Sample.UwpClient/Shmuelie.WinRTServer.Sample.UwpClient.csproj">
+      <BuildDependency Project="samples/Shmuelie.WinRTServer.Sample.Metadata/Shmuelie.WinRTServer.Sample.Metadata.vcxproj" />
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+      <Deploy />
+    </Project>
+    <Project Path="samples/Shmuelie.WinRTServer.Sample.WpfNet6Client/Shmuelie.WinRTServer.Sample.WpfNet6Client.csproj">
+      <BuildDependency Project="samples/Shmuelie.WinRTServer.Sample.Metadata/Shmuelie.WinRTServer.Sample.Metadata.vcxproj" />
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+    <Project Path="samples/Shmuelie.WinRTServer.Sample.WpfNetFxClient/Shmuelie.WinRTServer.Sample.WpfNetFxClient.csproj">
+      <BuildDependency Project="samples/Shmuelie.WinRTServer.Sample.Metadata/Shmuelie.WinRTServer.Sample.Metadata.vcxproj" />
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+  </Folder>
+  <Folder Name="/Tests/">
+    <File Path="tests/Directory.Build.props" />
+    <Project Path="tests/Shmuelie.WinRTServer.SourceGenerator.Tests/Shmuelie.WinRTServer.SourceGenerator.Tests.csproj" />
+    <Project Path="tests/Shmuelie.WinRTServer.Tests/Shmuelie.WinRTServer.Tests.csproj">
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+  </Folder>
+  <Folder Name="/_SolutionItems/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Build.targets" />
+    <File Path="global.json" />
+    <File Path="LICENSE" />
+    <File Path="README.md" />
+  </Folder>
+</Solution>

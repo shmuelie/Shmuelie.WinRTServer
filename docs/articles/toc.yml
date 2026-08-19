@@ -1,0 +1,26 @@
+- name: Getting Started
+  href: getting-started.md
+- name: Packages
+  href: packages.md
+- name: Concepts
+  items:
+    - name: How COM OOP server creation works
+      href: how-com-oop-works.md
+    - name: WinRT activation limits
+      href: winrt-activation-limits.md
+    - name: Packaged COM
+      href: packaged-com.md
+    - name: Hosting models (Service vs. exe)
+      href: hosting-models.md
+- name: Guides
+  items:
+    - name: Object lifetime & dependency injection
+      href: lifetime-and-di.md
+    - name: Declarative registration & source generators
+      href: source-generators.md
+    - name: Creating custom factories
+      href: custom-factories.md
+    - name: Using interfaces defined elsewhere
+      href: external-interfaces.md
+    - name: Server security
+      href: security.md

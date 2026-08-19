@@ -1,0 +1,60 @@
+{
+  "$schema": "https://raw.githubusercontent.com/dotnet/docfx/main/schemas/docfx.schema.json",
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": "../src",
+          "files": [
+            "Shmuelie.WinRTServer.Core/Shmuelie.WinRTServer.Core.csproj",
+            "Shmuelie.WinRTServer.Lifecycle/Shmuelie.WinRTServer.Lifecycle.csproj",
+            "Shmuelie.WinRTServer.StrategyBased/Shmuelie.WinRTServer.StrategyBased.csproj",
+            "Shmuelie.WinRTServer.CsWinRT/Shmuelie.WinRTServer.CsWinRT.csproj",
+            "Shmuelie.WinRTServer.DependencyInjection/Shmuelie.WinRTServer.DependencyInjection.csproj",
+            "Shmuelie.WinRTServer.Annotations/Shmuelie.WinRTServer.Annotations.csproj"
+          ]
+        }
+      ],
+      "dest": "api",
+      "properties": {
+        "TargetFramework": "net10.0-windows10.0.26100.0",
+        "Platform": "x64"
+      }
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "**/*.{md,yml}"
+        ],
+        "exclude": [
+          "_site/**",
+          "obj/**"
+        ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "images/**"
+        ]
+      }
+    ],
+    "output": "_site",
+    "template": [
+      "default",
+      "modern"
+    ],
+    "globalMetadata": {
+      "_appName": "Shmuelie.WinRTServer",
+      "_appTitle": "Shmuelie.WinRTServer",
+      "_enableSearch": true,
+      "_appFooter": "Shmuelie.WinRTServer — Out-of-Process WinRT/COM Server",
+      "_gitContribute": {
+        "repo": "https://github.com/shmuelie/Shmuelie.WinRTServer",
+        "branch": "main"
+      }
+    }
+  }
+}

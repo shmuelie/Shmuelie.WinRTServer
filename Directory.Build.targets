@@ -30,4 +30,13 @@
     <PackageVersion Condition="'$(IsCommitOnReleaseBranch)' != true">$(VersionPrefix)-$(VersionSuffix).$(GITHUB_RUN_ID)</PackageVersion>
     <PackageVersion Condition="'$(GITHUB_SHA)' != ''">$(PackageVersion)+$(GITHUB_SHA)</PackageVersion>
   </PropertyGroup>
+
+  <!--
+    Every produced package shares the same logo. Imported late, so $(IsPackable)
+    reflects the project's own setting. Each packable project supplies its own
+    README.md (packed as PackageReadmeFile); the meta-package uses the repo README.
+  -->
+  <ItemGroup Condition="'$(IsPackable)' != 'false'">
+    <None Include="$(MSBuildThisFileDirectory)Shmuelie.WinRTServer-128.png" PackagePath="\" Pack="true" Visible="false" />
+  </ItemGroup>
 </Project>
