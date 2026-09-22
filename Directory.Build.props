@@ -13,40 +13,53 @@
     <PackageOutputPath>$(MSBuildThisFileDirectory)artifacts/</PackageOutputPath>
   </PropertyGroup>
 
-  <!--
-    The target version being built (this is referenced by all build steps).
-    This version will set the package version prefix and the assembly version.
-    As such, this needs to be changed before a new release as well.
-  -->
+  <!-- The next version used by local development and non-release CI builds. -->
   <PropertyGroup>
     <ShmuelieWinRTServerPackageVersion>2.2.1</ShmuelieWinRTServerPackageVersion>
-    <IsCommitOnReleaseBranch>false</IsCommitOnReleaseBranch>
+    <_InputVersion>$(Version)</_InputVersion>
+    <_InputVersionPrefix>$(VersionPrefix)</_InputVersionPrefix>
+    <_InputVersionSuffix>$(VersionSuffix)</_InputVersionSuffix>
+    <_IsGitHubBuild Condition="'$(GITHUB_RUN_ID)' != '' OR '$(GITHUB_ACTIONS)' == 'true'">true</_IsGitHubBuild>
+    <_IsReleaseBuild Condition="'$(_IsGitHubBuild)' == 'true' AND '$(GITHUB_EVENT_NAME)' == 'push' AND '$(GITHUB_REF_TYPE)' == 'branch' AND $(GITHUB_REF_NAME.StartsWith('rel/'))">true</_IsReleaseBuild>
   </PropertyGroup>
 
-  <!--
-    Check if the current push is for a release build for NuGet, as that will create a package with a hardcoded version.
-    A release build is one that originates from a push to a branch with the format 'rel/<BUILD_VERSION>(.<SUFFIX>)?'.
-  -->
+  <!-- SemVer 2.0: numeric identifiers cannot have leading zeroes; metadata can. -->
   <PropertyGroup>
-    <ReleaseVersionParsingRegex>^rel/(\d{1,4}\.\d{1,4}\.\d{1,4})(?:-(\w+(?:\.\w+)?))?$</ReleaseVersionParsingRegex>
-    <IsBranchNameStartingWithRefPrefix>$([System.Text.RegularExpressions.Regex]::IsMatch($(GITHUB_REF_NAME), $(ReleaseVersionParsingRegex)))</IsBranchNameStartingWithRefPrefix>
+    <_PrereleaseIdentifier>(?:0|[1-9][0-9]*|[0-9]*[A-Za-z-][0-9A-Za-z-]*)</_PrereleaseIdentifier>
+    <_SemanticVersionRegex>\A((?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*))(?:-($(_PrereleaseIdentifier)(?:\.$(_PrereleaseIdentifier))*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?\z</_SemanticVersionRegex>
   </PropertyGroup>
 
-  <!-- If the current branch and action match a release for NuGet, override the relative build properties -->
-  <PropertyGroup Condition="'$(GITHUB_EVENT_NAME)' == 'push' AND '$(GITHUB_REF_NAME)' != '' AND '$(IsBranchNameStartingWithRefPrefix)' == 'true'">
-    <IsCommitOnReleaseBranch>true</IsCommitOnReleaseBranch>
-    <ShmuelieWinRTServerPackageVersionFromReleaseBranch>$([System.Text.RegularExpressions.Regex]::Match($(GITHUB_REF_NAME), $(ReleaseVersionParsingRegex)).Groups[1].Value)</ShmuelieWinRTServerPackageVersionFromReleaseBranch>
-    <ShmuelieWinRTServerPackageVersionSuffixFromReleaseBranch>$([System.Text.RegularExpressions.Regex]::Match($(GITHUB_REF_NAME), $(ReleaseVersionParsingRegex)).Groups[2].Value)</ShmuelieWinRTServerPackageVersionSuffixFromReleaseBranch>
-    <ShmuelieWinRTServerPackageVersion>$(ShmuelieWinRTServerPackageVersionFromReleaseBranch)</ShmuelieWinRTServerPackageVersion>
-    <VersionSuffix>$(ShmuelieWinRTServerPackageVersionSuffixFromReleaseBranch)</VersionSuffix>
+  <PropertyGroup Condition="'$(_IsGitHubBuild)' != 'true'">
+    <_LocalVersionPrefix>$(_InputVersionPrefix)</_LocalVersionPrefix>
+    <_LocalVersionPrefix Condition="'$(_LocalVersionPrefix)' == ''">$(ShmuelieWinRTServerPackageVersion)</_LocalVersionPrefix>
+    <_LocalVersionSuffix>$(_InputVersionSuffix)</_LocalVersionSuffix>
+    <_LocalVersionSuffix Condition="'$(_LocalVersionSuffix)' == ''">alpha</_LocalVersionSuffix>
+    <_ResolvedVersion>$(_LocalVersionPrefix)-$(_LocalVersionSuffix)</_ResolvedVersion>
+    <_ResolvedVersion Condition="'$(_InputVersion)' != ''">$(_InputVersion)</_ResolvedVersion>
   </PropertyGroup>
 
-  <!-- Configure the assembly version and suffix for both normal CI builds and release builds -->
+  <PropertyGroup Condition="'$(_IsGitHubBuild)' == 'true'">
+    <_CIVersionSuffix>alpha</_CIVersionSuffix>
+    <_CIVersionSuffix Condition="'$(GITHUB_EVENT_NAME)' == 'pull_request'">pr</_CIVersionSuffix>
+    <_ResolvedVersion>$(ShmuelieWinRTServerPackageVersion)-$(_CIVersionSuffix).$(GITHUB_RUN_ID)</_ResolvedVersion>
+    <_ResolvedVersion Condition="'$(_IsReleaseBuild)' == 'true'">$(GITHUB_REF_NAME.Substring(4))</_ResolvedVersion>
+    <_MetadataSeparator>+</_MetadataSeparator>
+    <_MetadataSeparator Condition="$(_ResolvedVersion.Contains('+'))">.</_MetadataSeparator>
+    <_ResolvedVersion Condition="'$(GITHUB_SHA)' != ''">$(_ResolvedVersion)$(_MetadataSeparator)$(GITHUB_SHA)</_ResolvedVersion>
+  </PropertyGroup>
+
+  <!-- Resolve before the SDK consumes Version; validate all public outputs in the targets file. -->
   <PropertyGroup>
-    <AssemblyVersion>$(ShmuelieWinRTServerPackageVersion).0</AssemblyVersion>
-    <VersionPrefix>$(ShmuelieWinRTServerPackageVersion)</VersionPrefix>
-    <VersionSuffix Condition="'$(GITHUB_EVENT_NAME)' != 'pull_request' AND '$(IsCommitOnReleaseBranch)' != 'true'">alpha</VersionSuffix>
-    <VersionSuffix Condition="'$(GITHUB_EVENT_NAME)' == 'pull_request' AND '$(IsCommitOnReleaseBranch)' != 'true'">pr</VersionSuffix>
+    <_ResolvedVersionPrefix>$([System.Text.RegularExpressions.Regex]::Match('$(_ResolvedVersion)', '$(_SemanticVersionRegex)').Groups[1].Value)</_ResolvedVersionPrefix>
+    <_ResolvedVersionSuffix>$([System.Text.RegularExpressions.Regex]::Match('$(_ResolvedVersion)', '$(_SemanticVersionRegex)').Groups[2].Value)</_ResolvedVersionSuffix>
+    <VersionPrefix>$(_ResolvedVersionPrefix)</VersionPrefix>
+    <VersionSuffix>$(_ResolvedVersionSuffix)</VersionSuffix>
+    <Version>$(_ResolvedVersion)</Version>
+    <PackageVersion>$(_ResolvedVersion)</PackageVersion>
+    <AssemblyVersion>$(_ResolvedVersionPrefix).0</AssemblyVersion>
+    <FileVersion>$(AssemblyVersion)</FileVersion>
+    <InformationalVersion>$(_ResolvedVersion)</InformationalVersion>
+    <IncludeSourceRevisionInInformationalVersion Condition="'$(_IsGitHubBuild)' == 'true' AND '$(GITHUB_SHA)' != ''">false</IncludeSourceRevisionInInformationalVersion>
   </PropertyGroup>
 
   <PropertyGroup>
