@@ -2,9 +2,8 @@ name: .NET
 
 on: [push, pull_request]
 
-env:
-  EXCLUDE_RUN_ID_FROM_PACKAGE: false
-  EXCLUDE_SUFFIX_FROM_VERSION: false
+permissions:
+  contents: read
 
 jobs:
 
@@ -24,12 +23,12 @@ jobs:
     - name: NuGet Restore
       run: nuget restore
     - name: Build
-      run: msbuild /t:restore`;build /p:Configuration=${{matrix.configuration}} /p:Platform=x64 /bl
+      run: msbuild /t:restore`;build /p:Configuration=${{matrix.configuration}} /p:Platform=x64 "-bl:artifacts\solution-${{matrix.configuration}}-{}.binlog"
     - name: Upload MSBuild binary log
       uses: actions/upload-artifact@v4
       with:
         name: msbuild_log_${{matrix.configuration}}
-        path: msbuild.binlog
+        path: artifacts\solution-*.binlog
         if-no-files-found: error
       if: always()
 
@@ -46,10 +45,29 @@ jobs:
       uses: nuget/setup-nuget@v1
     - name: NuGet Restore
       run: nuget restore
+    - name: Test versioning and package consumption
+      shell: pwsh
+      run: .\tests\Versioning\Test-Versioning.ps1 -Packages
     - name: Build
-      run: msbuild .\src\Shmuelie.WinRTServer\Shmuelie.WinRTServer.csproj /t:restore`;build /p:Configuration=Release
+      run: msbuild .\src\Shmuelie.WinRTServer\Shmuelie.WinRTServer.csproj /t:restore`;build /p:Configuration=Release "-bl:artifacts\package-build-{}.binlog"
     - name: Pack
-      run: msbuild .\src\Shmuelie.WinRTServer\Shmuelie.WinRTServer.csproj /t:pack /p:Configuration=Release
+      run: msbuild .\src\Shmuelie.WinRTServer\Shmuelie.WinRTServer.csproj /t:pack /p:Configuration=Release /p:NoBuild=true "-bl:artifacts\package-pack-{}.binlog"
+    - name: Verify package artifact
+      shell: pwsh
+      run: |
+        $output = & msbuild .\src\Shmuelie.WinRTServer\Shmuelie.WinRTServer.csproj -nologo -verbosity:quiet -t:ValidatePackageVersion '-getProperty:PackageVersion,AssemblyVersion' '-bl:artifacts\package-version-{}.binlog'
+        if ($LASTEXITCODE -ne 0) { throw 'Could not resolve the expected package version.' }
+        $version = ($output | Out-String | ConvertFrom-Json).Properties.PackageVersion
+        $packages = @(Get-ChildItem .\artifacts -Filter '*.nupkg')
+        if ($packages.Count -ne 1) { throw "Expected one package, found $($packages.Count)." }
+        .\tests\Versioning\Test-Package.ps1 -PackagePath $packages[0].FullName -ExpectedVersion $version
+    - name: Upload package verification logs
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: package_verification_logs
+        path: artifacts\**\*.binlog
+        if-no-files-found: error
     - name: Upload package artifacts
       uses: actions/upload-artifact@v4
       with:
@@ -61,6 +79,9 @@ jobs:
   publish-nightlies-github:
     needs: [build-solution, build-packages]
     runs-on: windows-2022
+    permissions:
+      contents: read
+      packages: write
     if: ${{github.event_name == 'push'}}
     steps:
     - uses: actions/download-artifact@v4
