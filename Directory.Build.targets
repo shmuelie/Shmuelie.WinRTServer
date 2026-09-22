@@ -9,25 +9,33 @@
     MSBuildAllProjects, as that is done by the file that imports us.
   -->
 
-  <!--
-    Manually set the version if null. This is copied from Microsoft.NET.DefaultAssemblyInfo.targets and is needed
-    for cases where that target is not being automatically imported (which happens because MSBuild is used instead
-    of dotnet build for some cases, due to the solution having some UWP and WinUI 3 projects, and non SDK-style too).
-    The lines setting the prefix have been omitted, as that is already handled in the root .props file.
-  -->
-  <PropertyGroup Condition="'$(Version)' == ''">
-    <Version Condition="'$(VersionSuffix)' != ''">$(VersionPrefix)-$(VersionSuffix)</Version>
-    <Version Condition="'$(Version)' == ''">$(VersionPrefix)</Version>
-  </PropertyGroup>
-
-  <!-- Set the base package version (this applies to all build types) -->
-  <PropertyGroup>
-    <PackageVersion>$(Version)</PackageVersion>
-  </PropertyGroup>
-
-  <!-- Settings that are only set for CI builds -->
-  <PropertyGroup Condition="'$(GITHUB_RUN_ID)' != ''">
-    <PackageVersion Condition="'$(IsCommitOnReleaseBranch)' != true">$(VersionPrefix)-$(VersionSuffix).$(GITHUB_RUN_ID)</PackageVersion>
-    <PackageVersion Condition="'$(GITHUB_SHA)' != ''">$(PackageVersion)+$(GITHUB_SHA)</PackageVersion>
-  </PropertyGroup>
+  <Target Name="ValidatePackageVersion" BeforeTargets="PrepareForBuild;CollectPackageReferences;GenerateNuspec;Pack">
+    <Error Code="WRTVER001"
+           Condition="'$(_IsGitHubBuild)' == 'true' AND !$([System.Text.RegularExpressions.Regex]::IsMatch('$(GITHUB_RUN_ID)', '\A[1-9][0-9]*\z'))"
+           Text="GitHub builds require a positive numeric GITHUB_RUN_ID." />
+    <Error Code="WRTVER001"
+           Condition="'$(_IsGitHubBuild)' == 'true' AND '$(GITHUB_EVENT_NAME)' != 'push' AND '$(GITHUB_EVENT_NAME)' != 'pull_request'"
+           Text="GitHub versioning supports push and pull_request events only." />
+    <Error Code="WRTVER001"
+           Condition="'$(_IsGitHubBuild)' == 'true' AND '$(GITHUB_SHA)' != '' AND !$([System.Text.RegularExpressions.Regex]::IsMatch('$(GITHUB_SHA)', '\A[0-9a-fA-F]{40}\z'))"
+           Text="GITHUB_SHA must be a full 40-character hexadecimal commit ID." />
+    <Error Code="WRTVER002"
+           Condition="!$([System.Text.RegularExpressions.Regex]::IsMatch('$(_ResolvedVersion)', '$(_SemanticVersionRegex)'))"
+           Text="Invalid package version '$(_ResolvedVersion)' (ref: '$(GITHUB_REF_NAME)'). Use SemVer major.minor.patch[-prerelease][+metadata]. Malformed rel/ branches cannot fall back to nightly versions." />
+    <Error Code="WRTVER003"
+           Condition="!$([System.Text.RegularExpressions.Regex]::IsMatch('$(_ResolvedVersionPrefix)', '\A[0-9]{1,5}\.[0-9]{1,5}\.[0-9]{1,5}\z'))"
+           Text="Version components must be in the assembly-compatible range 0 through 65534." />
+    <Error Code="WRTVER003"
+           Condition="$([System.Version]::Parse('$(_ResolvedVersionPrefix)').Major) &gt; 65534 OR $([System.Version]::Parse('$(_ResolvedVersionPrefix)').Minor) &gt; 65534 OR $([System.Version]::Parse('$(_ResolvedVersionPrefix)').Build) &gt; 65534"
+           Text="Version components must be in the assembly-compatible range 0 through 65534." />
+    <Error Code="WRTVER004"
+           Condition="('$(_InputVersion)' != '' AND !$([System.String]::Equals('$(_InputVersion)', '$(_ResolvedVersion)', System.StringComparison.Ordinal))) OR ('$(_InputVersionPrefix)' != '' AND '$(_InputVersionPrefix)' != '$(_ResolvedVersionPrefix)') OR ('$(_InputVersionSuffix)' != '' AND !$([System.String]::Equals('$(_InputVersionSuffix)', '$(_ResolvedVersionSuffix)', System.StringComparison.Ordinal)))"
+           Text="Conflicting version inputs. Expected Version='$(_ResolvedVersion)', VersionPrefix='$(_ResolvedVersionPrefix)', VersionSuffix='$(_ResolvedVersionSuffix)'. CI versions come from the branch/build context; local versions use Version or VersionPrefix/VersionSuffix." />
+    <Error Code="WRTVER004"
+           Condition="!$([System.String]::Equals('$(Version)', '$(_ResolvedVersion)', System.StringComparison.Ordinal)) OR !$([System.String]::Equals('$(PackageVersion)', '$(_ResolvedVersion)', System.StringComparison.Ordinal)) OR '$(VersionPrefix)' != '$(_ResolvedVersionPrefix)' OR !$([System.String]::Equals('$(VersionSuffix)', '$(_ResolvedVersionSuffix)', System.StringComparison.Ordinal)) OR !$([System.String]::Equals('$(InformationalVersion)', '$(_ResolvedVersion)', System.StringComparison.Ordinal))"
+           Text="Version properties must agree with the resolved version '$(_ResolvedVersion)'. Do not override PackageVersion independently or override the CI build context." />
+    <Error Code="WRTVER004"
+           Condition="'$(AssemblyVersion)' != '$(_ResolvedVersionPrefix).0' OR '$(FileVersion)' != '$(_ResolvedVersionPrefix).0'"
+           Text="AssemblyVersion and FileVersion must be '$(_ResolvedVersionPrefix).0', derived from the package version." />
+  </Target>
 </Project>
