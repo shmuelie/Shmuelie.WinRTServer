@@ -114,6 +114,114 @@ remote instances simply by `new SomeType()`, like you would for any other type.
 The sample WPF application shows this in action (using with WinForms would be
 similar).
 
+# Package Versions and Releases
+
+Pre-release and stable packages use the same package ID,
+`Shmuelie.WinRTServer`. Pre-release versions follow SemVer 2.0, for example
+`2.3.0-preview.1`, `2.3.0-beta.2`, and `2.3.0-rc.1`. These versions are
+illustrative; check the package feed for available versions.
+
+## Build a Package Locally
+
+Use a Visual Studio developer PowerShell with MSBuild 17.8 or later, the .NET 8
+SDK, and the Windows SDK installed. Packages are written to `artifacts`.
+
+```powershell
+# Pack an explicitly versioned preview.
+msbuild .\src\Shmuelie.WinRTServer\Shmuelie.WinRTServer.csproj -restore '-t:Build;Pack' -p:Configuration=Release '-p:Version=2.3.0-preview.1' '-bl:artifacts\local-{}.binlog'
+
+# Equivalent prefix/suffix inputs.
+msbuild .\src\Shmuelie.WinRTServer\Shmuelie.WinRTServer.csproj -restore '-t:Build;Pack' -p:Configuration=Release '-p:VersionPrefix=2.3.0' '-p:VersionSuffix=preview.1' '-bl:artifacts\local-{}.binlog'
+
+# An explicit Version without a suffix creates a stable local package.
+msbuild .\src\Shmuelie.WinRTServer\Shmuelie.WinRTServer.csproj -restore '-t:Build;Pack' -p:Configuration=Release '-p:Version=2.3.0' '-bl:artifacts\local-{}.binlog'
+```
+
+Without explicit inputs, local packages use the base version in
+`Directory.Build.props` with an `alpha` suffix. Providing only `VersionPrefix`
+retains that suffix; providing only `VersionSuffix` uses the repository's base
+version. Use `Version` to request a stable package, not an empty suffix.
+Conflicting inputs fail rather than silently selecting a different version.
+Do not override `PackageVersion`, `AssemblyVersion`, `FileVersion`, or
+`InformationalVersion` independently.
+
+Pre-release identifiers may contain ASCII letters, digits, and hyphens, separated
+by dots. Numeric identifiers cannot have leading zeroes. Version components must
+be between 0 and 65534 so the assembly and file versions can use
+`major.minor.patch.0`. Optional SemVer build metadata is preserved in package
+metadata, but is not part of the NuGet package filename or its unique identity.
+
+## Publish from CI
+
+CI derives versions from its build context and rejects conflicting version
+overrides:
+
+| Context | Package identity |
+| --- | --- |
+| Ordinary push | `<base>-alpha.<run-id>` |
+| Pull request | `<base>-pr.<run-id>` |
+| Push to branch `rel/2.3.0-rc.1` | `2.3.0-rc.1` |
+| Push to branch `rel/2.3.0` | `2.3.0` |
+
+The commit SHA is included as build metadata. Re-running a workflow retains the
+same version; a new nightly run receives a new run ID. PRs cannot become stable
+releases even if their branch is named `rel/2.3.0`. Tags do not select release
+versions. Invalid release-branch versions fail instead of falling back to a
+nightly version.
+
+To release a preview, push the intended commit to a branch such as
+`rel/2.3.0-preview.1`. After validation, release candidates and the stable release
+use new versions, for example `rel/2.3.0-rc.1` and then `rel/2.3.0`.
+Never replace an already published version: increment the pre-release identifier
+or the stable version when publishing changed contents. Commit metadata alone
+does not create a new package identity.
+
+The workflow checks version rules, package/assembly contents, and stable versus
+pre-release consumption, as well as the existing Debug/Release solution builds.
+Only push builds publish, and they publish the verified artifact without
+rebuilding it. Both stable and pre-release packages currently go to
+[GitHub Packages](https://github.com/shmuelie/Shmuelie.WinRTServer/packages).
+NuGet.org publishing is tracked separately in
+[#42](https://github.com/shmuelie/Shmuelie.WinRTServer/issues/42).
+
+## Consume Pre-release Packages
+
+Configure the GitHub NuGet feed using your own credentials. For example, on
+Windows, use a personal access token with `read:packages` in an environment
+variable; NuGet encrypts the saved password for the current user. Do not commit
+credentials to the repository.
+
+```powershell
+dotnet nuget add source https://nuget.pkg.github.com/shmuelie/index.json --name shmuelie-github --username YOUR_GITHUB_USERNAME --password $env:GITHUB_PACKAGES_TOKEN
+
+# Install a specific preview.
+dotnet add .\MyApp.csproj package Shmuelie.WinRTServer --version 2.3.0-rc.1 --source https://nuget.pkg.github.com/shmuelie/index.json
+
+# Or opt into the latest available pre-release.
+dotnet add .\MyApp.csproj package Shmuelie.WinRTServer --prerelease --source https://nuget.pkg.github.com/shmuelie/index.json
+```
+
+In Visual Studio's NuGet UI, select the configured feed and enable **Include
+prerelease**. Without this option (or the CLI's `--prerelease`), normal latest-version
+selection remains stable-only; existing pinned package references are unchanged.
+
+## Validate Versioning
+
+From the repository root in PowerShell 7 with MSBuild on `PATH`:
+
+```powershell
+# Fast version-resolution and invalid-input checks.
+.\tests\Versioning\Test-Versioning.ps1
+
+# Also build packages, inspect their metadata/assemblies, and restore consumers
+# from an isolated local feed to check pre-release opt-in.
+.\tests\Versioning\Test-Versioning.ps1 -Packages
+```
+
+The package checks restore dependencies from NuGet.org; an alternative public
+source can be supplied with `-RestoreSource`. Tests never publish packages.
+Per-run binary logs and artifacts are retained under `artifacts\versioning`.
+
 # Sample
 
 To help understand usage and show what can be done samples can be found under
