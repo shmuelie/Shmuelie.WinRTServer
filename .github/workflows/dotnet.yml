@@ -12,6 +12,7 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
+      fail-fast: false
     runs-on: windows-2022
     steps:
     - name: Git checkout
@@ -20,6 +21,9 @@ jobs:
       uses: microsoft/setup-msbuild@v1.1
     - name: Setup NuGet
       uses: nuget/setup-nuget@v1
+    - name: Check sample Windows SDK
+      shell: pwsh
+      run: .\tests\Test-WindowsSdk.ps1
     - name: NuGet Restore
       run: nuget restore
     - name: Build

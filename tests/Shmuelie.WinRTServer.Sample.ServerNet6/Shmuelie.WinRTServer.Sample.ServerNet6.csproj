@@ -8,6 +8,7 @@
     <RuntimeIdentifiers>win-x64;$(RuntimeIdentifiers)</RuntimeIdentifiers>
     <CsWinRTIncludes>Shmuelie.WinRTServer.Sample</CsWinRTIncludes>
     <CsWinRTIncludesPrivate>Shmuelie.WinRTServer.Sample</CsWinRTIncludesPrivate>
+    <CsWinRTWindowsMetadata>$(SampleWindowsSdkVersion)</CsWinRTWindowsMetadata>
     <DefineConstants>$(DefineConstants);NET</DefineConstants>
     <DebugType>full</DebugType>
     <DisableRuntimeMarshalling>True</DisableRuntimeMarshalling>

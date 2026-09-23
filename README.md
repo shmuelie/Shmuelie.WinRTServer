@@ -233,6 +233,19 @@ the tests folder. The sample has:
 - WPF .NET Framework Client App
 - WPF .NET 8 Client App
 
+Sample builds require Windows SDK **10.0.26100.0**, Visual Studio's C++ tools,
+and UWP development support (including the .NET Native toolchain for Release).
+The build SDK is pinned in `tests\Directory.Build.props`; it supplies native
+headers/tools, UWP references, and C#/WinRT projection metadata. This does not
+change the library's `net8.0-windows10.0.22000.0` target framework or the samples'
+minimum Windows versions.
+
+Run `.\tests\Test-WindowsSdk.ps1` in PowerShell 7 to check the SDK's metadata,
+headers, libraries, and tools before building. CI runs this check before restore
+and retains both Debug and Release solution builds as publishing gates. If the
+SDK is missing, install it through Visual Studio Installer instead of overriding
+`TargetPlatformVersion` globally or reinstalling the obsolete 22000 SDK.
+
 > **Note**: If Visual Studio fails to build the Metadata project restarting
 > Visual Studio should fix the problem.
 
