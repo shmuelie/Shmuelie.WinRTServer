@@ -199,7 +199,7 @@
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe">
       <Version>6.0.0</Version>
     </PackageReference>
-    <Reference Include="..\Shmuelie.WinRTServer.Sample.Metadata\bin\$(Platform)\$(Configuration)\Shmuelie.WinRTServer.Sample.winmd;..\Shmuelie.WinRTServer.Sample.Metadata\bin\$(Platform)\$(Configuration)\Shmuelie.WinRTServer.Sample.Interfaces.winmd">
+    <Reference Include="..\Shmuelie.WinRTServer.Sample.Metadata\bin\$(SampleMetadataPlatform)\$(Configuration)\Shmuelie.WinRTServer.Sample.winmd;..\Shmuelie.WinRTServer.Sample.Metadata\bin\$(SampleMetadataPlatform)\$(Configuration)\Shmuelie.WinRTServer.Sample.Interfaces.winmd">
       <Name>%(Filename)</Name>
       <IsWinMDFile>true</IsWinMDFile>
     </Reference>
