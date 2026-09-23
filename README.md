@@ -246,8 +246,9 @@ and retains both Debug and Release solution builds as publishing gates. If the
 SDK is missing, install it through Visual Studio Installer instead of overriding
 `TargetPlatformVersion` globally or reinstalling the obsolete 22000 SDK.
 
-> **Note**: If Visual Studio fails to build the Metadata project restarting
-> Visual Studio should fix the problem.
+Build the solution so its dependency ordering generates the interface and proxy
+WinMDs before the clients consume them. The clients reference the explicit output
+filenames so a clean checkout does not require a preliminary build.
 
 # Troubleshooting
 
