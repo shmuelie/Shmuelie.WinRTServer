@@ -118,7 +118,7 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="PropertySheet.props" />
-    <Reference Include="..\Shmuelie.WinRTServer.Sample.Metadata\bin\$(Platform)\$(Configuration)\*.winmd">
+    <Reference Include="..\Shmuelie.WinRTServer.Sample.Metadata\bin\$(Platform)\$(Configuration)\Shmuelie.WinRTServer.Sample.winmd;..\Shmuelie.WinRTServer.Sample.Metadata\bin\$(Platform)\$(Configuration)\Shmuelie.WinRTServer.Sample.Interfaces.winmd">
       <Name>%(Filename)</Name>
       <IsWinMDFile>true</IsWinMDFile>
     </Reference>
