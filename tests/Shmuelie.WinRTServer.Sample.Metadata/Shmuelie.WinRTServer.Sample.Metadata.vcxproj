@@ -24,7 +24,6 @@
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{AEAC1534-6CA9-4A7E-9F24-E1F72D261AE4}</ProjectGuid>
     <RootNamespace>Shmuelie.WinRTServer.Sample</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
