@@ -249,6 +249,10 @@ SDK is missing, install it through Visual Studio Installer instead of overriding
 Build the solution so its dependency ordering generates the interface and proxy
 WinMDs before the clients consume them. The clients reference the explicit output
 filenames so a clean checkout does not require a preliminary build.
+Managed x86 clients consume the native Metadata project's `Win32` outputs;
+their own platform remains x86. Full solution CI and packaged-server validation
+use x64: the existing .NET 8 Native AOT server configuration does not support
+`win-x86`, and its full x86 packaging path is outside this pre-release change.
 
 # Troubleshooting
 

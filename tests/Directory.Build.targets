@@ -1,0 +1,9 @@
+<Project>
+  <Import Project="$(MSBuildThisFileDirectory)..\Directory.Build.targets" />
+
+  <!-- Project defaults must be evaluated before mapping managed x86 to native Win32 outputs. -->
+  <PropertyGroup>
+    <SampleMetadataPlatform>$(Platform)</SampleMetadataPlatform>
+    <SampleMetadataPlatform Condition="'$(Platform)' == 'x86'">Win32</SampleMetadataPlatform>
+  </PropertyGroup>
+</Project>
